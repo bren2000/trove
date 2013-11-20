@@ -1,0 +1,98 @@
+<?php
+/**
+ * @file
+ * The drove module.
+ */
+
+define('TROVE_BASE_URL', 'http://api.trove.nla.gov.au/');
+
+/**
+ * Implements hook_menu().
+ */
+function trove_menu() {
+  $items['admin/config/services/trove'] = array(
+    'title' => 'Trove',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('trove_admin_settings'),
+    'access arguments' => array('administer site configuration'),
+    'description' => 'Change settings for the trove module.',
+    'file' => 'trove.admin.inc',
+  );
+  return $items;
+}
+
+function _get_zones() {
+  $zones = array('all', 'article', 'book', 'collection', 'list', 'map','music',
+    'newspaper', 'people', 'picture', 'website');
+  return array_combine($zones, $zones);
+}
+
+function _get_facets_format() {
+  return array(
+    'Archived website' => 'Archved website',
+    'Art work' => 'Art work',
+    'Article' => array(
+      'Article/Abstract' => 'Abstract',
+      'Article/Book chapter' => 'Book chapter',
+      'Article/Conference paper' => 'Conference Paper',
+      'Article/Journal or magazne article' => 'Journal or magazine article',
+      'Article/Other article' => 'Other article',
+      'Article/Report' => 'Report',
+      'Article/Review' => 'Review',
+      'Article/Working paper' => 'Working paper'),
+    'Audio book' => 'Audio book',
+    'Book' => array(
+      'Book/Braille',
+      'Book/Illustrated',
+      'Book/Large print'),
+    'Conference Proceedings',
+    'Data set',
+    'Map' => array(
+      'Map/Aerial photograph' => 'Aerial photograph',
+      'Map/Atlas' => 'Atlas',
+      'Map/Braille' => 'Braille',
+      'Map/Electronic' => 'Electronic',
+      'Map/Globe or object' => 'Globe or object',
+      'Map/Large print' => 'Large print',
+      'Map/Map series' => 'Map series',
+      'Map/Microform' => 'Microform',
+      'Map/Single map' => 'Single map'),
+    'Object' => 'Object',
+    'Periodical' => array(
+      'Periodical/Journal, magazine, other' => 'Journal, magazine, other',
+      'Periodical/Newspaper' => 'Newspaper'),
+    'Photograph' => 'Photograph',
+    'Poster, chart, other' => 'Poster, chart, other',
+    'Published' => 'Published',
+    'Sheet music' => 'Sheet music',
+    'Sound' => array(
+      'Sound/Interview, lecture, talk' => 'Interview, lecture, talk',
+      'Sound/Other sound' => 'Other sound',
+      'Sound/Recorded music' => 'Recorded music'),
+    'Thesis' => 'Thesis',
+    'Unpublished' => 'Unpublished',
+    'Video' => array(
+      'Video/Captioned' => 'Video/Captioned'),
+    );
+}
+
+function _get_facets_availability() {
+  return array(
+    'y' => 'online',
+    'y/f' => 'freely accessible online',
+    'y/r' => 'payment, subscription or membership required',
+    'y/s' => 'subscription required',
+    'y/u' => 'possibly online',
+  );
+}
+
+function _get_facets_category() {
+  return array(
+    'Article' => 'Article',
+    'Advertising' => 'Advertising',
+    'Details lists, results, guides' => 'Details lists, results, guides',
+    'Family notices' => 'Family notices',
+    'Literature' => 'Literature',
+  );
+}
+

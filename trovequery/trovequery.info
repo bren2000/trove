@@ -1,0 +1,30 @@
+name = Trove Views Query
+description = Trove API views integration.
+core = 7.x
+package = Trove
+dependencies[] = trove
+dependencies[] = views
+
+files[] = handlers/trovequery_handler_field_title.inc
+files[] = handlers/trovequery_handler_field_contributor.inc
+files[] = handlers/trovequery_handler_field_tid.inc
+files[] = handlers/trovequery_handler_filter_field.inc
+files[] = handlers/trovequery_handler_filter_zone.inc
+files[] = handlers/trovequery_handler_field_image.inc
+files[] = handlers/trovequery_handler_relationship.inc
+files[] = handlers/troveitem_handler_argument_item.inc
+files[] = handlers/troveitem_handler_filter_string.inc
+files[] = handlers/trovequery_handler_filter_query.inc
+files[] = handlers/trovequery_handler_filter_facet.inc
+files[] = handlers/trovequery_handler_field_url.inc
+files[] = handlers/trovequery_handler_field_include.inc
+files[] = handlers/trovequery_handler_filter_include.inc
+files[] = handlers/trovequery_handler_filter_comments_date.inc
+files[] = handlers/trovequery_handler_sort_date.inc
+files[] = handlers/trovequery_handler_sort_relevance.inc
+files[] = handlers/trovecontrib_handler_filter_query.inc
+files[] = handlers/trovequery_handler_field_snippet.inc
+files[] = plugins/trove_plugin_query.inc
+files[] = plugins/trovequery_plugin_argument_validate.inc
+; files[] = plugins/trovequery_plugin_pager.inc
+

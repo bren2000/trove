@@ -1,0 +1,6 @@
+name = Trove
+description = Use Trove API with Drupal.
+core = 7.x
+package = Trove
+
+files[] = trove.api.inc
