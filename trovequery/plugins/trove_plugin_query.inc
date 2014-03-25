@@ -39,16 +39,6 @@ class trove_plugin_query extends views_plugin_query {
       if (empty($this->args['method'])) {
         return;
       }
-      if (method_exists($view, 'init_pager')) {
-        $view->init_pager();
-      }
-
-      if ($this->pager->use_pager()) {
-        $this->pager->set_current_page($view->current_page);
-        $this->pager->total_items = 100;
-        $this->pager->options['total_pages'] = 10;
-      }
-      $this->pager->query();
 
       $this->request = troveAPI::factory($view->base_table);
       foreach ($this->args as $k => $v) {
@@ -57,13 +47,22 @@ class trove_plugin_query extends views_plugin_query {
       $this->request->query();
       $view->result = $this->request->parse();
 
-      // Slice the resultset.
-      if (isset($this->offset, $this->limit)) {
-        $end = $this->offset + $this->limit;
-        $end = count($view->result) >= $end ? $end : count($view->result);
-        $view->result = array_slice($view->result, $this->offset, $end);
+      // Setup pager
+      $view->init_pager();
+      if ($this->pager->use_pager()) {
+        $this->pager->set_current_page($view->current_page);
       }
-      dpm($this->pager);
+      $this->pager->total_items = $view->result['total_results'];
+      dpm($view->result['total_results']);
+      $this->pager->update_page_info();
+
+      // Slice the resultset.
+      //if (isset($this->offset, $this->limit)) {
+      //  $end = $this->offset + $this->limit;
+      //  $end = count($view->result) >= $end ? $end : count($view->result);
+      //  $view->result = array_slice($view->result, $this->offset, $end);
+      //}
+      //dpm($this->pager);
 
     } catch (Exception $e) {
       $this->errors[] = $e->getMessage();

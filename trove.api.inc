@@ -209,6 +209,7 @@ class troveAPIResult extends troveAPI {
 
   function parse() {
     $results = array();
+    $total_results = 0;
     //dpm($this->response['response']);
     foreach($this->response['response']['zone'] as $zones) {
       switch($zones['name']) {
@@ -222,6 +223,7 @@ class troveAPIResult extends troveAPI {
           $k = 'work';
       }
       if ($zones['records']['total'] != '0') {
+        $total_results += $zones['records']['total'];
         foreach($zones['records'][$k] as $res) {
           $row = new stdClass;
           // title
@@ -289,10 +291,13 @@ class troveAPIResult extends troveAPI {
             $row->trove_url = $res['troveUrl'];
           }
           $row->zone = $zones['name'];
+
           $results[] = $row;
         }
       }
     }
+    $results['total_results'] = $total_results;
+    dpm($total_results);
     dpm($results);
     return $results;
   }

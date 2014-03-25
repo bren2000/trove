@@ -26,5 +26,3 @@ files[] = handlers/trovecontrib_handler_filter_query.inc
 files[] = handlers/trovequery_handler_field_snippet.inc
 files[] = plugins/trove_plugin_query.inc
 files[] = plugins/trovequery_plugin_argument_validate.inc
-; files[] = plugins/trovequery_plugin_pager.inc
-
