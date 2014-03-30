@@ -271,6 +271,14 @@ class troveAPIResult extends troveAPI {
             }
             $row->tag = chop($row->tag, ', ');
           }
+          // issued (date)
+          if (isset($res['issued'])) {
+            //foreach($res['issued'] as $k) {
+            //  $row->date = $row->date . $k['value'] . ', ';
+           // }
+            //$row->date = chop($row->date, ', ');
+            $row->date = $res['issued'];
+          }
           // comments
           if(isset($res['comment'])) {
             foreach($res['comment'] as $k) {

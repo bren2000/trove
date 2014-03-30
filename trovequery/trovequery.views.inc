@@ -10,18 +10,6 @@ function trovequery_views_plugins() {
     'handler' => 'trove_plugin_query',
     'use pager' => TRUE,
   );
-  $plugin['argument validator']['trovequery_argument_validate'] = array(
-    'title' => t('trove query filter argument validation'),
-    'handler' => 'trovequery_plugin_argument_validate',
-    'path' => drupal_get_path('module', 'trovequery') .'/plugins',
-  );
-  $plugin['pager']['trovequery_pager'] = array(
-    'title' => t('Trove query result pager'),
-    'help' => t('Display pages'),
-    'handler' => 'trovequery_plugin_pager',
-    'path' => drupal_get_path('module', 'trovequery') .'/plugins',
-    'uses options' => TRUE,
-  );
   return $plugin;
 }
 
@@ -43,7 +31,8 @@ function trovequery_views_data() {
   $data['trovequery']['table']['group']  = t('Trove Results');
   $data['trovequery']['table']['base'] = array(
     'title' => t('Trove Results'),
-    'help' => t('Query Trove.'),
+    'help'  => t('Query Trove.'),
+    'field' => 'title',
     'query class' => 'trove_plugin_query',
   );
 
@@ -101,6 +90,15 @@ function trovequery_views_data() {
         'index' => 'has',
         'value' => 'tags',
       ),
+    ),
+  );
+
+  //date
+  $data['trovequery']['date'] = array(
+    'title' => t('date'),
+    'help' => t("Date of publication"),
+    'field' => array (
+      'handler' => 'trovequery_handler_field_date',
     ),
   );
 

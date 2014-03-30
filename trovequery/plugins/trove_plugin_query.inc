@@ -35,7 +35,7 @@ class trove_plugin_query extends views_plugin_query {
     }
     try {
       $start = microtime(TRUE);
-      // pager
+
       if (empty($this->args['method'])) {
         return;
       }
