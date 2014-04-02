@@ -21,6 +21,25 @@ function trove_menu() {
   return $items;
 }
 
+function trove_cron() {
+  $contributors = troveAPI::factory('trovecontrib');
+  $contributors->query();
+  $contributors->parse();
+  //dpm($contributors);
+  _db_add_contributors($contributors);
+}
+
+function _db_add_contributors($contributors) {
+  if(!empty($contributors)) {
+    dpm($contributors->response);
+  }
+  $values[] = array(
+    'name' => 'Groucho',
+    'address' => '123 Casablanca Ave.',
+    'phone' => '555-1212',
+  );
+}
+
 function _get_zones() {
   $zones = array('all', 'article', 'book', 'collection', 'list', 'map','music',
     'newspaper', 'people', 'picture', 'website');
