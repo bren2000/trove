@@ -43,7 +43,7 @@ class troveAPI {
       case 'troveitem':
         return new troveAPIRecord($base_table);
       case 'trovecontrib':
-        return new troveAPIContributor($base_table);
+        return new troveAPIContributor('contributor');
     }
   }
 
@@ -123,7 +123,7 @@ class troveAPI {
     $request_url = url($this->trove_base_url . $command , array('query' => $args, 'absolute' => TRUE));
 
     // Check if we have a cache hit or not.
-    //dpm($request_url);
+    dpm($request_url);
     if ($result = $this->cache_get($request_url)) {
       $this->response = $result->data;
       $this->cache = TRUE;
@@ -304,9 +304,9 @@ class troveAPIResult extends troveAPI {
         }
       }
     }
-    //$results['total_results'] = $total_results;
-    //dpm($total_results);
-    //dpm($results);
+    $results['total_results'] = $total_results;
+    dpm($total_results);
+    dpm($results);
     return $results;
   }
 
@@ -321,7 +321,12 @@ class troveAPIRecord extends troveAPI {
 
 class troveAPIContributor extends troveAPI {
 
+  function __construct($method) {
+    parent::__construct($method);
+  }
+
   function query() {
+    //dpm($api_key);
     return $this->call($this->params);
   }
 
