@@ -37,7 +37,47 @@ function trove_admin_settings() {
     '#default_value' => variable_get('trove_cache_duration', 3600),
     '#description' => t('The refresh interval indicating how often you want to check cached trove API calls are up to date.'),
   );
+  $form['trove_update_contributors'] = array(
+    '#type' => 'button',
+    '#value' => t('Update contributors'),
+    '#title' => t('Update contributors list'),
+    '#description' => t('This will update the list of Trove contributors, this list is used by views as filter values.'),
+    '#suffix' => '<span id="update-cont-div"></span>',
+    '#ajax' => array(
+      'callback' => '_get_trove_contributors',
+      'wrapper' => 'update-cont-div',
+      'method' => 'replace',
+      'effect' => 'fade',
+    ),
+  );
   return system_settings_form($form);
+}
+
+function _get_trove_contributors() {
+  $contributors = troveAPI::factory('trovecontrib');
+  $contributors->query();
+  $list = $contributors->parse();
+  //dpm($contributors);
+  //dpm($list);
+  _db_add_trove_contributors($list);
+  return 'Contributors list updated with ' . count($list) . ' entries';
+}
+
+function _db_add_trove_contributors($contributors) {
+  if(!empty($contributors)) {
+    foreach($contributors as $cont) {
+      $values[] = array(
+        'nuc' => $cont->id,
+        'name' => $cont->name,
+      );
+    };
+    db_delete('trove_contributors')->execute();
+    $insert = db_insert('trove_contributors')->fields(array('nuc', 'name'));
+    foreach ($values as $value) {
+      $insert->values($value);
+    }
+    $insert->execute();
+  }
 }
 
 /**
