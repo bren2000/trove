@@ -26,8 +26,10 @@ function trove_schema(){
     'description' => t('Stores trove contributors and their NUC'),
     'fields'  => array(
       'nuc' => array(
-        'type' => 'text',
+        'type' => 'varchar',
+        'length' => 32,
         'not null' => TRUE,
+        'default' => '',
         'description' => t('The NUC identifier for the contibutor.')
       ),
 
@@ -37,6 +39,7 @@ function trove_schema(){
         'not null' => FALSE,
       ),
     ),
+    'primary key' => array('nuc'),
   );
   return $schema;
 }
