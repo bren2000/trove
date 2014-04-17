@@ -250,12 +250,13 @@ function trovequery_views_data() {
       'handler' => 'trovequery_handler_field_contributor',
     ),
     'filter' => array(
-      'handler' => 'trovequery_handler_filter_field',
-      'help' => t('Keyword filter on the author’s name.'),
+      'handler' => 'trovequery_handler_filter_contributor',
+      'help' => t('Filter by contributor'),
       'trovequery' => array(
         'arg' => 'q',
         'method' => 'result',
-        'index' => 'creator',
+        'index' => 'nuc',
+        'index_method' => '_get_index_contributors',
        ),
     ),
   );

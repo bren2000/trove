@@ -20,6 +20,7 @@ files[] = handlers/trovequery_handler_filter_facet.inc
 files[] = handlers/trovequery_handler_field_url.inc
 files[] = handlers/trovequery_handler_field_include.inc
 files[] = handlers/trovequery_handler_filter_include.inc
+files[] = handlers/trovequery_handler_filter_contributor.inc
 files[] = handlers/trovequery_handler_filter_comments_date.inc
 files[] = handlers/trovequery_handler_sort_date.inc
 files[] = handlers/trovequery_handler_sort_relevance.inc

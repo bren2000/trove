@@ -25,7 +25,7 @@ class trove_plugin_query extends views_plugin_query {
    * $view->pager['current_page'].
    */
   function execute(&$view) {
-    if ($this->errors || $this->abort) {
+    if ($this->errors || $this->abort ){
       if (error_displayable()) {
         foreach ($this->errors as $msg) {
           drupal_set_message(check_plain($msg), 'error');
