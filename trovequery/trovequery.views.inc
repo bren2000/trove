@@ -36,38 +36,6 @@ function trovequery_views_data() {
     'query class' => 'trove_plugin_query',
   );
 
-  // Trove contributors base table
-  $data['trovecontrib']['table']['group']  = t('Trove Contributors');
-  $data['trovecontrib']['table']['base'] = array(
-    'title' => t('Trove Contributors'),
-    'help' => t('Query Trove contributors.'),
-    'query class' => 'trove_plugin_query',
-  );
-
-  $data['trovecontrib']['id'] = array(
-    'title' => t('id'),
-    'field' => array(
-      'handler' => 'trovequery_handler_field_title',
-      'help' => 'ID of the contributor',
-    ),
-    'filter' => array(
-      'handler' => 'trovecontrib_handler_filter_query',
-      'help' => t('Filter the contributors by name or nuc symbol. (Location may also be searched.)'),
-      'trovecontrib' => array(
-        'arg' => 'q',
-        'method' => 'contributor',
-      ),
-    ),
-  );
-
-  $data['trovecontrib']['name'] = array(
-    'title' => t('name'),
-    'field' => array(
-      'handler' => 'trovequery_handler_field_title',
-      'help' => 'Name of the contributor',
-    ),
-  );
-
   //tags
   $data['trovequery']['tag'] = array(
     'title' => t('tag'),
