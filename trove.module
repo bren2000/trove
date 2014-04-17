@@ -96,3 +96,13 @@ function _get_facets_category() {
   );
 }
 
+function _get_index_contributors() {
+  $list = array();
+  $result = db_query("SELECT nuc, name
+    FROM {trove_contributors}");
+  foreach ($result->fetchAllAssoc('nuc') as $arr) {
+    $list[$arr->nuc] = $arr->name;
+  }
+  return $list;
+}
+

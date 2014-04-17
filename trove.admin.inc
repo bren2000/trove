@@ -57,19 +57,18 @@ function _get_trove_contributors() {
   $contributors = troveAPI::factory('trovecontrib');
   $contributors->query();
   $list = $contributors->parse();
-  //dpm($contributors);
-  //dpm($list);
-  _db_add_trove_contributors($list);
-  return 'Contributors list updated with ' . count($list) . ' entries';
+  return ( _db_add_trove_contributors($list) ? 'Contributors list updated with ' . count($list) . ' entries' : 'Error occured');
 }
 
 function _db_add_trove_contributors($contributors) {
   if(!empty($contributors)) {
     foreach($contributors as $cont) {
-      $values[] = array(
-        'nuc' => $cont->id,
-        'name' => $cont->name,
-      );
+      if ($cont->nuc) {
+        $values[] = array(
+          'nuc' => $cont->nuc,
+          'name' => $cont->name,
+        );
+      }
     };
     db_delete('trove_contributors')->execute();
     $insert = db_insert('trove_contributors')->fields(array('nuc', 'name'));
@@ -77,7 +76,9 @@ function _db_add_trove_contributors($contributors) {
       $insert->values($value);
     }
     $insert->execute();
+    return true;
   }
+  return false;
 }
 
 /**

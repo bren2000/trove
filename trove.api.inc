@@ -336,6 +336,9 @@ class troveAPIContributor extends troveAPI {
       $cont = new stdClass;
       $cont->name = $contributor['name'];
       $cont->id = $contributor['id'];
+      if ($contributor['nuc'] != '') {
+        $cont->nuc  = $contributor['nuc'];
+      }
       $contributors[] = $cont;
     }
     return $contributors;
