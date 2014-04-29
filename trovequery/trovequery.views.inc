@@ -36,12 +36,80 @@ function trovequery_views_data() {
     'query class' => 'trove_plugin_query',
   );
 
-  //tags
+  // title
+  $data['trovequery']['title'] = array(
+    'title' => t('title'),
+    'help' => t('The title of this result.'),
+    'field' => array(
+      'handler' => 'trovequery_handler_field_title',
+    ),
+    'filter' => array(
+      'handler' => 'trovequery_handler_filter_field',
+      'help' => t('Keyword filter on the title field.'),
+      'trovequery' => array(
+        'arg' => 'q',
+        'method' => 'result',
+        'index' => 'title',
+       ),
+    ),
+  );
+
+  // isbn
+  $data['trovequery']['isbn'] = array(
+    'title' => t('ISBN'),
+    'help' => t('The ISBN for this result.'),
+    'filter' => array(
+      'handler' => 'trovequery_handler_filter_include_string',
+      'help' => t('Filter on ISBNs.'),
+      'label' => t('The ISBN of the item.'),
+      'trovequery' => array(
+        'arg' => 'q',
+        'method' => 'result',
+        'index' => 'isbn',
+      ),
+    ),
+  );
+
+  // issn
+  $data['trovequery']['issn'] = array(
+    'title' => t('ISSN'),
+    'help' => t('The ISSN for this result.'),
+    'filter' => array(
+      'handler' => 'trovequery_handler_filter_include_string',
+      'help' => t('Filter on ISSNs.'),
+      'label' => t('The ISSN of the item.'),
+      'trovequery' => array(
+        'arg' => 'q',
+        'method' => 'result',
+        'index' => 'issn',
+      ),
+    ),
+  );
+
+  // id
+  $data['trovequery']['id'] = array(
+    'title' => t('id'),
+    'help' => t('The work number of this item.'),
+    'filter' => array(
+      'handler' => 'trovequery_handler_filter_include_string',
+      'help' => t('Filter on work number (ID).'),
+      'label' => t('The work number of the item.'),
+      'trovequery' => array(
+        'arg' => 'q',
+        'method' => 'result',
+        'index' => 'id',
+      ),
+    ),
+  );
+
+
+
+  // tags
   $data['trovequery']['tag'] = array(
     'title' => t('tag'),
     'help' => t('Tags associated with this item.'),
     'field' => array(
-      'handler' => 'trovequery_handler_field_include',
+      'handler' => 'trovequery_handler_field_include_tags',
       'trovequery' => array(
         'arg' => 'include',
         'value' => 'tags',
@@ -82,6 +150,22 @@ function trovequery_views_data() {
         'arg' => 'q',
         'method' => 'result',
         'index' => 'commentlastupdated',
+      ),
+    ),
+  );
+
+  // lastupdated
+  $data['trovequery']['lastupdated'] = array (
+    'title' => t('last updated'),
+    'help' => t('The date the item was last updated.'),
+    'filter' => array(
+      'handler' => 'trovequery_handler_filter_date',
+      'help' => t('Limit results to items updated before, after or between certain dates'),
+      'label' => t('Last updated date'),
+      'trovequery' => array(
+        'arg' => 'q',
+        'method' => 'result',
+        'index' => 'lastupdated',
       ),
     ),
   );
@@ -138,24 +222,6 @@ function trovequery_views_data() {
     ),
   );
 
-  // title
-  $data['trovequery']['title'] = array(
-    'title' => t('title'),
-    'help' => t('The title of this result.'),
-    'field' => array(
-      'handler' => 'trovequery_handler_field_title',
-    ),
-    'filter' => array(
-      'handler' => 'trovequery_handler_filter_field',
-      'help' => t('Keyword filter on the title field.'),
-      'trovequery' => array(
-        'arg' => 'q',
-        'method' => 'result',
-        'index' => 'title',
-       ),
-    ),
-  );
-
   // query
   $data['trovequery']['query'] = array(
     'title' => t('query'),
@@ -168,6 +234,7 @@ function trovequery_views_data() {
        ),
     ),
   );
+
   // facets - format
   $data['trovequery']['facet_article'] = array(
     'title' => t('article format'),
