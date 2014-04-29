@@ -1,6 +1,7 @@
 <?php
 
-class trovequery_handler_filter_contributor extends views_handler_filter_in_operator {
+class trovequery_handler_filter_contributor
+  extends views_handler_filter_in_operator {
 
   public $opt = array();
 
@@ -16,8 +17,23 @@ class trovequery_handler_filter_contributor extends views_handler_filter_in_oper
   function query() {
     if (isset($this->value, $this->definition['trovequery'])) {
       $this->query->args['method'] = $this->definition['trovequery']['method'];
-      $this->query->args[$this->definition['trovequery']['arg']] .=  $this->definition['trovequery']['index'] . ':' . $this->definition['trovequery']['value'] . ' ';
+      $this->query->args[$this->definition['trovequery']['arg']] .=
+        $this->definition['trovequery']['index'] . ':' .
+        array_pop($this->value);
     }
+  }
+
+  function operators() {
+    $operators = array(
+      'in' => array(
+        'title' => t('Is one of'),
+        'short' => t('in'),
+        'short_single' => t('='),
+        'method' => 'op_simple',
+        'values' => 1,
+        ),
+    );
+    return $operators;
   }
 
 }

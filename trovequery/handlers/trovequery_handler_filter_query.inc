@@ -7,28 +7,88 @@ class trovequery_handler_filter_query extends views_handler_filter_string {
   function query() {
     //dpm($this->definition['trovequery']['arg'] . ":" . $this->value);
     //dpm($this->value);
-    if (isset($this->value, $this->definition['trovequery'])) {
-      $this->query->args['method'] = $this->definition['trovequery']['method'];
-      if(is_array($this->value)) {
-        $this->query->args[$this->definition['trovequery']['arg']] .= implode($this->value,',') . ' ';
-      } else {
-        $this->query->args[$this->definition['trovequery']['arg']] .= $this->value . ' ';
-      }
+
+    $this->ensure_my_table();
+    $field = "$this->table_alias.$this->real_field";
+
+    $info = $this->operators();
+    if (!empty($info[$this->operator]['method'])) {
+      $this->{$info[$this->operator]['method']}($field);
     }
+
+    // if (isset($this->value, $this->definition['trovequery'])) {
+    //   $this->query->args['method'] = $this->definition['trovequery']['method'];
+    //   if(is_array($this->value)) {
+    //     $this->query->args[$this->definition['trovequery']['arg']] .= implode($this->value,',') . ' ';
+    //   } else {
+    //     $this->query->args[$this->definition['trovequery']['arg']] .= $this->value . ' ';
+    //   }
+    // }
   }
 
   function operators() {
     $operators = array(
-      '=' => array(
-        'title' => t('Is equal to'),
-        'short' => t('='),
-        'method' => 'op_equal',
+      'word' => array(
+        'title' => t('Multi word search'),
+        'short' => t('has word'),
+        'method' => 'op_multi',
+        'values' => 1,
+        //'default' => 1,
+      ),
+      'phrase' => array(
+        'title' => t('Phrase search'),
+        'short' => t('contains the phrase'),
+        'method' => 'op_phrase',
+        'values' => 1,
+      ),
+      'not_word' => array(
+        'title' => t('Does not contain these words'),
+        'short' => t('not words'),
+        'method' => 'op_not_multi',
+        'values' => 1,
+      ),
+      'not_phrase' => array(
+        'title' => t('Does not contain this phrase'),
+        'short' => t('!has'),
+        'method' => 'op_not_phrase',
         'values' => 1,
       ),
     );
 
     return $operators;
   }
+
+  function op_phrase($field) {
+    $this->value = "\"$this->value\"";
+    if(is_array($this->value)) {
+      $this->query->args[$this->definition['trovequery']['arg']] .= implode($this->value,',') . ' ';
+    } else {
+      $this->query->args[$this->definition['trovequery']['arg']] = $this->value . ' ';
+    }
+  }
+
+  function op_multi($field) {
+    dpm('www');
+    if(is_array($this->value)) {
+      $this->query->args[$this->definition['trovequery']['arg']] .= implode($this->value,',') . ' ';
+    } else {
+      $this->query->args[$this->definition['trovequery']['arg']] = $this->value . ' ';
+    }
+  }
+
+  function op_not_phrase($field) {
+    $this->value = 'NOT ' . "\"$this->value\"";
+    if(is_array($this->value)) {
+      $this->query->args[$this->definition['trovequery']['arg']] .= implode($this->value,',') . ' ';
+    } else {
+      $this->query->args[$this->definition['trovequery']['arg']] = $this->value . ' ';
+    }
+  }
+
+  function op_not_multi($field) {
+    $this->value = 'NOT ' . str_replace(' ', ' NOT ', $this->value);
+  }
+
 
   /**
    * Handle the 'left' side of the exposed options form.

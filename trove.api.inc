@@ -68,12 +68,14 @@ class troveAPI {
    * @return the troveAPI object
    */
   public function setFilter($key, $value) {
+    dpm($key . ' = ' . $value);
     $this->params[$key] = $value;
     return $this;
   }
 
 
   function call($arguments) {
+    dpm($arguments);
     foreach ($arguments as $key => $value) {
       if (is_null($value))
         unset($arguments[$key]);
@@ -84,7 +86,11 @@ class troveAPI {
 
   function execute($request_url) {
 
-    $response = drupal_http_request($request_url);
+    $options = array(
+      'timeout' => 5.0,
+      );
+
+    $response = drupal_http_request($request_url, $options);
 
     if ($response->code == '200') {
       $data = json_decode($response->data, TRUE);
@@ -210,103 +216,115 @@ class troveAPIResult extends troveAPI {
   function parse() {
     $results = array();
     $total_results = 0;
-    //dpm($this->response['response']);
-    foreach($this->response['response']['zone'] as $zones) {
-      switch($zones['name']) {
-        case 'people':
-          $k = 'people'; break;
-        case 'newspaper':
-          $k = 'article'; break;
-        case 'list':
-          $k = 'list'; break;
-        default:
-          $k = 'work';
-      }
-      if ($zones['records']['total'] != '0') {
-        $total_results += $zones['records']['total'];
-        foreach($zones['records'][$k] as $res) {
-          $row = new stdClass;
-          // title
-          if (isset($res['title'])) {
-            if(is_array($res['title'])) {
-              $title = $res['title']['value'];
-            } else {
-              $title = $res['title'];
-            }
-          } else {
-            $title = '[title not set]';
-          }
-          $row->title = $title;
-          // contributor
-          if (isset($res['contributor'])) {
-            foreach($res['contributor'] as $contrib) {
-              $contributor = $contrib;
-            }
-          } else {
-            $contributor = '[contributor not set]';
-          }
-          if (isset($res['id'])) {
-            $tid = $res['id'];
-          } else {
-            $tid = '[not set]';
-          }
-          $row->tid = $tid;
-          $row->contributor = $contributor;
 
-          // image
-          if(isset($res['identifier'])) {
-            foreach ($res['identifier'] as $identifier) {
-              if($identifier['linktype'] == 'thumbnail') {
-                $row->image = $identifier['value'];
+    if (isset($this->response['response'])) {
+      foreach($this->response['response']['zone'] as $zones) {
+        switch($zones['name']) {
+          case 'people':
+            $k = 'people'; break;
+          case 'newspaper':
+            $k = 'article'; break;
+          case 'list':
+            $k = 'list'; break;
+          default:
+            $k = 'work';
+        }
+        if ($zones['records']['total'] != '0') {
+          $total_results += $zones['records']['total'];
+          foreach($zones['records'][$k] as $res) {
+            $row = new stdClass;
+            // title
+            if (isset($res['title'])) {
+              if(is_array($res['title'])) {
+                $title = $res['title']['value'];
+              } else {
+                $title = $res['title'];
               }
+            } else {
+              $title = '[title not set]';
             }
-          } else {
-            $row->image = NULL;
-          }
+            $row->title = $title;
+            // contributor
+            if (isset($res['contributor'])) {
+              foreach($res['contributor'] as $contrib) {
+                $contributor = $contrib;
+              }
+            } else {
+              $contributor = '[contributor not set]';
+            }
+            if (isset($res['id'])) {
+              $tid = $res['id'];
+            } else {
+              $tid = '[not set]';
+            }
+            $row->tid = $tid;
+            $row->contributor = $contributor;
 
-          // tag
-          if(isset($res['tag'])) {
-            foreach($res['tag'] as $k) {
-              $row->tag = $row->tag . $k['value'] . ', ';
+            // image
+            if(isset($res['identifier'])) {
+              foreach ($res['identifier'] as $identifier) {
+                if($identifier['linktype'] == 'thumbnail') {
+                  $row->image = $identifier['value'];
+                }
+              }
+            } else {
+              $row->image = NULL;
             }
-            $row->tag = chop($row->tag, ', ');
-          }
-          // issued (date)
-          if (isset($res['issued'])) {
-            //foreach($res['issued'] as $k) {
-            //  $row->date = $row->date . $k['value'] . ', ';
-           // }
-            //$row->date = chop($row->date, ', ');
-            $row->date = $res['issued'];
-          }
-          // comments
-          if(isset($res['comment'])) {
-            foreach($res['comment'] as $k) {
-              $row->comment = $row->comment . $k['value'] . ', ';
-            }
-            $row->comment = chop($row->comment, ', ');
-          }
-          // snippets
-          if(isset($res['snippet'])) {
-              $row->snippet = $res['snippet'];
-          }
-          // category
-          if(isset($res['category'])) {
-              $row->category = $res['category'];
-          }
-          // trove url
-          if(isset($res['troveUrl'])) {
-            $row->trove_url = $res['troveUrl'];
-          }
-          $row->zone = $zones['name'];
 
-          $results[] = $row;
+            // tag
+            if(isset($res['tag'])) {
+              foreach($res['tag'] as $k) {
+                $row->tag = $row->tag . $k['value'] . ', ';
+              }
+              $row->tag = chop($row->tag, ', ');
+            }
+            // issued (date)
+            if (isset($res['issued'])) {
+              //foreach($res['issued'] as $k) {
+              //  $row->date = $row->date . $k['value'] . ', ';
+             // }
+              //$row->date = chop($row->date, ', ');
+              $row->date = $res['issued'];
+            }
+            // comments
+            if(isset($res['comment'])) {
+              foreach($res['comment'] as $k) {
+                $row->comment = $row->comment . $k['value'] . ', ';
+              }
+              $row->comment = chop($row->comment, ', ');
+            }
+            // snippets
+            if(isset($res['snippet'])) {
+                $row->snippet = $res['snippet'];
+            }
+            // category
+            if(isset($res['category'])) {
+                $row->category = $res['category'];
+            }
+            // trove url
+            if(isset($res['troveUrl'])) {
+              $row->trove_url = $res['troveUrl'];
+            }
+            // isbn
+            if (isset($res['isbn'])) {
+              $row->isbn = $res['isbn'];
+            }
+            // issn
+            if (isset($res['issn'])) {
+              $row->issn = $res['issn'];
+            }
+            // id
+            if (isset($res['id'])) {
+              $row->id = $res['id'];
+            }
+            $row->zone = $zones['name'];
+
+            $results[] = $row;
+          }
         }
       }
     }
     $results['total_results'] = $total_results;
-    dpm($total_results);
-    dpm($results);
     return $results;
   }
 
@@ -326,7 +344,6 @@ class troveAPIContributor extends troveAPI {
   }
 
   function query() {
-    //dpm($api_key);
     return $this->call($this->params);
   }
 

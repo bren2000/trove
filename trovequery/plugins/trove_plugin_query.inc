@@ -14,6 +14,8 @@ class trove_plugin_query extends views_plugin_query {
   // then gets passed to url() along with $api_url and becomes the query
   // string.
   var $args;
+  protected $errors;
+  protected $abort = FALSE;
 
   function query($get_count = FALSE) {  }
 

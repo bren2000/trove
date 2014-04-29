@@ -5,6 +5,7 @@
  */
 
 define('TROVE_BASE_URL', 'http://api.trove.nla.gov.au/');
+define('TROVE_FROM_DATE', '2012-04-04T00:00:00Z');
 
 /**
  * Implements hook_menu().
