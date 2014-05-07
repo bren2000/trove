@@ -14,7 +14,7 @@ class trovequery_handler_filter_comments_date
 extends views_handler_filter_date {
 
   function query() {
-    dpm(date("Y-m-d\TH:i:s\Z", strtotime($this->value['value'] . "-10 hours") ));
+    //dpm(date("Y-m-d\TH:i:s\Z", strtotime($this->value['value'] . "-10 hours") ));
 
     $this->field_alias = $this->real_field;
 

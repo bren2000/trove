@@ -68,14 +68,14 @@ class troveAPI {
    * @return the troveAPI object
    */
   public function setFilter($key, $value) {
-    dpm($key . ' = ' . $value);
+    //dpm($key . ' = ' . $value);
     $this->params[$key] = $value;
     return $this;
   }
 
 
   function call($arguments) {
-    dpm($arguments);
+    //dpm($arguments);
     foreach ($arguments as $key => $value) {
       if (is_null($value))
         unset($arguments[$key]);
@@ -129,7 +129,7 @@ class troveAPI {
     $request_url = url($this->trove_base_url . $command , array('query' => $args, 'absolute' => TRUE));
 
     // Check if we have a cache hit or not.
-    dpm($request_url);
+    //dpm($request_url);
     if ($result = $this->cache_get($request_url)) {
       $this->response = $result->data;
       $this->cache = TRUE;

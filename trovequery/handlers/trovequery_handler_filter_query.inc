@@ -68,7 +68,7 @@ class trovequery_handler_filter_query extends views_handler_filter_string {
   }
 
   function op_multi($field) {
-    dpm('www');
+    //dpm('www');
     if(is_array($this->value)) {
       $this->query->args[$this->definition['trovequery']['arg']] .= implode($this->value,',') . ' ';
     } else {

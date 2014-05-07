@@ -36,6 +36,7 @@ class trove_plugin_query extends views_plugin_query {
       return;
     }
     try {
+
       $start = microtime(TRUE);
 
       if (empty($this->args['method'])) {
@@ -55,7 +56,7 @@ class trove_plugin_query extends views_plugin_query {
         $this->pager->set_current_page($view->current_page);
       }
       $this->pager->total_items = $view->result['total_results'];
-      dpm($view->result['total_results']);
+      //dpm($view->result['total_results']);
       $this->pager->update_page_info();
 
       // Slice the resultset.
@@ -71,5 +72,27 @@ class trove_plugin_query extends views_plugin_query {
       // Recursion to get the same error behaviour as above.
       return $this->execute($view);
     }
+  }
+
+  function validate() {
+    $errors = parent::validate();
+    $required_options = array(
+      'title_field',
+      'link_field',
+      'description_field',
+      'creator_field',
+      'date_field',
+    );
+    foreach ($required_options as $required_option) {
+      if (empty($this->options[$required_option])) {
+        $errors[] = t('Row style plugin requires specifying which views fields to use for RSS item.');
+        break;
+      }
+    }
+    // Once more for guid.
+    if (empty($this->options['guid_field_options']['guid_field'])) {
+      $errors[] = t('Row style plugin requires specifying which views fields to use for RSS item.');
+    }
+    //return $errors;
   }
 }

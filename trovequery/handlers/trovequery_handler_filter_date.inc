@@ -14,8 +14,8 @@ class trovequery_handler_filter_date
 extends views_handler_filter_date {
 
   function query() {
-    dpm($this->operator);
-    dpm(date("Y-m-d\TH:i:s\Z", strtotime($this->value['value'] . "-10 hours") ));
+    //dpm($this->operator);
+    //dpm(date("Y-m-d\TH:i:s\Z", strtotime($this->value['value'] . "-10 hours") ));
 
     $this->field_alias = $this->real_field;
 
@@ -27,6 +27,7 @@ extends views_handler_filter_date {
         $this->definition['trovequery']['index'] . ':[' .
         date(DATE_ATOM, strtotime($this->value['value']) ) . '] ';
     }
+    dpm($this->query->args);
   }
 
   function op_between($field) {
@@ -48,7 +49,7 @@ extends views_handler_filter_date {
   function op_simple($field) {
 
     $value = intval(strtotime($this->value['value'], 0));
-    dpm($this);
+    dpm('sssssss');
     if (!empty($this->value['type']) && $this->value['type'] == 'offset') {
       $value = '***CURRENT_TIME***' . sprintf('%+d', $value); // keep sign
     }
