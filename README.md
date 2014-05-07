@@ -1,3 +1,3 @@
 TROVE
 =====
-Trove API module and views integration.
+Trove API module and views integration
