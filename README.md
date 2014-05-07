@@ -1,3 +1,3 @@
 TROVE
 =====
-Trove API module, include trove blocks and trove views integration.
+Trove API module and views integration
