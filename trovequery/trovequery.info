@@ -16,11 +16,8 @@ files[] = handlers/trovequery_handler_field_image.inc
 files[] = handlers/trovequery_handler_field_url.inc
 files[] = handlers/trovequery_handler_field_include.inc
 files[] = handlers/trovequery_handler_field_snippet.inc
-
 files[] = handlers/trovequery_handler_relationship.inc
-
 files[] = handlers/troveitem_handler_argument_item.inc
-
 files[] = handlers/trovequery_handler_filter_field.inc
 files[] = handlers/trovequery_handler_filter_zone.inc
 files[] = handlers/trovequery_handler_filter_query.inc
@@ -30,8 +27,6 @@ files[] = handlers/trovequery_handler_filter_include_string.inc
 files[] = handlers/trovequery_handler_filter_contributor.inc
 files[] = handlers/trovequery_handler_filter_comments_date.inc
 files[] = handlers/trovequery_handler_filter_date.inc
-
 files[] = handlers/trovequery_handler_sort_date.inc
 files[] = handlers/trovequery_handler_sort_relevance.inc
-
 files[] = plugins/trove_plugin_query.inc
