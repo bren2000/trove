@@ -51,7 +51,7 @@ class troveAPI {
    * Constructor, please use the factory.
    */
   function __construct($method) {
-    $this->params['method'] = $method;
+    $this->setFilter('method', $method);
     $this->trove_base_url = TROVE_BASE_URL;
     $this->api_key = variable_get('trove_api_key', '');
   }
@@ -68,8 +68,13 @@ class troveAPI {
    * @return the troveAPI object
    */
   public function setFilter($key, $value) {
-    //dpm($key . ' = ' . $value);
-    $this->params[$key] = $value;
+    if(array_key_exists($key, $this->params) && $key !== 'method') {
+      //dpm('this key exists' . $key . ' : ' . $value);
+      $this->params[$key] .= (' ' .$value);
+    } else {
+      //dpm($key . ' : ' . $value);
+      $this->params[$key] = $value;
+    }
     return $this;
   }
 
@@ -85,10 +90,9 @@ class troveAPI {
   }
 
   function execute($request_url) {
-
     $options = array(
       'timeout' => 5.0,
-      );
+    );
 
     $response = drupal_http_request($request_url, $options);
 
@@ -113,7 +117,7 @@ class troveAPI {
   }
 
   function request($command, $args = array()) {
-
+    //dpm($this->params);
     unset($args['method']);
     $args = array_merge(array("encoding" => "json", "key" => $this->api_key), $args);
 
@@ -129,7 +133,7 @@ class troveAPI {
     $request_url = url($this->trove_base_url . $command , array('query' => $args, 'absolute' => TRUE));
 
     // Check if we have a cache hit or not.
-    //dpm($request_url);
+    dpm($request_url);
     if ($result = $this->cache_get($request_url)) {
       $this->response = $result->data;
       $this->cache = TRUE;
