@@ -9,16 +9,28 @@
 */
 class trove_plugin_query extends views_plugin_query {
 
-  // Our argument array. Anything that needs to be passed to the API gets
-  // added to this array through the argumet and filter handlers. This array
-  // then gets passed to url() along with $api_url and becomes the query
-  // string.
-  var $args;
-  var $required_fields;
-  var $request;
-  var $where;
-  protected $errors;
-  protected $abort = FALSE;
+  /**
+   * An array of sections of the WHERE query. Each section is in itself
+   * an array of pieces. All AND by default.
+   */
+  var $where = array();
+
+  /**
+   * Array of all encountered errors.
+   *
+   * Each of these is fatal, meaning that a non-empty $errors property will
+   * result in an empty result being returned.
+   *
+   * @var array
+   */
+  var $errors = array();
+
+  /**
+   * Whether to abort the search instead of executing it.
+   *
+   * @var bool
+   */
+  var $abort = FALSE;
 
   /**
    * Constructor; Create the basic query object and fill with default values.
@@ -40,16 +52,13 @@ class trove_plugin_query extends views_plugin_query {
   }
 
   /**
-   * Get the arguments attached to the WHERE and HAVING clauses of this query.
+   * Get the arguments attached to the WHERE clauses of this query.
    */
   function get_where_args() {
 
     $args = array();
     foreach ($this->where as $group => $where) {
       $args = array_merge($args, $where['args']);
-    }
-    foreach ($this->having as $group => $having) {
-      $args = array_merge($args, $having['args']);
     }
 
     return $args;
@@ -125,6 +134,7 @@ class trove_plugin_query extends views_plugin_query {
     if (empty($group)) {
       $group = 0;
     }
+    dpm('add_where('. $field . ',' . $value .')');
 
     // Check for a group.
     if (!isset($this->where[$group])) {
@@ -142,7 +152,7 @@ class trove_plugin_query extends views_plugin_query {
     $this->request->setFilter($field, $value);
   }
 
-    /**
+  /**
    * Builds the necessary info to execute the query.
    */
   public function build(&$view) {
@@ -152,7 +162,6 @@ class trove_plugin_query extends views_plugin_query {
       foreach ($this->where as $group_id => $group) {
         if (!empty($group['conditions'])) {
           foreach ($group['conditions'] as $condition) {
-            //dpm($condition);
             $this->add_filter($condition['field'], $condition['value']);
           }
         }
@@ -185,9 +194,6 @@ class trove_plugin_query extends views_plugin_query {
         return;
       }
 
-      // foreach ($this->args as $k => $v) {
-      //   $this->request->setFilter($k, $v);
-      // }
       $this->request->query();
       $view->result = $this->request->parse();
 
@@ -196,9 +202,9 @@ class trove_plugin_query extends views_plugin_query {
       if ($this->pager->use_pager()) {
         $this->pager->set_current_page($view->current_page);
       }
-      $this->pager->total_items = $view->result['total_results'];
-      //dpm($view->result['total_results']);
+      $this->pager->total_items = $view->total_rows = $this->request->get_total_results();
       $this->pager->update_page_info();
+
 
       // Slice the resultset.
       //if (isset($this->offset, $this->limit)) {
@@ -215,5 +221,6 @@ class trove_plugin_query extends views_plugin_query {
       // Recursion to get the same error behaviour as above.
       return $this->execute($view);
     }
+    $view->execute_time = microtime(TRUE) - $start;
   }
 }

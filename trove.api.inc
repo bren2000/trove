@@ -26,6 +26,8 @@ class troveAPI {
   // The cache table to use.
   protected $cache_table = 'cache';
 
+  protected $total_results;
+
   /**
    * Factory method
    *
@@ -328,8 +330,16 @@ class troveAPIResult extends troveAPI {
         }
       }
     }
-    $results['total_results'] = $total_results;
+    $this->set_total_results($total_results);
     return $results;
+  }
+
+  function set_total_results($results = 0) {
+    $this->total_results = $results;
+  }
+
+  function get_total_results() {
+    return (int) $this->total_results;
   }
 
 }

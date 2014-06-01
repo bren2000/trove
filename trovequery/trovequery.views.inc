@@ -143,7 +143,7 @@ function trovequery_views_data() {
     'title' => t('comments date'),
     'help' => t('Comments posted on this date.'),
     'filter' => array(
-      'handler' => 'trovequery_handler_filter_comments_date',
+      'handler' => 'trovequery_handler_filter_date',
       'help' => t('Limit results to items with comments posted in this date range.'),
       'label' => t('Comments date range'),
       'trovequery' => array(
