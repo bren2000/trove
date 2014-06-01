@@ -8,8 +8,9 @@ class trovequery_handler_filter_include extends views_handler_filter_boolean_ope
   function query() {
     $this->field_alias = $this->real_field;
     if (isset($this->value, $this->definition['trovequery']) && $this->value) {
-      $this->query->args['method'] = $this->definition['trovequery']['method'];
-      $this->query->args[$this->definition['trovequery']['arg']] .=  $this->definition['trovequery']['index'] . ':' . $this->definition['trovequery']['value'] . ' ';
+      //$this->query->args['method'] = $this->definition['trovequery']['method'];
+      $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], $this->definition['trovequery']['index'] . ':' . $this->definition['trovequery']['value']);
+     //$this->query->args[$this->definition['trovequery']['arg']] .=  $this->definition['trovequery']['index'] . ':' . $this->definition['trovequery']['value'] . ' ';
     }
   }
 

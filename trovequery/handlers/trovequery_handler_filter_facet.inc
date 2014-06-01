@@ -4,6 +4,8 @@ class trovequery_handler_filter_facet extends views_handler_filter_in_operator {
 
   public $opt = array();
 
+
+
   function make_options($array, $level = 0) {
     $pre = '';
     for($i = $level; $i > 0; $i--) {
@@ -18,6 +20,11 @@ class trovequery_handler_filter_facet extends views_handler_filter_in_operator {
       }
     }
   }
+
+  /**
+   * [get_value_options description]
+   *
+   */
 
   function get_value_options() {
     if (!isset($this->value_options)) {

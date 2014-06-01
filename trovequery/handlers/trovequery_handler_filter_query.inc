@@ -5,9 +5,6 @@ class trovequery_handler_filter_query extends views_handler_filter_string {
   public $always_required = TRUE;
 
   function query() {
-    //dpm($this->definition['trovequery']['arg'] . ":" . $this->value);
-    //dpm($this->value);
-
     $this->ensure_my_table();
     $field = "$this->table_alias.$this->real_field";
 
@@ -61,10 +58,8 @@ class trovequery_handler_filter_query extends views_handler_filter_string {
   function op_phrase($field) {
     $this->value = "\"$this->value\"";
     if(is_array($this->value)) {
-      //$this->query->args[$this->definition['trovequery']['arg']] .= implode($this->value,',') . ' ';
       $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], implode($this->value,','));
     } else {
-      //$this->query->args[$this->definition['trovequery']['arg']] = $this->value . ' ';
       $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], $this->value);
     }
   }
