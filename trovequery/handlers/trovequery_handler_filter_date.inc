@@ -163,24 +163,31 @@ class trovequery_handler_filter_date extends views_handler_filter_date {
     $b = intval(strtotime($this->value['max'], 0));
 
     if ($this->value['type'] == 'offset') {
-      $a = '***CURRENT_TIME***' . sprintf('%+d', $a); // keep sign
-      $b = '***CURRENT_TIME***' . sprintf('%+d', $b); // keep sign
+      $a = date('Y-m-d\T00:00:00\Z', intval(time()) + $a);
+      $b = date('Y-m-d\T00:00:00\Z', intval(time()) + $b);
     }
     // This is safe because we are manually scrubbing the values.
     // It is necessary to do it this way because $a and $b are formulas when using an offset.
     $operator = 'TO';
-    dpm($this->definition['trovequery']['arg']);
-    dpm("$field:[$a $operator $b]");
-    $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], "$field:[$a $operator $b]");
+    //dpm($this->definition['trovequery']['arg']);
+    //dpm($this->definition['trovequery']['index'] . ":[$a $operator $b]");
+    $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], $this->definition['trovequery']['index'] . ":[$a $operator $b]");
   }
 
   function op_simple($field) {
-    $value = intval(strtotime($this->value['value'], 0));
-    if (!empty($this->value['type']) && $this->value['type'] == 'offset') {
-      $value = '***CURRENT_TIME***' . sprintf('%+d', $value); // keep sign
+    //date_default_timezone_set('UTC');
+    //$value = intval(strtotime($this->value['value'], 0));
+    if ($this->value['value'] == 'now') {
+      $value = date('Y-m-d\T00:00:00\Z');
+    } else {
+      $value = date('Y-m-d\T00:00:00\Z', intval(time()) + intval(strtotime( $this->value['value'], 0)));
     }
+    if (!empty($this->value['type']) && $this->value['type'] == 'offset') {
+       $value = date('Y-m-d\T00:00:00\Z', intval(time()) + intval(strtotime( $this->value['value'], 0)));
+    }
+    $operator = 'TO';
     // This is safe because we are manually scrubbing the value.
     // It is necessary to do it this way because $value is a formula when using an offset.
-    $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], "$field $this->operator $value");
+    $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], $this->definition['trovequery']['index'] . ":[$value $operator $value]");
   }
 }
