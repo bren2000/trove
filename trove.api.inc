@@ -70,10 +70,11 @@ class troveAPI {
    * @return the troveAPI object
    */
   public function setFilter($key, $value) {
-    if(array_key_exists($key, $this->params) && $key !== 'method') {
+    if (array_key_exists($key, $this->params) && $key !== 'method') {
       //dpm('this key exists' . $key . ' : ' . $value);
-      $this->params[$key] .= (' ' .$value);
-    } else {
+      $this->params[$key] .= (' ' . $value);
+    }
+    else {
       //dpm($key . ' : ' . $value);
       $this->params[$key] = $value;
     }
@@ -84,8 +85,9 @@ class troveAPI {
   function call($arguments) {
     //dpm($arguments);
     foreach ($arguments as $key => $value) {
-      if (is_null($value))
+      if (is_null($value)) {
         unset($arguments[$key]);
+      }
     }
     $this->request($this->params['method'], $arguments);
     return $this->response ? $this->response : false;
@@ -127,12 +129,13 @@ class troveAPI {
       if ( is_null($data) ) {
         unset($args[$key]);
         continue;
-      } else {
+      }
+      else {
         $args[$key] = trim($data);
       }
     }
 
-    $request_url = url($this->trove_base_url . $command , array('query' => $args, 'absolute' => TRUE));
+    $request_url = url($this->trove_base_url . $command, array('query' => $args, 'absolute' => TRUE));
 
     // Check if we have a cache hit or not.
     //dpm($request_url);
@@ -167,8 +170,9 @@ class troveAPI {
     $cid = $this->cache_id($request_url);
     if (!isset($items[$cid]) || $reset) {
       $items[$cid] = cache_get($cid, $this->cache_table);
-      if (cache_get($cid, $this->cache_table) == FALSE)
+      if (cache_get($cid, $this->cache_table) == FALSE) {
         return FALSE;
+      }
       // Don't return temporary items more that 5 minutes old.
       if ($items[$cid]->expire === CACHE_TEMPORARY && $items[$cid]->created > (time() + 300)) {
         return FALSE;
@@ -187,7 +191,7 @@ class troveAPI {
       cache_set($this->cache_id($url), FALSE, $this->cache_table, CACHE_TEMPORARY);
     }
     else {
-      $ttl = (int)variable_get('trove_cache_duration', 900);
+      $ttl = (int) variable_get('trove_cache_duration', 900);
       $expire = time() + $ttl;
       cache_set($this->cache_id($url), $data, $this->cache_table, $expire);
     }
@@ -198,10 +202,10 @@ class troveAPI {
    * hash of the url
    */
   protected function cache_id($request_url) {
-    return get_class($this) .':'. md5($request_url);
+    return get_class($this) . ':' . md5($request_url);
   }
 
-  function query() {}
+  function query() { }
 
   /**
    * Custom parser for the type of data we're retrieving.
@@ -209,7 +213,7 @@ class troveAPI {
    * indexed array of results, each result being an array keyed
    * by the field name.
    */
-  protected function parse($joins) {}
+  protected function parse($joins) { }
 
 }
 
@@ -224,62 +228,70 @@ class troveAPIResult extends troveAPI {
     $total_results = 0;
 
     if (isset($this->response['response'])) {
-      foreach($this->response['response']['zone'] as $zones) {
-        switch($zones['name']) {
+      foreach ($this->response['response']['zone'] as $zones) {
+        switch ($zones['name']) {
           case 'people':
-            $k = 'people'; break;
+            $k = 'people';
+            break;
           case 'newspaper':
-            $k = 'article'; break;
+            $k = 'article';
+            break;
           case 'list':
-            $k = 'list'; break;
+            $k = 'list';
+            break;
           default:
             $k = 'work';
         }
         if ($zones['records']['total'] != '0') {
           $total_results += $zones['records']['total'];
-          foreach($zones['records'][$k] as $res) {
+          foreach ($zones['records'][$k] as $res) {
             $row = new stdClass;
             // title
             if (isset($res['title'])) {
-              if(is_array($res['title'])) {
+              if (is_array($res['title'])) {
                 $title = $res['title']['value'];
-              } else {
+              }
+              else {
                 $title = $res['title'];
               }
-            } else {
+            }
+            else {
               $title = '[title not set]';
             }
             $row->title = $title;
             // contributor
             if (isset($res['contributor'])) {
-              foreach($res['contributor'] as $contrib) {
+              foreach ($res['contributor'] as $contrib) {
                 $contributor = $contrib;
               }
-            } else {
+            }
+            else {
               $contributor = '[contributor not set]';
             }
             if (isset($res['id'])) {
               $tid = $res['id'];
-            } else {
+            }
+            else {
               $tid = '[not set]';
             }
             $row->tid = $tid;
             $row->contributor = $contributor;
 
             // image
-            if(isset($res['identifier'])) {
+            if (isset($res['identifier'])) {
               foreach ($res['identifier'] as $identifier) {
-                if($identifier['linktype'] == 'thumbnail') {
+                if ($identifier['linktype'] == 'thumbnail') {
                   $row->image = $identifier['value'];
                 }
               }
-            } else {
+            }
+            else {
               $row->image = NULL;
             }
 
             // tag
-            if(isset($res['tag'])) {
-              foreach($res['tag'] as $k) {
+            if (isset($res['tag'])) {
+              foreach ($res['tag'] as $k) {
                 $row->tag = $row->tag . $k['value'] . ', ';
               }
               $row->tag = chop($row->tag, ', ');
@@ -287,28 +299,28 @@ class troveAPIResult extends troveAPI {
             // issued (date)
             if (isset($res['issued'])) {
               //foreach($res['issued'] as $k) {
-              //  $row->date = $row->date . $k['value'] . ', ';
-             // }
+//  $row->date = $row->date . $k['value'] . ', ';
+              // }
               //$row->date = chop($row->date, ', ');
               $row->date = $res['issued'];
             }
             // comments
-            if(isset($res['comment'])) {
-              foreach($res['comment'] as $k) {
+            if (isset($res['comment'])) {
+              foreach ($res['comment'] as $k) {
                 $row->comment = $row->comment . $k['value'] . ', ';
               }
               $row->comment = chop($row->comment, ', ');
             }
             // snippets
-            if(isset($res['snippet'])) {
-                $row->snippet = $res['snippet'];
+            if (isset($res['snippet'])) {
+              $row->snippet = $res['snippet'];
             }
             // category
-            if(isset($res['category'])) {
-                $row->category = $res['category'];
+            if (isset($res['category'])) {
+              $row->category = $res['category'];
             }
             // trove url
-            if(isset($res['troveUrl'])) {
+            if (isset($res['troveUrl'])) {
               $row->trove_url = $res['troveUrl'];
             }
             // isbn
@@ -363,7 +375,7 @@ class troveAPIContributor extends troveAPI {
 
   function parse() {
     $contributors = array();
-    foreach($this->response['response']['contributor'] as $contributor) {
+    foreach ($this->response['response']['contributor'] as $contributor) {
       $cont = new stdClass;
       $cont->name = $contributor['name'];
       $cont->id = $contributor['id'];

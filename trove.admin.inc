@@ -61,15 +61,15 @@ function _get_trove_contributors() {
 }
 
 function _db_add_trove_contributors($contributors) {
-  if(!empty($contributors)) {
-    foreach($contributors as $cont) {
+  if (!empty($contributors)) {
+    foreach ($contributors as $cont) {
       if ($cont->nuc) {
         $values[] = array(
           'nuc' => $cont->nuc,
           'name' => $cont->name,
         );
       }
-    };
+    }
     db_delete('trove_contributors')->execute();
     $insert = db_insert('trove_contributors')->fields(array('nuc', 'name'));
     foreach ($values as $value) {

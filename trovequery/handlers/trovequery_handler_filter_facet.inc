@@ -8,14 +8,15 @@ class trovequery_handler_filter_facet extends views_handler_filter_in_operator {
 
   function make_options($array, $level = 0) {
     $pre = '';
-    for($i = $level; $i > 0; $i--) {
+    for ($i = $level; $i > 0; $i--) {
       $pre .= '--';
     }
-    foreach($array as $k => $v) {
-      if(is_array($v)) {
+    foreach ($array as $k => $v) {
+      if (is_array($v)) {
         $this->opt[$k] = $k;
         $this->make_options($v, $level + 1);
-      } else {
+      }
+      else {
         $this->opt[$k] = $pre . $v;
       }
     }
@@ -38,9 +39,10 @@ class trovequery_handler_filter_facet extends views_handler_filter_in_operator {
   function query() {
     if (isset($this->value, $this->definition['trovequery'])) {
       $this->query->args['method'] = $this->definition['trovequery']['method'];
-      if(is_array($this->value)) {
-        $this->query->args[$this->definition['trovequery']['arg']] = implode($this->value,',');
-      } else {
+      if (is_array($this->value)) {
+        $this->query->args[$this->definition['trovequery']['arg']] = implode($this->value, ',');
+      }
+      else {
         $this->query->args[$this->definition['trovequery']['arg']] = $this->value;
       }
     }

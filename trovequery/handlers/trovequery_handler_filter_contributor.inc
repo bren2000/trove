@@ -1,7 +1,6 @@
 <?php
 
-class trovequery_handler_filter_contributor
-  extends views_handler_filter_in_operator {
+class trovequery_handler_filter_contributor extends views_handler_filter_in_operator {
 
   public $opt = array();
 
@@ -31,7 +30,7 @@ class trovequery_handler_filter_contributor
         'short_single' => t('='),
         'method' => 'op_simple',
         'values' => 1,
-        ),
+      ),
     );
     return $operators;
   }

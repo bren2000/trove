@@ -23,8 +23,19 @@ function trove_menu() {
 }
 
 function _get_zones() {
-  $zones = array('all', 'article', 'book', 'collection', 'list', 'map','music',
-    'newspaper', 'people', 'picture', 'website');
+  $zones = array(
+    'all',
+    'article',
+    'book',
+    'collection',
+    'list',
+    'map',
+    'music',
+    'newspaper',
+    'people',
+    'picture',
+    'website',
+  );
   return array_combine($zones, $zones);
 }
 
@@ -40,14 +51,14 @@ function _get_facets_format() {
       'Article/Other article' => 'Other article',
       'Article/Report' => 'Report',
       'Article/Review' => 'Review',
-      'Article/Working paper' => 'Working paper'),
+      'Article/Working paper' => 'Working paper',
+    ),
     'Audio book' => 'Audio book',
     'Book' => array(
       'Book/Braille',
       'Book/Illustrated',
-      'Book/Large print'),
-    'Conference Proceedings',
-    'Data set',
+      'Book/Large print',
+    ), 'Conference Proceedings', 'Data set',
     'Map' => array(
       'Map/Aerial photograph' => 'Aerial photograph',
       'Map/Atlas' => 'Atlas',
@@ -57,11 +68,13 @@ function _get_facets_format() {
       'Map/Large print' => 'Large print',
       'Map/Map series' => 'Map series',
       'Map/Microform' => 'Microform',
-      'Map/Single map' => 'Single map'),
+      'Map/Single map' => 'Single map',
+    ),
     'Object' => 'Object',
     'Periodical' => array(
       'Periodical/Journal, magazine, other' => 'Journal, magazine, other',
-      'Periodical/Newspaper' => 'Newspaper'),
+      'Periodical/Newspaper' => 'Newspaper',
+    ),
     'Photograph' => 'Photograph',
     'Poster, chart, other' => 'Poster, chart, other',
     'Published' => 'Published',
@@ -69,12 +82,14 @@ function _get_facets_format() {
     'Sound' => array(
       'Sound/Interview, lecture, talk' => 'Interview, lecture, talk',
       'Sound/Other sound' => 'Other sound',
-      'Sound/Recorded music' => 'Recorded music'),
+      'Sound/Recorded music' => 'Recorded music',
+    ),
     'Thesis' => 'Thesis',
     'Unpublished' => 'Unpublished',
     'Video' => array(
-      'Video/Captioned' => 'Video/Captioned'),
-    );
+      'Video/Captioned' => 'Video/Captioned',
+    ),
+  );
 }
 
 function _get_facets_availability() {

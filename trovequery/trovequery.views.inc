@@ -1,7 +1,7 @@
 <?php
 /**
-* Implementation of hook_views_plugins().
-*/
+ * Implementation of hook_views_plugins().
+ */
 function trovequery_views_plugins() {
   $plugin = array();
   $plugin['query']['trove_plugin_query'] = array(
@@ -14,24 +14,24 @@ function trovequery_views_plugins() {
 }
 
 /**
-* Implementation of hook_views_data().
-*/
+ * Implementation of hook_views_data().
+ */
 function trovequery_views_data() {
   $data = array();
 
   // // Trove item base table
   // $data['troveitem']['table']['group']  = t('Trove Item');
   // $data['troveitem']['table']['base'] = array(
-  //   'title' => t('Trove Item'),
-  //   'help' => t('Get an item from Trove.'),
-  //   'query class' => 'trove_plugin_query',
+//   'title' => t('Trove Item'),
+//   'help' => t('Get an item from Trove.'),
+//   'query class' => 'trove_plugin_query',
   // );
 
   // Trove query base table
   $data['trovequery']['table']['group']  = t('Trove Results');
   $data['trovequery']['table']['base'] = array(
     'title' => t('Trove Results'),
-    'help'  => t('Query Trove.'),
+    'help' => t('Query Trove.'),
     'field' => 'title',
     'query class' => 'trove_plugin_query',
   );
@@ -50,7 +50,7 @@ function trovequery_views_data() {
         'arg' => 'q',
         'method' => 'result',
         'index' => 'title',
-       ),
+      ),
     ),
   );
 
@@ -133,7 +133,7 @@ function trovequery_views_data() {
   $data['trovequery']['date'] = array(
     'title' => t('date'),
     'help' => t("Date of publication"),
-    'field' => array (
+    'field' => array(
       'handler' => 'trovequery_handler_field_date',
     ),
   );
@@ -155,7 +155,7 @@ function trovequery_views_data() {
   );
 
   // lastupdated
-  $data['trovequery']['lastupdated'] = array (
+  $data['trovequery']['lastupdated'] = array(
     'title' => t('last updated'),
     'help' => t('The date the item was last updated.'),
     'filter' => array(
@@ -231,7 +231,7 @@ function trovequery_views_data() {
       'trovequery' => array(
         'arg' => 'q',
         'method' => 'result',
-       ),
+      ),
     ),
   );
 
@@ -245,7 +245,7 @@ function trovequery_views_data() {
         'arg' => 'l-format',
         'method' => 'result',
         'facets_method' => '_get_facets_format',
-       ),
+      ),
     ),
   );
   // facets - availability
@@ -258,7 +258,7 @@ function trovequery_views_data() {
         'arg' => 'l-availability',
         'method' => 'result',
         'facets_method' => '_get_facets_availability',
-       ),
+      ),
     ),
   );
   // zone
@@ -274,7 +274,7 @@ function trovequery_views_data() {
         'arg' => 'zone',
         'method' => 'result',
         'zones_method' => '_get_zones',
-       ),
+      ),
     ),
   );
   // contributor
@@ -292,7 +292,7 @@ function trovequery_views_data() {
         'method' => 'result',
         'index' => 'nuc',
         'index_method' => '_get_index_contributors',
-       ),
+      ),
     ),
   );
   // id
@@ -324,7 +324,7 @@ function trovequery_views_data() {
         'arg' => 'l-category',
         'method' => 'result',
         'facets_method' => '_get_facets_category',
-       ),
+      ),
     ),
   );
   // lists
@@ -344,7 +344,7 @@ function trovequery_views_data() {
     'title' => t('image'),
     'help' => t('The image for the Trove work - if available.'),
     'field' => array(
-      'handler' => 'trovequery_handler_field_image'
+      'handler' => 'trovequery_handler_field_image',
     ),
   );
   return $data;

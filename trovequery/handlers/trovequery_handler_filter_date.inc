@@ -179,11 +179,12 @@ class trovequery_handler_filter_date extends views_handler_filter_date {
     //$value = intval(strtotime($this->value['value'], 0));
     if ($this->value['value'] == 'now') {
       $value = date('Y-m-d\T00:00:00\Z');
-    } else {
+    }
+    else {
       $value = date('Y-m-d\T00:00:00\Z', intval(time()) + intval(strtotime( $this->value['value'], 0)));
     }
     if (!empty($this->value['type']) && $this->value['type'] == 'offset') {
-       $value = date('Y-m-d\T00:00:00\Z', intval(time()) + intval(strtotime( $this->value['value'], 0)));
+      $value = date('Y-m-d\T00:00:00\Z', intval(time()) + intval(strtotime( $this->value['value'], 0)));
     }
     $operator = 'TO';
     // This is safe because we are manually scrubbing the value.

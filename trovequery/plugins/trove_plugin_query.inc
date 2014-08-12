@@ -1,12 +1,12 @@
 <?php
 /**
-* @file
-*   Views query plugin for Trove Query.
-*/
+ * @file
+ *   Views query plugin for Trove Query.
+ */
 
 /**
-* Views query plugin for the Trove Query results.
-*/
+ * Views query plugin for the Trove Query results.
+ */
 class trove_plugin_query extends views_plugin_query {
 
   /**
@@ -178,7 +178,7 @@ class trove_plugin_query extends views_plugin_query {
    */
   function execute(&$view) {
 
-    if ($this->errors || $this->abort ){
+    if ($this->errors || $this->abort ) {
       if (error_displayable()) {
         foreach ($this->errors as $msg) {
           drupal_set_message(check_plain($msg), 'error');
@@ -208,15 +208,16 @@ class trove_plugin_query extends views_plugin_query {
 
       // Slice the resultset.
       //if (isset($this->offset, $this->limit)) {
-      //  $end = $this->offset + $this->limit;
-      //  $end = count($view->result) >= $end ? $end : count($view->result);
-      //  $view->result = array_slice($view->result, $this->offset, $end);
+//  $end = $this->offset + $this->limit;
+//  $end = count($view->result) >= $end ? $end : count($view->result);
+//  $view->result = array_slice($view->result, $this->offset, $end);
       //}
       //dpm($this->pager);
       //
       //dpm($this);
 
-    } catch (Exception $e) {
+    }
+    catch (Exception $e) {
       $this->errors[] = $e->getMessage();
       // Recursion to get the same error behaviour as above.
       return $this->execute($view);

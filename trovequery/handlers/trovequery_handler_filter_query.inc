@@ -14,12 +14,12 @@ class trovequery_handler_filter_query extends views_handler_filter_string {
     }
 
     // if (isset($this->value, $this->definition['trovequery'])) {
-    //   $this->query->args['method'] = $this->definition['trovequery']['method'];
-    //   if(is_array($this->value)) {
-    //     $this->query->args[$this->definition['trovequery']['arg']] .= implode($this->value,',') . ' ';
-    //   } else {
-    //     $this->query->args[$this->definition['trovequery']['arg']] .= $this->value . ' ';
-    //   }
+//   $this->query->args['method'] = $this->definition['trovequery']['method'];
+//   if(is_array($this->value)) {
+//     $this->query->args[$this->definition['trovequery']['arg']] .= implode($this->value,',') . ' ';
+//   } else {
+//     $this->query->args[$this->definition['trovequery']['arg']] .= $this->value . ' ';
+//   }
     // }
   }
 
@@ -57,27 +57,30 @@ class trovequery_handler_filter_query extends views_handler_filter_string {
 
   function op_phrase($field) {
     $this->value = "\"$this->value\"";
-    if(is_array($this->value)) {
-      $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], implode($this->value,','));
-    } else {
+    if (is_array($this->value)) {
+      $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], implode($this->value, ','));
+    }
+    else {
       $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], $this->value);
     }
   }
 
   function op_multi($field) {
     //dpm('www');
-    if(is_array($this->value)) {
-      $this->query->args[$this->definition['trovequery']['arg']] .= implode($this->value,',') . ' ';
-    } else {
+    if (is_array($this->value)) {
+      $this->query->args[$this->definition['trovequery']['arg']] .= implode($this->value, ',') . ' ';
+    }
+    else {
       $this->query->args[$this->definition['trovequery']['arg']] = $this->value . ' ';
     }
   }
 
   function op_not_phrase($field) {
     $this->value = 'NOT ' . "\"$this->value\"";
-    if(is_array($this->value)) {
-      $this->query->args[$this->definition['trovequery']['arg']] .= implode($this->value,',') . ' ';
-    } else {
+    if (is_array($this->value)) {
+      $this->query->args[$this->definition['trovequery']['arg']] .= implode($this->value, ',') . ' ';
+    }
+    else {
       $this->query->args[$this->definition['trovequery']['arg']] = $this->value . ' ';
     }
   }

@@ -16,14 +16,16 @@ class trovequery_handler_filter_zone extends views_handler_filter_in_operator {
   function query() {
     if (isset($this->value, $this->definition['trovequery'])) {
       $this->query->args['method'] = $this->definition['trovequery']['method'];
-      if(is_array($this->value)) {
+      if (is_array($this->value)) {
         if (in_array('all', $this->value)) {
           $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], 'all');
-        } else {
-
-          $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], implode($this->value,','));
         }
-      } else {
+        else {
+
+          $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], implode($this->value, ','));
+        }
+      }
+      else {
         $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], $this->value);
       }
     }
@@ -37,7 +39,7 @@ class trovequery_handler_filter_zone extends views_handler_filter_in_operator {
         'short_single' => t('='),
         'method' => 'op_simple',
         'values' => 1,
-        ),
+      ),
     );
     return $operators;
   }

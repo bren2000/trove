@@ -9,9 +9,10 @@ class trovecontrib_handler_filter_query extends views_handler_filter_string {
     //dpm($this->value);
     if (isset($this->value, $this->definition['trovecontrib'])) {
       $this->query->args['method'] = $this->definition['trovecontrib']['method'];
-      if(is_array($this->value)) {
-        $this->query->args[$this->definition['trovecontrib']['arg']] = implode($this->value,',');
-      } else {
+      if (is_array($this->value)) {
+        $this->query->args[$this->definition['trovecontrib']['arg']] = implode($this->value, ',');
+      }
+      else {
         $this->query->args[$this->definition['trovecontrib']['arg']] = $this->value;
       }
     }

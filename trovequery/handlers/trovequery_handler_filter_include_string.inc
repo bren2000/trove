@@ -1,7 +1,6 @@
 <?php
 
-class trovequery_handler_filter_include_string
-  extends views_handler_filter_string {
+class trovequery_handler_filter_include_string extends views_handler_filter_string {
 
   /**
    * Called to add the field to a query.
