@@ -24,7 +24,7 @@ class trovequery_handler_field_snippet extends views_handler_field {
     return $options;
   }
 
-  function options_form(&$form, $form_state) {
+  function options_form(&$form, &$form_state) {
     $form['render_html'] = array(
       '#title' => t('Render HTML'),
       '#description' => t('By default, HTML returned from the Trove API is escaped and will not render. Checking this option will disable this behavior and allow the HTML to render. Note that this could be a security problem if Trove\'s filtering of dangerous HTML has problems.'),

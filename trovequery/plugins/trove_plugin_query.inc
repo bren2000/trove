@@ -35,7 +35,7 @@ class trove_plugin_query extends views_plugin_query {
   /**
    * Constructor; Create the basic query object and fill with default values.
    */
-  function init($base_table, $base_field) {
+  function init($base_table, $base_field, $options) {
     //parent::init($base_table, $base_field, $options);
     // Required fields are fields that may not be empty in rows of the
     // resultset. Any rows with empty required fields are dropped *prior* to

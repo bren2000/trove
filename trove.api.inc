@@ -223,7 +223,7 @@ class troveAPIResult extends troveAPI {
     return $this->call($this->params);
   }
 
-  function parse() {
+  function parse($joins) {
     $results = array();
     $total_results = 0;
 
@@ -373,7 +373,7 @@ class troveAPIContributor extends troveAPI {
     return $this->call($this->params);
   }
 
-  function parse() {
+  function parse($joins) {
     $contributors = array();
     foreach ($this->response['response']['contributor'] as $contributor) {
       $cont = new stdClass;

@@ -12,15 +12,6 @@ class trovequery_handler_filter_query extends views_handler_filter_string {
     if (!empty($info[$this->operator]['method'])) {
       $this->{$info[$this->operator]['method']}($field);
     }
-
-    // if (isset($this->value, $this->definition['trovequery'])) {
-//   $this->query->args['method'] = $this->definition['trovequery']['method'];
-//   if(is_array($this->value)) {
-//     $this->query->args[$this->definition['trovequery']['arg']] .= implode($this->value,',') . ' ';
-//   } else {
-//     $this->query->args[$this->definition['trovequery']['arg']] .= $this->value . ' ';
-//   }
-    // }
   }
 
   function operators() {
