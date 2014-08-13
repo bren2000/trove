@@ -44,12 +44,20 @@ class trovequery_handler_filter_zone extends views_handler_filter_in_operator {
     return $operators;
   }
 
+
   function validate() {
     $this->get_value_options();
+    $errors = array();
+
+    if (empty($this->value)) {
+      $errors[] = t('The must select at least one zone');
+    }
+
     if (isset($this->value['all'])) {
       unset($this->value);
       $this->value['all'] = 'all';
     }
+    return $errors;
   }
 
 }

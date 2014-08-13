@@ -36,7 +36,7 @@ class trove_plugin_query extends views_plugin_query {
    * Constructor; Create the basic query object and fill with default values.
    */
   function init($base_table, $base_field, $options) {
-    //parent::init($base_table, $base_field, $options);
+    // parent::init($base_table, $base_field, $options);
     // Required fields are fields that may not be empty in rows of the
     // resultset. Any rows with empty required fields are dropped *prior* to
     // paging.
@@ -50,6 +50,7 @@ class trove_plugin_query extends views_plugin_query {
       $this->request = troveAPI::factory($table);
     }
   }
+
 
   /**
    * Get the arguments attached to the WHERE clauses of this query.
@@ -194,6 +195,7 @@ class trove_plugin_query extends views_plugin_query {
         return;
       }
 
+
       $this->request->query();
       $view->result = $this->request->parse();
 
@@ -203,7 +205,7 @@ class trove_plugin_query extends views_plugin_query {
         $this->pager->set_current_page($view->current_page);
       }
       $this->pager->total_items = $view->total_rows = $this->request->get_total_results();
-      $this->pager->update_page_info();
+      $this->pager->update_page_info();      
 
 
       // Slice the resultset.
