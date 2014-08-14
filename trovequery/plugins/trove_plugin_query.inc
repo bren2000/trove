@@ -150,7 +150,7 @@ class trove_plugin_query extends views_plugin_query {
 
   function add_filter($field, $value, $operator = '=') {
     //$this->ensure_table($table);
-    $this->request->setFilter($field, $value);
+    $this->request->set_filter($field, $value);
   }
 
   /**
@@ -168,6 +168,7 @@ class trove_plugin_query extends views_plugin_query {
         }
       }
     }
+
   }
 
   /**
@@ -195,18 +196,22 @@ class trove_plugin_query extends views_plugin_query {
         return;
       }
 
-
-      $this->request->query();
-      $view->result = $this->request->parse();
-
       // Setup pager
       $view->init_pager();
       if ($this->pager->use_pager()) {
         $this->pager->set_current_page($view->current_page);
       }
-      $this->pager->total_items = $view->total_rows = $this->request->get_total_results();
-      $this->pager->update_page_info();      
 
+      $this->add_filter('n', $this->pager->options['items_per_page']); 
+      $this->add_filter('s', $this->pager->current_page + 1);   
+
+      $this->request->query();
+      $view->result = $this->request->parse(NULL);
+
+      $this->pager->total_items = $this->request->get_total_results();
+      $this->pager->update_page_info();  
+
+      dpm($this->pager);
 
       // Slice the resultset.
       //if (isset($this->offset, $this->limit)) {

@@ -17,7 +17,7 @@ class troveAPI {
 
   protected $method;
 
-  // API parameter, use troveAPI->setFilter() to set.
+  // API parameter, use troveAPI->set_filter() to set.
   protected $params = array();
 
   // Flag to designate if the $response is from a cache.
@@ -53,7 +53,7 @@ class troveAPI {
    * Constructor, please use the factory.
    */
   function __construct($method) {
-    $this->setFilter('method', $method);
+    $this->set_filter('method', $method);
     $this->trove_base_url = TROVE_BASE_URL;
     $this->api_key = variable_get('trove_api_key', '');
   }
@@ -69,7 +69,7 @@ class troveAPI {
    *
    * @return the troveAPI object
    */
-  public function setFilter($key, $value) {
+  public function set_filter($key, $value) {
     if (array_key_exists($key, $this->params) && $key !== 'method') {
       //dpm('this key exists' . $key . ' : ' . $value);
       $this->params[$key] .= (' ' . $value);
@@ -138,7 +138,7 @@ class troveAPI {
     $request_url = url($this->trove_base_url . $command, array('query' => $args, 'absolute' => TRUE));
 
     // Check if we have a cache hit or not.
-    //dpm($request_url);
+    dpm($request_url);
     if ($result = $this->cache_get($request_url)) {
       $this->response = $result->data;
       $this->cache = TRUE;
@@ -350,7 +350,7 @@ class troveAPIResult extends troveAPI {
     $this->total_results = $results;
   }
 
-  function get_total_results() {
+  public function get_total_results() {
     return (int) $this->total_results;
   }
 
