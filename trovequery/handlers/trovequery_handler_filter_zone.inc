@@ -49,7 +49,7 @@ class trovequery_handler_filter_zone extends views_handler_filter_in_operator {
     $this->get_value_options();
     $errors = array();
 
-    dpm($this);
+    //dpm($this);
 
     if (empty($this->value)) {
       $errors[] = t('You must select at least one zone');

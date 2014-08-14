@@ -203,7 +203,7 @@ class trove_plugin_query extends views_plugin_query {
       }
 
       $this->add_filter('n', $this->pager->options['items_per_page']); 
-      $this->add_filter('s', $this->pager->current_page + 1);   
+      $this->add_filter('s', $this->pager->current_page * $this->pager->options['items_per_page']);   
 
       $this->request->query();
       $view->result = $this->request->parse(NULL);
@@ -211,7 +211,7 @@ class trove_plugin_query extends views_plugin_query {
       $this->pager->total_items = $this->request->get_total_results();
       $this->pager->update_page_info();  
 
-      dpm($this->pager);
+      //dpm($this->pager);
 
       // Slice the resultset.
       //if (isset($this->offset, $this->limit)) {
