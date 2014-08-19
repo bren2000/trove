@@ -339,6 +339,15 @@ function trovequery_views_data() {
       'handler' => 'trovequery_handler_field_image',
     ),
   );
+  // holdings: nuc
+  $data['trovequery']['holdings_nuc'] = array(
+    'title' => t('holdings:nuc'),
+    'help' => t('The NUC symbol of an organisation with a copy of this work.'),
+    'field'=> array(
+      'handler' => 'trovequery_handler_field_string'
+    ),
+  );
+
   return $data;
 }
 

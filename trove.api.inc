@@ -248,7 +248,7 @@ class troveAPIResult extends troveAPI {
               }
             }
             else {
-              $title = '[title not set]';
+              $title = NULL;
             }
             $row->title = $title;
             // contributor
@@ -258,13 +258,13 @@ class troveAPIResult extends troveAPI {
               }
             }
             else {
-              $contributor = '[contributor not set]';
+              $contributor = NULL;
             }
             if (isset($res['id'])) {
               $tid = $res['id'];
             }
             else {
-              $tid = '[not set]';
+              $tid = NULL;
             }
             $row->tid = $tid;
             $row->contributor = $contributor;
@@ -326,6 +326,13 @@ class troveAPIResult extends troveAPI {
             // id
             if (isset($res['id'])) {
               $row->id = $res['id'];
+            }
+            // holdings:nuc
+            if (isset($res['holding']['nuc'])) {
+              foreach ($res['holding']['nuc'] as $k) {
+                $row->holdings_nuc = $row->holdings_nuc  . $k['value'] . ', ';
+              }
+              $row->$row->holdings_nuc  = chop($row->$row->holdings_nuc , ', ');
             }
             $row->zone = $zones['name'];
 
