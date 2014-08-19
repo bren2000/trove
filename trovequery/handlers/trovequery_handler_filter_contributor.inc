@@ -12,13 +12,17 @@ class trovequery_handler_filter_contributor extends views_handler_filter_in_oper
     }
   }
 
-
   function query() {
     if (isset($this->value, $this->definition['trovequery'])) {
       $this->query->args['method'] = $this->definition['trovequery']['method'];
-      $this->query->args[$this->definition['trovequery']['arg']] .=
-        $this->definition['trovequery']['index'] . ':' .
-        array_pop($this->value);
+      if (is_array($this->value)) {
+        foreach ($this->value as $key => $value) {
+          $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], $this->definition['trovequery']['index'] . ':' . $value);
+        }
+      }
+      else {
+        $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], $this->definition['trovequery']['index'] . ':' . $this->value);
+      }
     }
   }
 
