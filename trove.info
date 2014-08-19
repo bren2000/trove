@@ -2,5 +2,6 @@ name = Trove
 description = Use Trove API with Drupal.
 core = 7.x
 package = Trove
+configure = admin/config/services/trove
 
 files[] = trove.api.inc
