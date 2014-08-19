@@ -19,14 +19,6 @@ function trovequery_views_plugins() {
 function trovequery_views_data() {
   $data = array();
 
-  // // Trove item base table
-  // $data['troveitem']['table']['group']  = t('Trove Item');
-  // $data['troveitem']['table']['base'] = array(
-//   'title' => t('Trove Item'),
-//   'help' => t('Get an item from Trove.'),
-//   'query class' => 'trove_plugin_query',
-  // );
-
   // Trove query base table
   $data['trovequery']['table']['group']  = t('Trove Results');
   $data['trovequery']['table']['base'] = array(

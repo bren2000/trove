@@ -171,6 +171,7 @@ class trove_plugin_query extends views_plugin_query {
 
   }
 
+
   /**
    * Executes the query and fills the associated view object with according
    * values.
@@ -210,6 +211,7 @@ class trove_plugin_query extends views_plugin_query {
 
       $this->pager->total_items = $this->request->get_total_results();
       $this->pager->update_page_info();  
+      
 
       //dpm($this->pager);
 
@@ -230,5 +232,11 @@ class trove_plugin_query extends views_plugin_query {
       return $this->execute($view);
     }
     $view->execute_time = microtime(TRUE) - $start;
+  }
+
+  function validate() {
+    $errors = array();
+
+    return $errors;
   }
 }
