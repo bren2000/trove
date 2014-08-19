@@ -49,9 +49,6 @@ class troveAPI {
     }
   }
 
-  /**
-   * Constructor, please use the factory.
-   */
   function __construct($method) {
     $this->set_filter('method', $method);
     $this->trove_base_url = TROVE_BASE_URL;
@@ -138,7 +135,7 @@ class troveAPI {
     $request_url = url($this->trove_base_url . $command, array('query' => $args, 'absolute' => TRUE));
 
     // Check if we have a cache hit or not.
-    //dpm($request_url);
+    dpm($request_url);
     if ($result = $this->cache_get($request_url)) {
       $this->response = $result->data;
       $this->cache = TRUE;
@@ -153,12 +150,6 @@ class troveAPI {
 
   /**
    * Populate the cache. Wrapper around Drupal's cache_get()
-   *
-   * The caching model implemented here is somewhat different than drupal's
-   * normal model because the data in this cache cannot be regenerated locally.
-   *
-   * Additionally we wait to avoid making repeated failed requests to the API in
-   * the case where it's either down, or a invalid query has been fomulated.
    *
    * @param $url
    *   The API url that would be used.
@@ -213,6 +204,7 @@ class troveAPI {
    * indexed array of results, each result being an array keyed
    * by the field name.
    */
+
   protected function parse($joins) { }
 
 }
