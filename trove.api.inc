@@ -219,6 +219,8 @@ class troveAPIResult extends troveAPI {
     $results = array();
     $total_results = 0;
 
+    dpm($this->response['response']);
+
     if (isset($this->response['response'])) {
       foreach ($this->response['response']['zone'] as $zones) {
         switch ($zones['name']) {
@@ -272,7 +274,7 @@ class troveAPIResult extends troveAPI {
             // image
             if (isset($res['identifier'])) {
               foreach ($res['identifier'] as $identifier) {
-                if ($identifier['linktype'] == 'thumbnail') {
+                if (isset($identifier['linktype']) && $identifier['linktype'] == 'thumbnail') {
                   $row->image = $identifier['value'];
                 }
               }
@@ -328,11 +330,11 @@ class troveAPIResult extends troveAPI {
               $row->id = $res['id'];
             }
             // holdings:nuc
-            if (isset($res['holding']['nuc'])) {
-              foreach ($res['holding']['nuc'] as $k) {
-                $row->holdings_nuc = $row->holdings_nuc  . $k['value'] . ', ';
+            if (isset($res['holding'])) {
+              foreach ($res['holding'] as $k) {
+                $row->holdings_nuc[] = $k['nuc'];         
               }
-              $row->$row->holdings_nuc  = chop($row->$row->holdings_nuc , ', ');
+              //$row->$row->holdings_nuc  = chop($row->$row->holdings_nuc , ', ');
             }
             $row->zone = $zones['name'];
 
