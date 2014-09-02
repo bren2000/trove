@@ -135,8 +135,7 @@ class trove_plugin_query extends views_plugin_query {
     if (empty($group)) {
       $group = 0;
     }
-    //dpm('add_where('. $field . ',' . $value .')');
-
+    
     // Check for a group.
     if (!isset($this->where[$group])) {
       $this->set_where_group('AND', $group);
