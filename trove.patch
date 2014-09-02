@@ -1,0 +1,1104 @@
+Only in sites/all/modules/trove: .git
+diff -up -r trove.admin.inc trove.admin.inc
+--- trove.admin.inc	2014-08-12 09:38:00.000000000 +0000
++++ trove.admin.inc	2014-08-12 10:42:25.000000000 +0000
+@@ -61,15 +61,15 @@ function _get_trove_contributors() {
+ }
+ 
+ function _db_add_trove_contributors($contributors) {
+-  if(!empty($contributors)) {
+-    foreach($contributors as $cont) {
++  if (!empty($contributors)) {
++    foreach ($contributors as $cont) {
+       if ($cont->nuc) {
+         $values[] = array(
+           'nuc' => $cont->nuc,
+           'name' => $cont->name,
+         );
+       }
+-    };
++    }
+     db_delete('trove_contributors')->execute();
+     $insert = db_insert('trove_contributors')->fields(array('nuc', 'name'));
+     foreach ($values as $value) {
+diff -up -r trove.api.inc trove.api.inc
+--- trove.api.inc	2014-08-12 09:42:29.000000000 +0000
++++ trove.api.inc	2014-08-12 10:42:25.000000000 +0000
+@@ -70,10 +70,11 @@ class troveAPI {
+    * @return the troveAPI object
+    */
+   public function setFilter($key, $value) {
+-    if(array_key_exists($key, $this->params) && $key !== 'method') {
++    if (array_key_exists($key, $this->params) && $key !== 'method') {
+       //dpm('this key exists' . $key . ' : ' . $value);
+-      $this->params[$key] .= (' ' .$value);
+-    } else {
++      $this->params[$key] .= (' ' . $value);
++    }
++    else {
+       //dpm($key . ' : ' . $value);
+       $this->params[$key] = $value;
+     }
+@@ -84,8 +85,9 @@ class troveAPI {
+   function call($arguments) {
+     //dpm($arguments);
+     foreach ($arguments as $key => $value) {
+-      if (is_null($value))
++      if (is_null($value)) {
+         unset($arguments[$key]);
++      }
+     }
+     $this->request($this->params['method'], $arguments);
+     return $this->response ? $this->response : false;
+@@ -127,12 +129,13 @@ class troveAPI {
+       if ( is_null($data) ) {
+         unset($args[$key]);
+         continue;
+-      } else {
++      }
++      else {
+         $args[$key] = trim($data);
+       }
+     }
+ 
+-    $request_url = url($this->trove_base_url . $command , array('query' => $args, 'absolute' => TRUE));
++    $request_url = url($this->trove_base_url . $command, array('query' => $args, 'absolute' => TRUE));
+ 
+     // Check if we have a cache hit or not.
+     //dpm($request_url);
+@@ -167,8 +170,9 @@ class troveAPI {
+     $cid = $this->cache_id($request_url);
+     if (!isset($items[$cid]) || $reset) {
+       $items[$cid] = cache_get($cid, $this->cache_table);
+-      if (cache_get($cid, $this->cache_table) == FALSE)
++      if (cache_get($cid, $this->cache_table) == FALSE) {
+         return FALSE;
++      }
+       // Don't return temporary items more that 5 minutes old.
+       if ($items[$cid]->expire === CACHE_TEMPORARY && $items[$cid]->created > (time() + 300)) {
+         return FALSE;
+@@ -187,7 +191,7 @@ class troveAPI {
+       cache_set($this->cache_id($url), FALSE, $this->cache_table, CACHE_TEMPORARY);
+     }
+     else {
+-      $ttl = (int)variable_get('trove_cache_duration', 900);
++      $ttl = (int) variable_get('trove_cache_duration', 900);
+       $expire = time() + $ttl;
+       cache_set($this->cache_id($url), $data, $this->cache_table, $expire);
+     }
+@@ -198,10 +202,10 @@ class troveAPI {
+    * hash of the url
+    */
+   protected function cache_id($request_url) {
+-    return get_class($this) .':'. md5($request_url);
++    return get_class($this) . ':' . md5($request_url);
+   }
+ 
+-  function query() {}
++  function query() { }
+ 
+   /**
+    * Custom parser for the type of data we're retrieving.
+@@ -209,7 +213,7 @@ class troveAPI {
+    * indexed array of results, each result being an array keyed
+    * by the field name.
+    */
+-  protected function parse($joins) {}
++  protected function parse($joins) { }
+ 
+ }
+ 
+@@ -224,62 +228,70 @@ class troveAPIResult extends troveAPI {
+     $total_results = 0;
+ 
+     if (isset($this->response['response'])) {
+-      foreach($this->response['response']['zone'] as $zones) {
+-        switch($zones['name']) {
++      foreach ($this->response['response']['zone'] as $zones) {
++        switch ($zones['name']) {
+           case 'people':
+-            $k = 'people'; break;
++            $k = 'people';
++            break;
+           case 'newspaper':
+-            $k = 'article'; break;
++            $k = 'article';
++            break;
+           case 'list':
+-            $k = 'list'; break;
++            $k = 'list';
++            break;
+           default:
+             $k = 'work';
+         }
+         if ($zones['records']['total'] != '0') {
+           $total_results += $zones['records']['total'];
+-          foreach($zones['records'][$k] as $res) {
++          foreach ($zones['records'][$k] as $res) {
+             $row = new stdClass;
+             // title
+             if (isset($res['title'])) {
+-              if(is_array($res['title'])) {
++              if (is_array($res['title'])) {
+                 $title = $res['title']['value'];
+-              } else {
++              }
++              else {
+                 $title = $res['title'];
+               }
+-            } else {
++            }
++            else {
+               $title = '[title not set]';
+             }
+             $row->title = $title;
+             // contributor
+             if (isset($res['contributor'])) {
+-              foreach($res['contributor'] as $contrib) {
++              foreach ($res['contributor'] as $contrib) {
+                 $contributor = $contrib;
+               }
+-            } else {
++            }
++            else {
+               $contributor = '[contributor not set]';
+             }
+             if (isset($res['id'])) {
+               $tid = $res['id'];
+-            } else {
++            }
++            else {
+               $tid = '[not set]';
+             }
+             $row->tid = $tid;
+             $row->contributor = $contributor;
+ 
+             // image
+-            if(isset($res['identifier'])) {
++            if (isset($res['identifier'])) {
+               foreach ($res['identifier'] as $identifier) {
+-                if($identifier['linktype'] == 'thumbnail') {
++                if ($identifier['linktype'] == 'thumbnail') {
+                   $row->image = $identifier['value'];
+                 }
+               }
+-            } else {
++            }
++            else {
+               $row->image = NULL;
+             }
+ 
+             // tag
+-            if(isset($res['tag'])) {
+-              foreach($res['tag'] as $k) {
++            if (isset($res['tag'])) {
++              foreach ($res['tag'] as $k) {
+                 $row->tag = $row->tag . $k['value'] . ', ';
+               }
+               $row->tag = chop($row->tag, ', ');
+@@ -287,28 +299,28 @@ class troveAPIResult extends troveAPI {
+             // issued (date)
+             if (isset($res['issued'])) {
+               //foreach($res['issued'] as $k) {
+-              //  $row->date = $row->date . $k['value'] . ', ';
+-             // }
++//  $row->date = $row->date . $k['value'] . ', ';
++              // }
+               //$row->date = chop($row->date, ', ');
+               $row->date = $res['issued'];
+             }
+             // comments
+-            if(isset($res['comment'])) {
+-              foreach($res['comment'] as $k) {
++            if (isset($res['comment'])) {
++              foreach ($res['comment'] as $k) {
+                 $row->comment = $row->comment . $k['value'] . ', ';
+               }
+               $row->comment = chop($row->comment, ', ');
+             }
+             // snippets
+-            if(isset($res['snippet'])) {
+-                $row->snippet = $res['snippet'];
++            if (isset($res['snippet'])) {
++              $row->snippet = $res['snippet'];
+             }
+             // category
+-            if(isset($res['category'])) {
+-                $row->category = $res['category'];
++            if (isset($res['category'])) {
++              $row->category = $res['category'];
+             }
+             // trove url
+-            if(isset($res['troveUrl'])) {
++            if (isset($res['troveUrl'])) {
+               $row->trove_url = $res['troveUrl'];
+             }
+             // isbn
+@@ -363,7 +375,7 @@ class troveAPIContributor extends troveA
+ 
+   function parse() {
+     $contributors = array();
+-    foreach($this->response['response']['contributor'] as $contributor) {
++    foreach ($this->response['response']['contributor'] as $contributor) {
+       $cont = new stdClass;
+       $cont->name = $contributor['name'];
+       $cont->id = $contributor['id'];
+diff -up -r trove.install trove.install
+--- trove.install	2014-08-12 09:38:00.000000000 +0000
++++ trove.install	2014-08-12 10:42:25.000000000 +0000
+@@ -14,27 +14,26 @@ function trove_uninstall() {
+   drupal_uninstall_schema('trove_contributors');
+ }
+ 
+-function trove_install(){
++function trove_install() {
+   drupal_install_schema('trove_contributors');
+ }
+ 
+ /**
+-* Implementation of hook_schema().
+-*/
+-function trove_schema(){
++ * Implementation of hook_schema().
++ */
++function trove_schema() {
+   $schema['trove_contributors'] = array(
+     'description' => t('Stores trove contributors and their NUC'),
+-    'fields'  => array(
++    'fields' => array(
+       'nuc' => array(
+         'type' => 'varchar',
+         'length' => 32,
+         'not null' => TRUE,
+         'default' => '',
+-        'description' => t('The NUC identifier for the contibutor.')
++        'description' => t('The NUC identifier for the contibutor.'),
+       ),
+-
+-      'name'  => array(
+-       'description' => t('The name of the contributor'),
++      'name' => array(
++        'description' => t('The name of the contributor'),
+         'type' => 'text',
+         'not null' => FALSE,
+       ),
+diff -up -r trove.module trove.module
+--- trove.module	2014-08-12 09:38:00.000000000 +0000
++++ trove.module	2014-08-12 10:42:26.000000000 +0000
+@@ -23,8 +23,19 @@ function trove_menu() {
+ }
+ 
+ function _get_zones() {
+-  $zones = array('all', 'article', 'book', 'collection', 'list', 'map','music',
+-    'newspaper', 'people', 'picture', 'website');
++  $zones = array(
++    'all',
++    'article',
++    'book',
++    'collection',
++    'list',
++    'map',
++    'music',
++    'newspaper',
++    'people',
++    'picture',
++    'website',
++  );
+   return array_combine($zones, $zones);
+ }
+ 
+@@ -40,14 +51,14 @@ function _get_facets_format() {
+       'Article/Other article' => 'Other article',
+       'Article/Report' => 'Report',
+       'Article/Review' => 'Review',
+-      'Article/Working paper' => 'Working paper'),
++      'Article/Working paper' => 'Working paper',
++    ),
+     'Audio book' => 'Audio book',
+     'Book' => array(
+       'Book/Braille',
+       'Book/Illustrated',
+-      'Book/Large print'),
+-    'Conference Proceedings',
+-    'Data set',
++      'Book/Large print',
++    ), 'Conference Proceedings', 'Data set',
+     'Map' => array(
+       'Map/Aerial photograph' => 'Aerial photograph',
+       'Map/Atlas' => 'Atlas',
+@@ -57,11 +68,13 @@ function _get_facets_format() {
+       'Map/Large print' => 'Large print',
+       'Map/Map series' => 'Map series',
+       'Map/Microform' => 'Microform',
+-      'Map/Single map' => 'Single map'),
++      'Map/Single map' => 'Single map',
++    ),
+     'Object' => 'Object',
+     'Periodical' => array(
+       'Periodical/Journal, magazine, other' => 'Journal, magazine, other',
+-      'Periodical/Newspaper' => 'Newspaper'),
++      'Periodical/Newspaper' => 'Newspaper',
++    ),
+     'Photograph' => 'Photograph',
+     'Poster, chart, other' => 'Poster, chart, other',
+     'Published' => 'Published',
+@@ -69,12 +82,14 @@ function _get_facets_format() {
+     'Sound' => array(
+       'Sound/Interview, lecture, talk' => 'Interview, lecture, talk',
+       'Sound/Other sound' => 'Other sound',
+-      'Sound/Recorded music' => 'Recorded music'),
++      'Sound/Recorded music' => 'Recorded music',
++    ),
+     'Thesis' => 'Thesis',
+     'Unpublished' => 'Unpublished',
+     'Video' => array(
+-      'Video/Captioned' => 'Video/Captioned'),
+-    );
++      'Video/Captioned' => 'Video/Captioned',
++    ),
++  );
+ }
+ 
+ function _get_facets_availability() {
+diff -up -r trovequery/handlers/trovecontrib_handler_filter_query.inc trovequery/handlers/trovecontrib_handler_filter_query.inc
+--- trovequery/handlers/trovecontrib_handler_filter_query.inc	2014-08-12 09:38:00.000000000 +0000
++++ trovequery/handlers/trovecontrib_handler_filter_query.inc	2014-08-12 10:42:26.000000000 +0000
+@@ -9,9 +9,10 @@ class trovecontrib_handler_filter_query
+     //dpm($this->value);
+     if (isset($this->value, $this->definition['trovecontrib'])) {
+       $this->query->args['method'] = $this->definition['trovecontrib']['method'];
+-      if(is_array($this->value)) {
+-        $this->query->args[$this->definition['trovecontrib']['arg']] = implode($this->value,',');
+-      } else {
++      if (is_array($this->value)) {
++        $this->query->args[$this->definition['trovecontrib']['arg']] = implode($this->value, ',');
++      }
++      else {
+         $this->query->args[$this->definition['trovecontrib']['arg']] = $this->value;
+       }
+     }
+diff -up -r trovequery/handlers/trovequery_handler_field_contributor.inc trovequery/handlers/trovequery_handler_field_contributor.inc
+--- trovequery/handlers/trovequery_handler_field_contributor.inc	2014-08-12 09:38:00.000000000 +0000
++++ trovequery/handlers/trovequery_handler_field_contributor.inc	2014-08-12 10:42:26.000000000 +0000
+@@ -1,16 +1,16 @@
+ <?php
+ /**
+-* @file
+-*   Views field handler for basic Trove Query fields.
+-*/
++ * @file
++ *   Views field handler for basic Trove Query fields.
++ */
+ 
+ /**
+-* Views field handler for basic Trove Query fields.
+-*
+-* The only thing we're doing here is making sure the field_alias
+-* gets set properly, and that none of the sql-specific query functionality
+-* gets called.
+-*/
++ * Views field handler for basic Trove Query fields.
++ *
++ * The only thing we're doing here is making sure the field_alias
++ * gets set properly, and that none of the sql-specific query functionality
++ * gets called.
++ */
+ class trovequery_handler_field_contributor extends views_handler_field {
+   function query() {
+     $this->field_alias = $this->real_field;
+diff -up -r trovequery/handlers/trovequery_handler_field_date.inc trovequery/handlers/trovequery_handler_field_date.inc
+--- trovequery/handlers/trovequery_handler_field_date.inc	2014-08-12 09:38:00.000000000 +0000
++++ trovequery/handlers/trovequery_handler_field_date.inc	2014-08-12 10:42:26.000000000 +0000
+@@ -1,16 +1,16 @@
+ <?php
+ /**
+-* @file
+-*   Views field handler for basic Trove Query fields.
+-*/
++ * @file
++ *   Views field handler for basic Trove Query fields.
++ */
+ 
+ /**
+-* Views field handler for basic Trove Query fields.
+-*
+-* The only thing we're doing here is making sure the field_alias
+-* gets set properly, and that none of the sql-specific query functionality
+-* gets called.
+-*/
++ * Views field handler for basic Trove Query fields.
++ *
++ * The only thing we're doing here is making sure the field_alias
++ * gets set properly, and that none of the sql-specific query functionality
++ * gets called.
++ */
+ class trovequery_handler_field_date extends views_handler_field {
+ 
+   function query() {
+diff -up -r trovequery/handlers/trovequery_handler_field_image.inc trovequery/handlers/trovequery_handler_field_image.inc
+--- trovequery/handlers/trovequery_handler_field_image.inc	2014-08-12 09:38:00.000000000 +0000
++++ trovequery/handlers/trovequery_handler_field_image.inc	2014-08-12 10:42:26.000000000 +0000
+@@ -1,16 +1,16 @@
+ <?php
+ /**
+-* @file
+-*   Views field handler for basic Trove Query fields.
+-*/
++ * @file
++ *   Views field handler for basic Trove Query fields.
++ */
+ 
+ /**
+-* Views field handler for basic Trove Query fields.
+-*
+-* The only thing we're doing here is making sure the field_alias
+-* gets set properly, and that none of the sql-specific query functionality
+-* gets called.
+-*/
++ * Views field handler for basic Trove Query fields.
++ *
++ * The only thing we're doing here is making sure the field_alias
++ * gets set properly, and that none of the sql-specific query functionality
++ * gets called.
++ */
+ class trovequery_handler_field_image extends views_handler_field {
+   function query() {
+     $this->field_alias = $this->real_field;
+@@ -20,7 +20,7 @@ class trovequery_handler_field_image ext
+    * Render the field.
+    */
+   function render($values) {
+-    if(isset($values->image)) {
++    if (isset($values->image)) {
+       $variables = array(
+         'path' => $values->{$this->field},
+       );
+diff -up -r trovequery/handlers/trovequery_handler_field_include.inc trovequery/handlers/trovequery_handler_field_include.inc
+--- trovequery/handlers/trovequery_handler_field_include.inc	2014-08-12 09:38:00.000000000 +0000
++++ trovequery/handlers/trovequery_handler_field_include.inc	2014-08-12 10:42:26.000000000 +0000
+@@ -1,20 +1,20 @@
+ <?php
+ /**
+-* @file
+-*   Views field handler for basic Trove Query fields.
+-*/
++ * @file
++ *   Views field handler for basic Trove Query fields.
++ */
+ 
+ /**
+-* Views field handler for basic Trove Query fields.
+-*
+-* The only thing we're doing here is making sure the field_alias
+-* gets set properly, and that none of the sql-specific query functionality
+-* gets called.
+-*
+-*  Some trove api response fields  can contain HTML, which is typically run through
+-* check_plain() and thus not rendered. Here we give the user the option to
+-* override this behavior and render the HTML.
+-*/
++ * Views field handler for basic Trove Query fields.
++ *
++ * The only thing we're doing here is making sure the field_alias
++ * gets set properly, and that none of the sql-specific query functionality
++ * gets called.
++ *
++ *  Some trove api response fields  can contain HTML, which is typically run through
++ * check_plain() and thus not rendered. Here we give the user the option to
++ * override this behavior and render the HTML.
++ */
+ 
+ class trovequery_handler_field_include extends views_handler_field {
+ 
+diff -up -r trovequery/handlers/trovequery_handler_field_snippet.inc trovequery/handlers/trovequery_handler_field_snippet.inc
+--- trovequery/handlers/trovequery_handler_field_snippet.inc	2014-08-12 09:38:00.000000000 +0000
++++ trovequery/handlers/trovequery_handler_field_snippet.inc	2014-08-12 10:42:26.000000000 +0000
+@@ -1,20 +1,20 @@
+ <?php
+ /**
+-* @file
+-*   Views field handler for basic Trove Query fields.
+-*/
++ * @file
++ *   Views field handler for basic Trove Query fields.
++ */
+ 
+ /**
+-* Views field handler for basic Trove Query fields.
+-*
+-* The only thing we're doing here is making sure the field_alias
+-* gets set properly, and that none of the sql-specific query functionality
+-* gets called.
+-*
+-*  Some trove api response fields  can contain HTML, which is typically run through
+-* check_plain() and thus not rendered. Here we give the user the option to
+-* override this behavior and render the HTML.
+-*/
++ * Views field handler for basic Trove Query fields.
++ *
++ * The only thing we're doing here is making sure the field_alias
++ * gets set properly, and that none of the sql-specific query functionality
++ * gets called.
++ *
++ *  Some trove api response fields  can contain HTML, which is typically run through
++ * check_plain() and thus not rendered. Here we give the user the option to
++ * override this behavior and render the HTML.
++ */
+ 
+ class trovequery_handler_field_snippet extends views_handler_field {
+ 
+diff -up -r trovequery/handlers/trovequery_handler_field_tid.inc trovequery/handlers/trovequery_handler_field_tid.inc
+--- trovequery/handlers/trovequery_handler_field_tid.inc	2014-08-12 09:38:00.000000000 +0000
++++ trovequery/handlers/trovequery_handler_field_tid.inc	2014-08-12 10:42:26.000000000 +0000
+@@ -1,16 +1,16 @@
+ <?php
+ /**
+-* @file
+-*   Views field handler for basic Trove Query fields.
+-*/
++ * @file
++ *   Views field handler for basic Trove Query fields.
++ */
+ 
+ /**
+-* Views field handler for basic Trove Query fields.
+-*
+-* The only thing we're doing here is making sure the field_alias
+-* gets set properly, and that none of the sql-specific query functionality
+-* gets called.
+-*/
++ * Views field handler for basic Trove Query fields.
++ *
++ * The only thing we're doing here is making sure the field_alias
++ * gets set properly, and that none of the sql-specific query functionality
++ * gets called.
++ */
+ class trovequery_handler_field_tid extends views_handler_field {
+   function query() {
+     $this->field_alias = $this->real_field;
+diff -up -r trovequery/handlers/trovequery_handler_field_title.inc trovequery/handlers/trovequery_handler_field_title.inc
+--- trovequery/handlers/trovequery_handler_field_title.inc	2014-08-12 09:38:00.000000000 +0000
++++ trovequery/handlers/trovequery_handler_field_title.inc	2014-08-12 10:42:26.000000000 +0000
+@@ -1,16 +1,16 @@
+ <?php
+ /**
+-* @file
+-*   Views field handler for basic Trove Query fields.
+-*/
++ * @file
++ *   Views field handler for basic Trove Query fields.
++ */
+ 
+ /**
+-* Views field handler for basic Trove Query fields.
+-*
+-* The only thing we're doing here is making sure the field_alias
+-* gets set properly, and that none of the sql-specific query functionality
+-* gets called.
+-*/
++ * Views field handler for basic Trove Query fields.
++ *
++ * The only thing we're doing here is making sure the field_alias
++ * gets set properly, and that none of the sql-specific query functionality
++ * gets called.
++ */
+ class trovequery_handler_field_title extends views_handler_field {
+ 
+   function query() {
+diff -up -r trovequery/handlers/trovequery_handler_field_url.inc trovequery/handlers/trovequery_handler_field_url.inc
+--- trovequery/handlers/trovequery_handler_field_url.inc	2014-08-12 09:38:00.000000000 +0000
++++ trovequery/handlers/trovequery_handler_field_url.inc	2014-08-12 10:42:27.000000000 +0000
+@@ -1,16 +1,16 @@
+ <?php
+ /**
+-* @file
+-*   Views field handler for basic Trove Query fields.
+-*/
++ * @file
++ *   Views field handler for basic Trove Query fields.
++ */
+ 
+ /**
+-* Views field handler for basic Trove Query fields.
+-*
+-* The only thing we're doing here is making sure the field_alias
+-* gets set properly, and that none of the sql-specific query functionality
+-* gets called.
+-*/
++ * Views field handler for basic Trove Query fields.
++ *
++ * The only thing we're doing here is making sure the field_alias
++ * gets set properly, and that none of the sql-specific query functionality
++ * gets called.
++ */
+ class trovequery_handler_field_url extends views_handler_field_url {
+ 
+   function query() {
+diff -up -r trovequery/handlers/trovequery_handler_filter_contributor.inc trovequery/handlers/trovequery_handler_filter_contributor.inc
+--- trovequery/handlers/trovequery_handler_filter_contributor.inc	2014-08-12 09:38:00.000000000 +0000
++++ trovequery/handlers/trovequery_handler_filter_contributor.inc	2014-08-12 10:42:27.000000000 +0000
+@@ -1,7 +1,6 @@
+ <?php
+ 
+-class trovequery_handler_filter_contributor
+-  extends views_handler_filter_in_operator {
++class trovequery_handler_filter_contributor extends views_handler_filter_in_operator {
+ 
+   public $opt = array();
+ 
+@@ -31,7 +30,7 @@ class trovequery_handler_filter_contribu
+         'short_single' => t('='),
+         'method' => 'op_simple',
+         'values' => 1,
+-        ),
++      ),
+     );
+     return $operators;
+   }
+diff -up -r trovequery/handlers/trovequery_handler_filter_date.inc trovequery/handlers/trovequery_handler_filter_date.inc
+--- trovequery/handlers/trovequery_handler_filter_date.inc	2014-08-12 09:38:00.000000000 +0000
++++ trovequery/handlers/trovequery_handler_filter_date.inc	2014-08-12 10:42:27.000000000 +0000
+@@ -179,11 +179,12 @@ class trovequery_handler_filter_date ext
+     //$value = intval(strtotime($this->value['value'], 0));
+     if ($this->value['value'] == 'now') {
+       $value = date('Y-m-d\T00:00:00\Z');
+-    } else {
++    }
++    else {
+       $value = date('Y-m-d\T00:00:00\Z', intval(time()) + intval(strtotime( $this->value['value'], 0)));
+     }
+     if (!empty($this->value['type']) && $this->value['type'] == 'offset') {
+-       $value = date('Y-m-d\T00:00:00\Z', intval(time()) + intval(strtotime( $this->value['value'], 0)));
++      $value = date('Y-m-d\T00:00:00\Z', intval(time()) + intval(strtotime( $this->value['value'], 0)));
+     }
+     $operator = 'TO';
+     // This is safe because we are manually scrubbing the value.
+diff -up -r trovequery/handlers/trovequery_handler_filter_facet.inc trovequery/handlers/trovequery_handler_filter_facet.inc
+--- trovequery/handlers/trovequery_handler_filter_facet.inc	2014-08-12 09:38:00.000000000 +0000
++++ trovequery/handlers/trovequery_handler_filter_facet.inc	2014-08-12 10:42:27.000000000 +0000
+@@ -8,14 +8,15 @@ class trovequery_handler_filter_facet ex
+ 
+   function make_options($array, $level = 0) {
+     $pre = '';
+-    for($i = $level; $i > 0; $i--) {
++    for ($i = $level; $i > 0; $i--) {
+       $pre .= '--';
+     }
+-    foreach($array as $k => $v) {
+-      if(is_array($v)) {
++    foreach ($array as $k => $v) {
++      if (is_array($v)) {
+         $this->opt[$k] = $k;
+         $this->make_options($v, $level + 1);
+-      } else {
++      }
++      else {
+         $this->opt[$k] = $pre . $v;
+       }
+     }
+@@ -38,9 +39,10 @@ class trovequery_handler_filter_facet ex
+   function query() {
+     if (isset($this->value, $this->definition['trovequery'])) {
+       $this->query->args['method'] = $this->definition['trovequery']['method'];
+-      if(is_array($this->value)) {
+-        $this->query->args[$this->definition['trovequery']['arg']] = implode($this->value,',');
+-      } else {
++      if (is_array($this->value)) {
++        $this->query->args[$this->definition['trovequery']['arg']] = implode($this->value, ',');
++      }
++      else {
+         $this->query->args[$this->definition['trovequery']['arg']] = $this->value;
+       }
+     }
+diff -up -r trovequery/handlers/trovequery_handler_filter_field.inc trovequery/handlers/trovequery_handler_filter_field.inc
+--- trovequery/handlers/trovequery_handler_filter_field.inc	2014-08-12 09:38:00.000000000 +0000
++++ trovequery/handlers/trovequery_handler_filter_field.inc	2014-08-12 10:42:27.000000000 +0000
+@@ -1,57 +1 @@
+ 
+-<?php
+-
+-class trovequery_handler_filter_field extends views_handler_filter_string {
+-
+-  /**
+-   * Called to add the field to a query.
+-   */
+-  function query() {
+-    $this->field_alias = $this->real_field;
+-    if (isset($this->value, $this->definition['trovequery'])) {
+-      $this->query->args['method'] = $this->definition['trovequery']['method'];
+-      $this->query->args[$this->definition['trovequery']['arg']] .=  $this->definition['trovequery']['index'] . ':' . $this->value . ' ';
+-    }
+-  }
+-
+-  function operators() {
+-    $operators = array(
+-      '=' => array(
+-        'title' => t('Is equal to'),
+-        'short' => t('='),
+-        'method' => 'op_equal',
+-        'values' => 1,
+-      ),
+-    );
+-
+-    return $operators;
+-  }
+-
+-  /**
+-   * Handle the 'left' side of the exposed options form.
+-   *
+-   * We remove the operator option since we only have one operators available.
+-   */
+-  function expose_form_left(&$form, &$form_state) {
+-    parent::expose_form_left($form, $form_state);
+-    $form['expose']['use_operator']['#access'] = FALSE;
+-    $form['expose']['operator']['#access'] = FALSE;
+-  }
+-
+-  /**
+-   * Remove the optional checkbox since it makes no sense in our context.
+-   */
+-  function expose_form_right(&$form, &$form_state) {
+-    parent::expose_form_right($form, $form_state);
+-    $form['expose']['optional']['#access'] = FALSE;
+-  }
+-
+-  /**
+-   * Remove the case sensitive option, since it is irrelevant.
+-   */
+-  function options_form(&$form, &$form_state) {
+-    parent::options_form($form, $form_state);
+-    $form['case']['#access'] = FALSE;
+-  }
+-}
+-
+diff -up -r trovequery/handlers/trovequery_handler_filter_include.inc trovequery/handlers/trovequery_handler_filter_include.inc
+--- trovequery/handlers/trovequery_handler_filter_include.inc	2014-08-12 09:38:00.000000000 +0000
++++ trovequery/handlers/trovequery_handler_filter_include.inc	2014-08-12 10:42:27.000000000 +0000
+@@ -10,12 +10,15 @@ class trovequery_handler_filter_include
+     if (isset($this->value, $this->definition['trovequery']) && $this->value) {
+       //$this->query->args['method'] = $this->definition['trovequery']['method'];
+       $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], $this->definition['trovequery']['index'] . ':' . $this->definition['trovequery']['value']);
+-     //$this->query->args[$this->definition['trovequery']['arg']] .=  $this->definition['trovequery']['index'] . ':' . $this->definition['trovequery']['value'] . ' ';
++      //$this->query->args[$this->definition['trovequery']['arg']] .=  $this->definition['trovequery']['index'] . ':' . $this->definition['trovequery']['value'] . ' ';
+     }
+   }
+ 
+   function get_value_options() {
+-    $this->value_options = array(1 => t('Yes'), 0 => t('No'));
++    $this->value_options = array(
++      1 => t('Yes'),
++      0 => t('No'),
++    );
+   }
+ 
+ }
+diff -up -r trovequery/handlers/trovequery_handler_filter_include_string.inc trovequery/handlers/trovequery_handler_filter_include_string.inc
+--- trovequery/handlers/trovequery_handler_filter_include_string.inc	2014-08-12 09:38:00.000000000 +0000
++++ trovequery/handlers/trovequery_handler_filter_include_string.inc	2014-08-12 10:42:27.000000000 +0000
+@@ -1,7 +1,6 @@
+ <?php
+ 
+-class trovequery_handler_filter_include_string
+-  extends views_handler_filter_string {
++class trovequery_handler_filter_include_string extends views_handler_filter_string {
+ 
+   /**
+    * Called to add the field to a query.
+diff -up -r trovequery/handlers/trovequery_handler_filter_query.inc trovequery/handlers/trovequery_handler_filter_query.inc
+--- trovequery/handlers/trovequery_handler_filter_query.inc	2014-08-12 09:38:00.000000000 +0000
++++ trovequery/handlers/trovequery_handler_filter_query.inc	2014-08-12 10:42:27.000000000 +0000
+@@ -14,12 +14,12 @@ class trovequery_handler_filter_query ex
+     }
+ 
+     // if (isset($this->value, $this->definition['trovequery'])) {
+-    //   $this->query->args['method'] = $this->definition['trovequery']['method'];
+-    //   if(is_array($this->value)) {
+-    //     $this->query->args[$this->definition['trovequery']['arg']] .= implode($this->value,',') . ' ';
+-    //   } else {
+-    //     $this->query->args[$this->definition['trovequery']['arg']] .= $this->value . ' ';
+-    //   }
++//   $this->query->args['method'] = $this->definition['trovequery']['method'];
++//   if(is_array($this->value)) {
++//     $this->query->args[$this->definition['trovequery']['arg']] .= implode($this->value,',') . ' ';
++//   } else {
++//     $this->query->args[$this->definition['trovequery']['arg']] .= $this->value . ' ';
++//   }
+     // }
+   }
+ 
+@@ -57,27 +57,30 @@ class trovequery_handler_filter_query ex
+ 
+   function op_phrase($field) {
+     $this->value = "\"$this->value\"";
+-    if(is_array($this->value)) {
+-      $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], implode($this->value,','));
+-    } else {
++    if (is_array($this->value)) {
++      $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], implode($this->value, ','));
++    }
++    else {
+       $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], $this->value);
+     }
+   }
+ 
+   function op_multi($field) {
+     //dpm('www');
+-    if(is_array($this->value)) {
+-      $this->query->args[$this->definition['trovequery']['arg']] .= implode($this->value,',') . ' ';
+-    } else {
++    if (is_array($this->value)) {
++      $this->query->args[$this->definition['trovequery']['arg']] .= implode($this->value, ',') . ' ';
++    }
++    else {
+       $this->query->args[$this->definition['trovequery']['arg']] = $this->value . ' ';
+     }
+   }
+ 
+   function op_not_phrase($field) {
+     $this->value = 'NOT ' . "\"$this->value\"";
+-    if(is_array($this->value)) {
+-      $this->query->args[$this->definition['trovequery']['arg']] .= implode($this->value,',') . ' ';
+-    } else {
++    if (is_array($this->value)) {
++      $this->query->args[$this->definition['trovequery']['arg']] .= implode($this->value, ',') . ' ';
++    }
++    else {
+       $this->query->args[$this->definition['trovequery']['arg']] = $this->value . ' ';
+     }
+   }
+diff -up -r trovequery/handlers/trovequery_handler_filter_zone.inc trovequery/handlers/trovequery_handler_filter_zone.inc
+--- trovequery/handlers/trovequery_handler_filter_zone.inc	2014-08-12 09:38:00.000000000 +0000
++++ trovequery/handlers/trovequery_handler_filter_zone.inc	2014-08-12 10:42:28.000000000 +0000
+@@ -16,14 +16,16 @@ class trovequery_handler_filter_zone ext
+   function query() {
+     if (isset($this->value, $this->definition['trovequery'])) {
+       $this->query->args['method'] = $this->definition['trovequery']['method'];
+-      if(is_array($this->value)) {
++      if (is_array($this->value)) {
+         if (in_array('all', $this->value)) {
+           $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], 'all');
+-        } else {
++        }
++        else {
+ 
+-          $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], implode($this->value,','));
++          $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], implode($this->value, ','));
+         }
+-      } else {
++      }
++      else {
+         $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], $this->value);
+       }
+     }
+@@ -37,7 +39,7 @@ class trovequery_handler_filter_zone ext
+         'short_single' => t('='),
+         'method' => 'op_simple',
+         'values' => 1,
+-        ),
++      ),
+     );
+     return $operators;
+   }
+diff -up -r trovequery/plugins/trove_plugin_query.inc trovequery/plugins/trove_plugin_query.inc
+--- trovequery/plugins/trove_plugin_query.inc	2014-08-12 09:42:47.000000000 +0000
++++ trovequery/plugins/trove_plugin_query.inc	2014-08-12 10:42:28.000000000 +0000
+@@ -1,12 +1,12 @@
+ <?php
+ /**
+-* @file
+-*   Views query plugin for Trove Query.
+-*/
++ * @file
++ *   Views query plugin for Trove Query.
++ */
+ 
+ /**
+-* Views query plugin for the Trove Query results.
+-*/
++ * Views query plugin for the Trove Query results.
++ */
+ class trove_plugin_query extends views_plugin_query {
+ 
+   /**
+@@ -178,7 +178,7 @@ class trove_plugin_query extends views_p
+    */
+   function execute(&$view) {
+ 
+-    if ($this->errors || $this->abort ){
++    if ($this->errors || $this->abort ) {
+       if (error_displayable()) {
+         foreach ($this->errors as $msg) {
+           drupal_set_message(check_plain($msg), 'error');
+@@ -208,15 +208,16 @@ class trove_plugin_query extends views_p
+ 
+       // Slice the resultset.
+       //if (isset($this->offset, $this->limit)) {
+-      //  $end = $this->offset + $this->limit;
+-      //  $end = count($view->result) >= $end ? $end : count($view->result);
+-      //  $view->result = array_slice($view->result, $this->offset, $end);
++//  $end = $this->offset + $this->limit;
++//  $end = count($view->result) >= $end ? $end : count($view->result);
++//  $view->result = array_slice($view->result, $this->offset, $end);
+       //}
+       //dpm($this->pager);
+       //
+       //dpm($this);
+ 
+-    } catch (Exception $e) {
++    }
++    catch (Exception $e) {
+       $this->errors[] = $e->getMessage();
+       // Recursion to get the same error behaviour as above.
+       return $this->execute($view);
+diff -up -r trovequery/trovequery.module trovequery/trovequery.module
+--- trovequery/trovequery.module	2014-08-12 09:38:00.000000000 +0000
++++ trovequery/trovequery.module	2014-08-12 10:42:28.000000000 +0000
+@@ -1,9 +1,9 @@
+ <?php
+ /**
+-* Implementation of hook_views_api().
+-*/
++ * Implementation of hook_views_api().
++ */
+ function trovequery_views_api() {
+-   return array(
+-     'api' => 3.0
+-   );
++  return array(
++    'api' => 3.0,
++  );
+ }
+diff -up -r trovequery/trovequery.views.inc trovequery/trovequery.views.inc
+--- trovequery/trovequery.views.inc	2014-08-12 09:38:00.000000000 +0000
++++ trovequery/trovequery.views.inc	2014-08-12 10:42:29.000000000 +0000
+@@ -1,7 +1,7 @@
+ <?php
+ /**
+-* Implementation of hook_views_plugins().
+-*/
++ * Implementation of hook_views_plugins().
++ */
+ function trovequery_views_plugins() {
+   $plugin = array();
+   $plugin['query']['trove_plugin_query'] = array(
+@@ -14,24 +14,24 @@ function trovequery_views_plugins() {
+ }
+ 
+ /**
+-* Implementation of hook_views_data().
+-*/
++ * Implementation of hook_views_data().
++ */
+ function trovequery_views_data() {
+   $data = array();
+ 
+   // // Trove item base table
+   // $data['troveitem']['table']['group']  = t('Trove Item');
+   // $data['troveitem']['table']['base'] = array(
+-  //   'title' => t('Trove Item'),
+-  //   'help' => t('Get an item from Trove.'),
+-  //   'query class' => 'trove_plugin_query',
++//   'title' => t('Trove Item'),
++//   'help' => t('Get an item from Trove.'),
++//   'query class' => 'trove_plugin_query',
+   // );
+ 
+   // Trove query base table
+   $data['trovequery']['table']['group']  = t('Trove Results');
+   $data['trovequery']['table']['base'] = array(
+     'title' => t('Trove Results'),
+-    'help'  => t('Query Trove.'),
++    'help' => t('Query Trove.'),
+     'field' => 'title',
+     'query class' => 'trove_plugin_query',
+   );
+@@ -50,7 +50,7 @@ function trovequery_views_data() {
+         'arg' => 'q',
+         'method' => 'result',
+         'index' => 'title',
+-       ),
++      ),
+     ),
+   );
+ 
+@@ -133,7 +133,7 @@ function trovequery_views_data() {
+   $data['trovequery']['date'] = array(
+     'title' => t('date'),
+     'help' => t("Date of publication"),
+-    'field' => array (
++    'field' => array(
+       'handler' => 'trovequery_handler_field_date',
+     ),
+   );
+@@ -155,7 +155,7 @@ function trovequery_views_data() {
+   );
+ 
+   // lastupdated
+-  $data['trovequery']['lastupdated'] = array (
++  $data['trovequery']['lastupdated'] = array(
+     'title' => t('last updated'),
+     'help' => t('The date the item was last updated.'),
+     'filter' => array(
+@@ -231,7 +231,7 @@ function trovequery_views_data() {
+       'trovequery' => array(
+         'arg' => 'q',
+         'method' => 'result',
+-       ),
++      ),
+     ),
+   );
+ 
+@@ -245,7 +245,7 @@ function trovequery_views_data() {
+         'arg' => 'l-format',
+         'method' => 'result',
+         'facets_method' => '_get_facets_format',
+-       ),
++      ),
+     ),
+   );
+   // facets - availability
+@@ -258,7 +258,7 @@ function trovequery_views_data() {
+         'arg' => 'l-availability',
+         'method' => 'result',
+         'facets_method' => '_get_facets_availability',
+-       ),
++      ),
+     ),
+   );
+   // zone
+@@ -274,7 +274,7 @@ function trovequery_views_data() {
+         'arg' => 'zone',
+         'method' => 'result',
+         'zones_method' => '_get_zones',
+-       ),
++      ),
+     ),
+   );
+   // contributor
+@@ -292,7 +292,7 @@ function trovequery_views_data() {
+         'method' => 'result',
+         'index' => 'nuc',
+         'index_method' => '_get_index_contributors',
+-       ),
++      ),
+     ),
+   );
+   // id
+@@ -324,7 +324,7 @@ function trovequery_views_data() {
+         'arg' => 'l-category',
+         'method' => 'result',
+         'facets_method' => '_get_facets_category',
+-       ),
++      ),
+     ),
+   );
+   // lists
+@@ -344,7 +344,7 @@ function trovequery_views_data() {
+     'title' => t('image'),
+     'help' => t('The image for the Trove work - if available.'),
+     'field' => array(
+-      'handler' => 'trovequery_handler_field_image'
++      'handler' => 'trovequery_handler_field_image',
+     ),
+   );
+   return $data;

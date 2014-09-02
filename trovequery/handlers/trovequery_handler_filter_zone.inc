@@ -49,7 +49,10 @@ class trovequery_handler_filter_zone extends views_handler_filter_in_operator {
     $this->get_value_options();
     $errors = array();
 
-    //dpm($this);
+    if ($this->options['exposed'] && !$this->options['expose']['required'] && empty($this->value)) {
+      // Don't validate if the field is exposed and no default value is provided.
+      return $errors;
+    }
 
     if (empty($this->value)) {
       $errors[] = t('You must select at least one zone');
@@ -58,7 +61,9 @@ class trovequery_handler_filter_zone extends views_handler_filter_in_operator {
     if (isset($this->value['all'])) {
       unset($this->value);
       $this->value['all'] = 'all';
+      return $errors;
     }
+    
     return $errors;
   }
 
