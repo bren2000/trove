@@ -68,11 +68,19 @@ class troveAPI {
    */
   public function set_filter($key, $value) {
     if (array_key_exists($key, $this->params) && $key !== 'method') {
-      //dpm('this key exists' . $key . ' : ' . $value);
-      $this->params[$key] .= (' ' . $value);
+      dpm('this key exists' . $key . ' : ' . $value);
+      switch ($key) {
+        case 'include':
+          $this->params[$key] .= (',' . $value);
+          break;
+        default:
+          $this->params[$key] .= (' ' . $value);
+          break;
+      }
+      
     }
     else {
-      //dpm($key . ' : ' . $value);
+      dpm($key . ' : ' . $value);
       $this->params[$key] = $value;
     }
     return $this;
@@ -91,6 +99,7 @@ class troveAPI {
   }
 
   function execute($request_url) {
+    dpm($request_url);
     $options = array(
       'timeout' => 5.0,
     );
@@ -118,7 +127,6 @@ class troveAPI {
   }
 
   function request($command, $args = array()) {
-    //dpm($this->params);
     unset($args['method']);
     $args = array_merge(array("encoding" => "json", "key" => $this->api_key), $args);
 
@@ -135,7 +143,7 @@ class troveAPI {
     $request_url = url($this->trove_base_url . $command, array('query' => $args, 'absolute' => TRUE));
 
     // Check if we have a cache hit or not.
-    dpm($request_url);
+
     if ($result = $this->cache_get($request_url)) {
       $this->response = $result->data;
       $this->cache = TRUE;
@@ -219,7 +227,7 @@ class troveAPIResult extends troveAPI {
     $results = array();
     $total_results = 0;
 
-    dpm($this->response['response']);
+    //dpm($this->response['response']);
 
     if (isset($this->response['response'])) {
       foreach ($this->response['response']['zone'] as $zones) {

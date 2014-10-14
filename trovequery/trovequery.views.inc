@@ -101,7 +101,7 @@ function trovequery_views_data() {
     'title' => t('tag'),
     'help' => t('Tags associated with this item.'),
     'field' => array(
-      'handler' => 'trovequery_handler_field_include_tags',
+      'handler' => 'trovequery_handler_field_include',
       'trovequery' => array(
         'arg' => 'include',
         'value' => 'tags',
