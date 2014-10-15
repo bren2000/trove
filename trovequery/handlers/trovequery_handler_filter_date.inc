@@ -169,14 +169,10 @@ class trovequery_handler_filter_date extends views_handler_filter_date {
     // This is safe because we are manually scrubbing the values.
     // It is necessary to do it this way because $a and $b are formulas when using an offset.
     $operator = 'TO';
-    //dpm($this->definition['trovequery']['arg']);
-    //dpm($this->definition['trovequery']['index'] . ":[$a $operator $b]");
     $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], $this->definition['trovequery']['index'] . ":[$a $operator $b]");
   }
 
   function op_simple($field) {
-    //date_default_timezone_set('UTC');
-    //$value = intval(strtotime($this->value['value'], 0));
     if ($this->value['value'] == 'now') {
       $value = date('Y-m-d\T00:00:00\Z');
     }

@@ -256,12 +256,13 @@ function trovequery_views_data() {
   // zone
   $data['trovequery']['zone'] = array(
     'title' => t('zone'),
-    'help' => t('Filter results based on trove zones'),
+    'help' => t('The trove zone this work belongs to'),
     'field' => array(
       'handler' => 'trovequery_handler_field_title',
     ),
     'filter' => array(
       'handler' => 'trovequery_handler_filter_zone',
+      'help' => t('Filter results based on trove zones'),
       'trovequery' => array(
         'arg' => 'zone',
         'method' => 'result',

@@ -36,7 +36,7 @@ class trovequery_handler_field_include extends views_handler_field {
   }
 
   function pre_query() {
-    $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], $this->definition['trovequery']['value']);
+    $this->query->add_where('', $this->definition['trovequery']['arg'], $this->definition['trovequery']['value']);
   }
 
   function query() {
@@ -44,15 +44,15 @@ class trovequery_handler_field_include extends views_handler_field {
   }
 
   function render($values) {
-    //dpm($values);
-    if ($this->options['render_html']) {
-      $value = $values->{$this->field};
+    if ( isset( $values->{$this->field} ) ) {
+      if ($this->options['render_html']) {
+        $value = $values->{$this->field};
+      }
+      else {
+        $value = check_plain($values->{$this->field});
+      }
+      return $value;
     }
-    else {
-      $value = check_plain($values->{$this->field});
-    }
-
-    return $value;
   }
 
 }

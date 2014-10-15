@@ -68,7 +68,6 @@ class troveAPI {
    */
   public function set_filter($key, $value) {
     if (array_key_exists($key, $this->params) && $key !== 'method') {
-      dpm('this key exists' . $key . ' : ' . $value);
       switch ($key) {
         case 'include':
           $this->params[$key] .= (',' . $value);
@@ -77,10 +76,8 @@ class troveAPI {
           $this->params[$key] .= (' ' . $value);
           break;
       }
-      
     }
     else {
-      dpm($key . ' : ' . $value);
       $this->params[$key] = $value;
     }
     return $this;
@@ -88,7 +85,6 @@ class troveAPI {
 
 
   function call($arguments) {
-    //dpm($arguments);
     foreach ($arguments as $key => $value) {
       if (is_null($value)) {
         unset($arguments[$key]);
@@ -99,6 +95,7 @@ class troveAPI {
   }
 
   function execute($request_url) {
+
     dpm($request_url);
     $options = array(
       'timeout' => 5.0,
@@ -227,8 +224,6 @@ class troveAPIResult extends troveAPI {
     $results = array();
     $total_results = 0;
 
-    //dpm($this->response['response']);
-
     if (isset($this->response['response'])) {
       foreach ($this->response['response']['zone'] as $zones) {
         switch ($zones['name']) {
@@ -247,6 +242,7 @@ class troveAPIResult extends troveAPI {
         if ($zones['records']['total'] != '0') {
           $total_results += $zones['records']['total'];
           foreach ($zones['records'][$k] as $res) {
+            dpm($res);
             $row = new stdClass;
             // title
             if (isset($res['title'])) {
@@ -293,10 +289,15 @@ class troveAPIResult extends troveAPI {
 
             // tag
             if (isset($res['tag'])) {
-              foreach ($res['tag'] as $k) {
-                $row->tag = $row->tag . $k['value'] . ', ';
-              }
-              $row->tag = chop($row->tag, ', ');
+              $row->tag = implode(', ', array_map(function ($entry) {
+                return $entry['value'];
+              }, $res['tag'] ));
+            }
+            // list
+            if (isset($res['list'])) {
+              $row->list = implode(', ', array_map(function ($entry) {
+                return $entry['value'];
+              }, $res['list'] ));
             }
             // issued (date)
             if (isset($res['issued'])) {
@@ -308,10 +309,9 @@ class troveAPIResult extends troveAPI {
             }
             // comments
             if (isset($res['comment'])) {
-              foreach ($res['comment'] as $k) {
-                $row->comment = $row->comment . $k['value'] . ', ';
-              }
-              $row->comment = chop($row->comment, ', ');
+              $row->tag = implode(', ', array_map(function ($entry) {
+                return $entry['value'];
+              }, $res['comment'] ));
             }
             // snippets
             if (isset($res['snippet'])) {

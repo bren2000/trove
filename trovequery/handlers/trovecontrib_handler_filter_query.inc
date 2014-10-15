@@ -5,8 +5,6 @@ class trovecontrib_handler_filter_query extends views_handler_filter_string {
   public $always_required = TRUE;
 
   function query() {
-    //dpm($this->definition['trovequery']['arg'] . ":" . $this->value);
-    //dpm($this->value);
     if (isset($this->value, $this->definition['trovecontrib'])) {
       $this->query->args['method'] = $this->definition['trovecontrib']['method'];
       if (is_array($this->value)) {

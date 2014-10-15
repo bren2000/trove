@@ -70,7 +70,6 @@ class trovequery_handler_filter_query extends views_handler_filter_string {
   }
 
   function op_multi($field) {
-    dpm($this->operator());
     if (is_array($this->value)) {
       $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], implode($this->value, ' ') . ' ');
     }
@@ -89,7 +88,6 @@ class trovequery_handler_filter_query extends views_handler_filter_string {
   }
 
   function op_not_multi($field) {
-    dpm($this->operator);
     $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], $this->operator() . str_replace(' ', $this->operator(), $this->value));
   }
 

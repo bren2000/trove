@@ -212,18 +212,6 @@ class trove_plugin_query extends views_plugin_query {
       $this->pager->update_page_info();  
       
 
-      //dpm($this->pager);
-
-      // Slice the resultset.
-      //if (isset($this->offset, $this->limit)) {
-//  $end = $this->offset + $this->limit;
-//  $end = count($view->result) >= $end ? $end : count($view->result);
-//  $view->result = array_slice($view->result, $this->offset, $end);
-      //}
-      //dpm($this->pager);
-      //
-      //dpm($this);
-
     }
     catch (Exception $e) {
       $this->errors[] = $e->getMessage();
