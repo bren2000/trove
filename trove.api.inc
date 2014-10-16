@@ -242,7 +242,7 @@ class troveAPIResult extends troveAPI {
         if ($zones['records']['total'] != '0') {
           $total_results += $zones['records']['total'];
           foreach ($zones['records'][$k] as $res) {
-            dpm($res);
+            //dpm($res);
             $row = new stdClass;
             // title
             if (isset($res['title'])) {
