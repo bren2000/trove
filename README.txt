@@ -33,7 +33,7 @@ CONFIGURATION
    - There are two required views filters for a 'Trove Results' view to be valid:
      - Select 'Trove Results: zone' from the filter criteria and select one of 
        the options (this may include all zones). This determines the Trove zones 
-       to search accross.
+       to search across.
      - Select 'Trove Results: query' from the filter criteria. This is the key 
        word/phrase filter.
    - Select one or more fields to display.
@@ -50,7 +50,10 @@ TROUBLESHOOTING
 THANKS
 ------
  * Thanks to the National Library and all of the contributors for the amazing, vast 
-   and free Trove service. Be sure and acknowledge them if you use this module on your
-   site. See http://trove.nla.gov.au/general/api-powered-by-trove for more information
-   on acknowledging Trove.
+   and free Trove service. Be sure and acknowledge them if you use this module on 
+   your site. See http://trove.nla.gov.au/general/api-powered-by-trove for more 
+   information on acknowledging Trove.
+ * Thanks to Greg Dunlap (https://www.drupal.org/user/128537) for his very helpful 
+   four part article on Building Views Query 
+   Plugins, see https://www.lullabot.com/blog/article/building-views-query-plugins
    
