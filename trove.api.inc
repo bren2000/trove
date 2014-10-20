@@ -94,8 +94,13 @@ class troveAPI {
     return $this->response ? $this->response : false;
   }
 
+  /**
+   * Make the request. The results of the call will be set on the `response`
+   * attribute.
+   *
+   * @return the troveAPIRequest object
+   */
   function execute($request_url) {
-
     dpm($request_url);
     $options = array(
       'timeout' => 5.0,
@@ -107,7 +112,7 @@ class troveAPI {
       $data = json_decode($response->data, TRUE);
       if (is_array($data)) {
         if (isset($data->error)) {
-          watchdog('error', "Trove error !code recieved: %message", array('!code' => $data->error, '%mesage' => $data->message));
+          watchdog('error', "Trove error !code received: %message", array('!code' => $data->error, '%mesage' => $data->message));
         }
         else {
           return $data;
@@ -123,6 +128,9 @@ class troveAPI {
     return FALSE;
   }
 
+  /**
+   * Make the actual HTTP request and parse output
+   */
   function request($command, $args = array()) {
     unset($args['method']);
     $args = array_merge(array("encoding" => "json", "key" => $this->api_key), $args);
@@ -140,7 +148,6 @@ class troveAPI {
     $request_url = url($this->trove_base_url . $command, array('query' => $args, 'absolute' => TRUE));
 
     // Check if we have a cache hit or not.
-
     if ($result = $this->cache_get($request_url)) {
       $this->response = $result->data;
       $this->cache = TRUE;
@@ -209,7 +216,6 @@ class troveAPI {
    * indexed array of results, each result being an array keyed
    * by the field name.
    */
-
   protected function parse($joins) { }
 
 }

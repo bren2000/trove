@@ -76,9 +76,9 @@ function _db_add_trove_contributors($contributors) {
       $insert->values($value);
     }
     $insert->execute();
-    return true;
+    return TRUE;
   }
-  return false;
+  return FALSE;
 }
 
 /**
