@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- *   Views field handler for basic Trove Query fields.
+ * Views field handler for basic Trove Query fields.
  */
 
 /**
@@ -11,9 +11,9 @@
  * gets set properly, and that none of the sql-specific query functionality
  * gets called.
  *
- *  Some trove api response fields  can contain HTML, which is typically run through
- * check_plain() and thus not rendered. Here we give the user the option to
- * override this behavior and render the HTML.
+ *  Some trove api response fields  can contain HTML, which is typically run 
+ * through check_plain() and thus not rendered. Here we give the user the 
+ * option to override this behavior and render the HTML.
  */
 
 class trovequery_handler_field_include extends views_handler_field {
@@ -44,7 +44,7 @@ class trovequery_handler_field_include extends views_handler_field {
   }
 
   function render($values) {
-    if ( isset( $values->{$this->field} ) ) {
+    if ( isset( $values->{$this->field} )) {
       if ($this->options['render_html']) {
         $value = $values->{$this->field};
       }

@@ -1,9 +1,22 @@
 <?php
 
+/**
+ * @file
+ * Views filter handler for basic Trove Query fields.
+ */
+
+/**
+ * Views filter handler for basic Trove Query fields.
+ *
+ */
 class trovequery_handler_filter_query extends views_handler_filter_string {
 
   public $always_required = TRUE;
 
+  /**
+   * Add this filter to the query.
+   *
+   */
   function query() {
     $this->ensure_my_table();
     $field = "$this->table_alias.$this->real_field";
@@ -14,6 +27,9 @@ class trovequery_handler_filter_query extends views_handler_filter_string {
     }
   }
 
+  /**
+   * Add the Trove query options
+   */
   function operators() {
     $operators = array(
       'word' => array(
@@ -45,16 +61,21 @@ class trovequery_handler_filter_query extends views_handler_filter_string {
     return $operators;
   }
 
+  /**
+   * Set the operator
+   */
   function operator() {
     $_operator = '';
     switch ($this->operator) {
       case 'word':
       case 'phrase':
         break;
+
       case 'not_word':
       case 'not_phrase':
         $_operator = ' NOT ';
         break;
+
     }
     return $_operator;
   }
