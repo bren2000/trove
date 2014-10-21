@@ -79,6 +79,7 @@ class TroveAPI {
         case 'include':
           $this->params[$key] .= (',' . $value);
           break;
+
         default:
           $this->params[$key] .= (' ' . $value);
           break;
@@ -103,18 +104,16 @@ class TroveAPI {
       }
     }
     $this->request($this->params['method'], $arguments);
-    return $this->response ? $this->response : false;
+    return $this->response ? $this->response : FALSE;
   }
 
   /**
-   * Make the request. The results of the call will be set on the `response`
-   * attribute.
+   * Make the request. The results of the call will be set on the `response` attribute.
    *
    * @return object TroveAPIRequest
    *   the TroveAPIRequest object
    */
   protected function execute($request_url) {
-    dpm($request_url);
     $options = array(
       'timeout' => 5.0,
     );
@@ -149,7 +148,7 @@ class TroveAPI {
     $args = array_merge(array("encoding" => "json", "key" => $this->apiKey), $args);
 
     foreach ($args as $key => $data) {
-      if ( is_null($data) ) {
+      if (is_null($data)) {
         unset($args[$key]);
         continue;
       }
@@ -176,9 +175,9 @@ class TroveAPI {
   /**
    * Populate the cache. Wrapper around Drupal's cache_get().
    *
-   * @param $url
+   * @param string $url
    *   The API url that would be used.
-   * @param $reset
+   * @param boolean $reset
    *   Set to TRUE to force a retrieval from the database.
    */
   protected function cache_get($request_url, $reset = FALSE) {
@@ -214,14 +213,16 @@ class TroveAPI {
   }
 
   /**
-   * Helper function to generate a cache id based on the class name and
-   * hash of the url.
+   * Helper function to generate a cache id based on the class name and hash of the url.
    */
   protected function cache_id($request_url) {
     return get_class($this) . ':' . md5($request_url);
   }
 
-  public function query() { }
+  /**
+   * Abstract method query. Implement in sub-classes.
+   */
+  public function query() {}
 
   /**
    * Custom parser for the type of data we're retrieving.
@@ -233,13 +234,19 @@ class TroveAPI {
 
 }
 
-class troveAPIResult extends troveAPI {
+class TroveAPIResult extends troveAPI {
 
-  function query() {
+  /**
+   * Make the request.
+   */
+  public function query() {
     return $this->call($this->params);
   }
 
-  function parse($joins) {
+  /**
+   * Create the result object.
+   */
+  public function parse($joins) {
     $results = array();
     $totalResults = 0;
 
@@ -249,12 +256,15 @@ class troveAPIResult extends troveAPI {
           case 'people':
             $k = 'people';
             break;
+
           case 'newspaper':
             $k = 'article';
             break;
+
           case 'list':
             $k = 'list';
             break;
+
           default:
             $k = 'work';
         }
@@ -351,7 +361,7 @@ class troveAPIResult extends troveAPI {
 
             if (isset($res['holding'])) {
               foreach ($res['holding'] as $k) {
-                $row->holdings_nuc[] = $k['nuc'];         
+                $row->holdings_nuc[] = $k['nuc']; 
               }
             }
 
@@ -366,10 +376,16 @@ class troveAPIResult extends troveAPI {
     return $results;
   }
 
+  /**
+   * Set the total results.
+   */
   function setTotalResults($results = 0) {
     $this->totalResults = $results;
   }
 
+  /**
+   * Get the total results.
+   */
   public function getTotalResults() {
     return (int) $this->totalResults;
   }
@@ -378,6 +394,9 @@ class troveAPIResult extends troveAPI {
 
 class TroveAPIRecord extends troveAPI {
 
+  /**
+  * Make the request.
+  */
   function query() {
     return $this->call($this->params);
   }
@@ -385,15 +404,24 @@ class TroveAPIRecord extends troveAPI {
 
 class TroveAPIContributor extends troveAPI {
 
-  function __construct($method) {
+  /**
+   * Constructor.
+   */
+  public function __construct($method) {
     parent::__construct($method);
   }
-
-  function query() {
+  
+  /**
+   * Make the request.
+   */
+  public function query() {
     return $this->call($this->params);
   }
 
-  function parse($joins) {
+  /**
+   * Create the result object.
+   */
+  public function parse($joins) {
     $contributors = array();
     foreach ($this->response['response']['contributor'] as $contributor) {
       $cont = new stdClass;
