@@ -21,7 +21,6 @@ class trovequery_handler_filter_query extends views_handler_filter_string {
         'short' => t('contains word'),
         'method' => 'op_multi',
         'values' => 1,
-        //'default' => 1,
       ),
       'phrase' => array(
         'title' => t('Phrase search'),

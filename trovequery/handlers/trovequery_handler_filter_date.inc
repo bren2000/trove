@@ -22,7 +22,7 @@ class trovequery_handler_filter_date extends views_handler_filter_date {
   }
 
   /**
-   * Add a type selector to the value form
+   * Add a type selector to the value form.
    */
   function value_form(&$form, &$form_state) {
     if (empty($form_state['exposed'])) {
@@ -153,7 +153,7 @@ class trovequery_handler_filter_date extends views_handler_filter_date {
       }
     }
 
-    // restore what got overwritten by the parent.
+    // Restore what got overwritten by the parent.
     $this->value['type'] = $type;
     return $rc;
   }

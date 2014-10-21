@@ -20,7 +20,6 @@ files[] = handlers/trovequery_handler_field_include_list.inc
 files[] = handlers/trovequery_handler_field_snippet.inc
 files[] = handlers/trovequery_handler_relationship.inc
 files[] = handlers/troveitem_handler_argument_item.inc
-files[] = handlers/trovequery_handler_filter_field.inc
 files[] = handlers/trovequery_handler_filter_zone.inc
 files[] = handlers/trovequery_handler_filter_query.inc
 files[] = handlers/trovequery_handler_filter_facet.inc
