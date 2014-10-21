@@ -31,7 +31,7 @@ class TroveAPI {
   /**
    * Factory method.
    *
-   * @param string $method
+   * @param string $base_table
    *   The Trove API operation to build a request for.
    *
    * @return 
@@ -69,7 +69,7 @@ class TroveAPI {
    * @param string $value
    *   The value to set for the $key.
    *
-   * @return 
+   * @return
    *    the TroveAPI object
    */
   public function set_filter($key, $value) {
@@ -256,7 +256,6 @@ class troveAPIResult extends troveAPI {
           foreach ($zones['records'][$k] as $res) {
             dpm($res);
             $row = new stdClass;
-            // title
             if (isset($res['title'])) {
               if (is_array($res['title'])) {
                 $title = $res['title']['value'];
@@ -269,7 +268,6 @@ class troveAPIResult extends troveAPI {
               $title = NULL;
             }
             $row->title = $title;
-            // contributor
             if (isset($res['contributor'])) {
               foreach ($res['contributor'] as $contrib) {
                 $contributor = $contrib;
@@ -287,7 +285,6 @@ class troveAPIResult extends troveAPI {
             $row->tid = $tid;
             $row->contributor = $contributor;
 
-            // image
             if (isset($res['identifier'])) {
               foreach ($res['identifier'] as $identifier) {
                 if (isset($identifier['linktype']) && $identifier['linktype'] == 'thumbnail') {
@@ -299,63 +296,58 @@ class troveAPIResult extends troveAPI {
               $row->image = NULL;
             }
 
-            // tag
             if (isset($res['tag'])) {
               $row->tag = implode(', ', array_map(function ($entry) {
                 return $entry['value'];
               }, $res['tag'] ));
             }
-            // list
+
             if (isset($res['list'])) {
               $row->list = implode(', ', array_map(function ($entry) {
                 return $entry['value'];
               }, $res['list'] ));
             }
-            // issued (date)
+
             if (isset($res['issued'])) {
-              //foreach($res['issued'] as $k) {
-//  $row->date = $row->date . $k['value'] . ', ';
-              // }
-              //$row->date = chop($row->date, ', ');
               $row->date = $res['issued'];
             }
-            // comments
+
             if (isset($res['comment'])) {
               $row->comment = implode(', ', array_map(function ($entry) {
                 return $entry['value'];
               }, $res['comment'] ));
             }
-            // snippets
+
             if (isset($res['snippet'])) {
               $row->snippet = $res['snippet'];
             }
-            // category
+
             if (isset($res['category'])) {
               $row->category = $res['category'];
             }
-            // trove url
+
             if (isset($res['troveUrl'])) {
               $row->trove_url = $res['troveUrl'];
             }
-            // isbn
+
             if (isset($res['isbn'])) {
               $row->isbn = $res['isbn'];
             }
-            // issn
+
             if (isset($res['issn'])) {
               $row->issn = $res['issn'];
             }
-            // id
+
             if (isset($res['id'])) {
               $row->id = $res['id'];
             }
-            // holdings:nuc
+
             if (isset($res['holding'])) {
               foreach ($res['holding'] as $k) {
                 $row->holdings_nuc[] = $k['nuc'];         
               }
-              //$row->$row->holdings_nuc  = chop($row->$row->holdings_nuc , ', ');
             }
+
             $row->zone = $zones['name'];
 
             $results[] = $row;
@@ -363,15 +355,15 @@ class troveAPIResult extends troveAPI {
         }
       }
     }
-    $this->set_totalResults($totalResults);
+    $this->setTotalResults($totalResults);
     return $results;
   }
 
-  function set_totalResults($results = 0) {
+  function setTotalResults($results = 0) {
     $this->totalResults = $results;
   }
 
-  public function get_totalResults() {
+  public function getTotalResults() {
     return (int) $this->totalResults;
   }
 
