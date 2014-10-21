@@ -108,7 +108,7 @@ class TroveAPI {
   }
 
   /**
-   * Make the request. The results of the call will be set on the `response` attribute.
+   * Make the request. The results will be set on the `response` attribute.
    *
    * @return object TroveAPIRequest
    *   the TroveAPIRequest object
@@ -175,9 +175,9 @@ class TroveAPI {
   /**
    * Populate the cache. Wrapper around Drupal's cache_get().
    *
-   * @param string $url
-   *   The API url that would be used.
-   * @param boolean $reset
+   * @param string $request_url
+   *   The API url that will be used.
+   * @param bool $reset
    *   Set to TRUE to force a retrieval from the database.
    */
   protected function cache_get($request_url, $reset = FALSE) {
@@ -213,7 +213,7 @@ class TroveAPI {
   }
 
   /**
-   * Helper function to generate a cache id based on the class name and hash of the url.
+   * Helper function to generate a cache id based on class name & hash of url.
    */
   protected function cache_id($request_url) {
     return get_class($this) . ':' . md5($request_url);
@@ -230,7 +230,7 @@ class TroveAPI {
    * indexed array of results, each result being an array keyed
    * by the field name.
    */
-  protected function parse($joins) { }
+  protected function parse($joins) {}
 
 }
 
@@ -248,7 +248,7 @@ class TroveAPIResult extends troveAPI {
    */
   public function parse($joins) {
     $results = array();
-    $totalResults = 0;
+    $total_results = 0;
 
     if (isset($this->response['response'])) {
       foreach ($this->response['response']['zone'] as $zones) {
@@ -269,10 +269,9 @@ class TroveAPIResult extends troveAPI {
             $k = 'work';
         }
         if ($zones['records']['total'] != '0') {
-          $totalResults += $zones['records']['total'];
+          $total_results += $zones['records']['total'];
           foreach ($zones['records'][$k] as $res) {
-            dpm($res);
-            $row = new stdClass;
+            $row = new stdClass();
             if (isset($res['title'])) {
               if (is_array($res['title'])) {
                 $title = $res['title']['value'];
@@ -316,13 +315,13 @@ class TroveAPIResult extends troveAPI {
             if (isset($res['tag'])) {
               $row->tag = implode(', ', array_map(function ($entry) {
                 return $entry['value'];
-              }, $res['tag'] ));
+              }, $res['tag']));
             }
 
             if (isset($res['list'])) {
               $row->list = implode(', ', array_map(function ($entry) {
                 return $entry['value'];
-              }, $res['list'] ));
+              }, $res['list']));
             }
 
             if (isset($res['issued'])) {
@@ -332,7 +331,7 @@ class TroveAPIResult extends troveAPI {
             if (isset($res['comment'])) {
               $row->comment = implode(', ', array_map(function ($entry) {
                 return $entry['value'];
-              }, $res['comment'] ));
+              }, $res['comment']));
             }
 
             if (isset($res['snippet'])) {
@@ -361,7 +360,7 @@ class TroveAPIResult extends troveAPI {
 
             if (isset($res['holding'])) {
               foreach ($res['holding'] as $k) {
-                $row->holdings_nuc[] = $k['nuc']; 
+                $row->holdings_nuc[] = $k['nuc'];
               }
             }
 
@@ -372,22 +371,22 @@ class TroveAPIResult extends troveAPI {
         }
       }
     }
-    $this->setTotalResults($totalResults);
+    $this->setTotalResults($total_results);
     return $results;
   }
 
   /**
    * Set the total results.
    */
-  function setTotalResults($results = 0) {
-    $this->totalResults = $results;
+  public function setTotalResults($results = 0) {
+    $this->total_results = $results;
   }
 
   /**
    * Get the total results.
    */
   public function getTotalResults() {
-    return (int) $this->totalResults;
+    return (int) $this->total_results;
   }
 
 }
@@ -395,9 +394,9 @@ class TroveAPIResult extends troveAPI {
 class TroveAPIRecord extends troveAPI {
 
   /**
-  * Make the request.
-  */
-  function query() {
+   * Make the request.
+   */
+  public function query() {
     return $this->call($this->params);
   }
 }
@@ -410,7 +409,7 @@ class TroveAPIContributor extends troveAPI {
   public function __construct($method) {
     parent::__construct($method);
   }
-  
+
   /**
    * Make the request.
    */
@@ -424,7 +423,7 @@ class TroveAPIContributor extends troveAPI {
   public function parse($joins) {
     $contributors = array();
     foreach ($this->response['response']['contributor'] as $contributor) {
-      $cont = new stdClass;
+      $cont = new stdClass();
       $cont->name = $contributor['name'];
       $cont->id = $contributor['id'];
       if ($contributor['nuc'] != '') {

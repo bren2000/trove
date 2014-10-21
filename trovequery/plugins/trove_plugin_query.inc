@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- *   Views query plugin for Trove Query.
+ * Views query plugin for Trove Query.
  */
 
 /**
