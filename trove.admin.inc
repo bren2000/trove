@@ -44,7 +44,7 @@ function trove_admin_settings() {
     '#description' => t('This will update the list of Trove contributors, this list is used by views as filter values.'),
     '#suffix' => '<span id="update-cont-div"></span>',
     '#ajax' => array(
-      'callback' => '_get_trove_contributors',
+      'callback' => 'trove_get_trove_contributors',
       'wrapper' => 'update-cont-div',
       'method' => 'replace',
       'effect' => 'fade',
@@ -56,17 +56,17 @@ function trove_admin_settings() {
 /**
  * Update the trove contributors table.
  */
-function _get_trove_contributors() {
+function trove_get_trove_contributors() {
   $contributors = TroveAPI::factory('trovecontrib');
   $contributors->query();
   $list = $contributors->parse();
-  return (_db_add_trove_contributors($list) ? 'Contributors list updated with ' . count($list) . ' entries' : 'Error occured');
+  return (trove_db_add_trove_contributors($list) ? 'Contributors list updated with ' . count($list) . ' entries' : 'Error occured');
 }
 
 /**
  * Add trove contributors.
  */
-function _db_add_trove_contributors($contributors) {
+function trove_db_add_trove_contributors($contributors) {
   if (!empty($contributors)) {
     foreach ($contributors as $cont) {
       if ($cont->nuc) {

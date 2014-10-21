@@ -34,8 +34,8 @@ class TroveAPI {
    * @param string $base_table
    *   The Trove API operation to build a request for.
    *
-   * @return 
-   *   a new Trove object
+   * @return object TroveAPI
+   *   The TroveAPI object.
    */
   public static function factory($base_table) {
     switch ($base_table) {
@@ -61,15 +61,16 @@ class TroveAPI {
   }
 
   /**
-   * Add a filter to the request. 
+   * Add a filter to the request.
+   *
    * Classes that extend this one should declare what $keys are accepted.
    *
    * @param string $key
-   *   The filter to set
+   *   The filter to set.
    * @param string $value
    *   The value to set for the $key.
    *
-   * @return
+   * @return object TroveAPI
    *    the TroveAPI object
    */
   public function set_filter($key, $value) {
@@ -89,8 +90,13 @@ class TroveAPI {
     return $this;
   }
 
-
-  function call($arguments) {
+  /**
+   * Check the arguments then make the request.
+   *
+   * @return object TroveAPIRequest
+   *   the TroveAPIRequest object
+   */
+  protected function call($arguments) {
     foreach ($arguments as $key => $value) {
       if (is_null($value)) {
         unset($arguments[$key]);
@@ -104,9 +110,10 @@ class TroveAPI {
    * Make the request. The results of the call will be set on the `response`
    * attribute.
    *
-   * @return the TroveAPIRequest object
+   * @return object TroveAPIRequest
+   *   the TroveAPIRequest object
    */
-  function execute($request_url) {
+  protected function execute($request_url) {
     dpm($request_url);
     $options = array(
       'timeout' => 5.0,
@@ -135,9 +142,9 @@ class TroveAPI {
   }
 
   /**
-   * Make the actual HTTP request and parse output
+   * Make the actual HTTP request and parse output.
    */
-  function request($command, $args = array()) {
+  public function request($command, $args = array()) {
     unset($args['method']);
     $args = array_merge(array("encoding" => "json", "key" => $this->apiKey), $args);
 
@@ -167,7 +174,7 @@ class TroveAPI {
   }
 
   /**
-   * Populate the cache. Wrapper around Drupal's cache_get()
+   * Populate the cache. Wrapper around Drupal's cache_get().
    *
    * @param $url
    *   The API url that would be used.
@@ -191,7 +198,7 @@ class TroveAPI {
   }
 
   /**
-   * Retrieve the cache. Wrapper around Drupal's cache_set()
+   * Retrieve the cache. Wrapper around Drupal's cache_set().
    */
   protected function cache_set($url, $data) {
     if ($data === FALSE) {
@@ -208,13 +215,13 @@ class TroveAPI {
 
   /**
    * Helper function to generate a cache id based on the class name and
-   * hash of the url
+   * hash of the url.
    */
   protected function cache_id($request_url) {
     return get_class($this) . ':' . md5($request_url);
   }
 
-  function query() { }
+  public function query() { }
 
   /**
    * Custom parser for the type of data we're retrieving.

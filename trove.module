@@ -25,7 +25,7 @@ function trove_menu() {
 /**
  * Get the available zones.
  */
-function _get_zones() {
+function trove_get_zones() {
   $zones = array(
     'all',
     'article',
@@ -45,7 +45,7 @@ function _get_zones() {
 /**
  * Get the available facet formats.
  */
-function _get_facets_format() {
+function trove_get_facets_format() {
   return array(
     'Archived website' => 'Archved website',
     'Art work' => 'Art work',
@@ -61,10 +61,11 @@ function _get_facets_format() {
     ),
     'Audio book' => 'Audio book',
     'Book' => array(
-      'Book/Braille',
-      'Book/Illustrated',
-      'Book/Large print',
-    ), 'Conference Proceedings', 'Data set',
+      'Book/Braille' => 'Book/Braille',
+      'Book/Illustrated' => 'Book/Illustrated',
+      'Book/Large print' => 'Book/Large print',
+    ), 
+    'Conference Proceedings', 'Data set',
     'Map' => array(
       'Map/Aerial photograph' => 'Aerial photograph',
       'Map/Atlas' => 'Atlas',
@@ -101,7 +102,7 @@ function _get_facets_format() {
 /**
  * Get the availability options.
  */
-function _get_facets_availability() {
+function trove_get_facets_availability() {
   return array(
     'y' => 'online',
     'y/f' => 'freely accessible online',
@@ -114,7 +115,7 @@ function _get_facets_availability() {
 /**
  * Get the category options.
  */
-function _get_facets_category() {
+function trove_get_facets_category() {
   return array(
     'Article' => 'Article',
     'Advertising' => 'Advertising',
@@ -127,7 +128,7 @@ function _get_facets_category() {
 /**
  * Get the contributors.
  */
-function _get_index_contributors() {
+function trove_get_index_contributors() {
   $list = array();
   $result = db_query("SELECT nuc, name
     FROM {trove_contributors}");
@@ -136,4 +137,3 @@ function _get_index_contributors() {
   }
   return $list;
 }
-
