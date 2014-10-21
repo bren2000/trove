@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Implementation of hook_views_plugins().
+ * Implements hook_views_plugins().
  */
 function trovequery_views_plugins() {
   $plugin = array();
@@ -14,7 +15,7 @@ function trovequery_views_plugins() {
 }
 
 /**
- * Implementation of hook_views_data().
+ * Implements hook_views_data().
  */
 function trovequery_views_data() {
   $data = array();
@@ -103,7 +104,7 @@ function trovequery_views_data() {
       'handler' => 'trovequery_handler_filter_include',
       'help' => t('Limit results to tagged items.'),
       'label' => t('The item has tags?'),
-      'use equal' => true,
+      'use equal' => TRUE,
       'trovequery' => array(
         'arg' => 'q',
         'method' => 'result',
@@ -329,12 +330,10 @@ function trovequery_views_data() {
   $data['trovequery']['holdings_nuc'] = array(
     'title' => t('holdings:nuc'),
     'help' => t('The NUC symbol of an organisation with a copy of this work.'),
-    'field'=> array(
-      'handler' => 'trovequery_handler_field_string'
+    'field' => array(
+      'handler' => 'trovequery_handler_field_string',
     ),
   );
 
   return $data;
 }
-
-

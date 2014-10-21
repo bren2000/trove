@@ -64,8 +64,9 @@ function trove_get_facets_format() {
       'Book/Braille' => 'Book/Braille',
       'Book/Illustrated' => 'Book/Illustrated',
       'Book/Large print' => 'Book/Large print',
-    ), 
-    'Conference Proceedings', 'Data set',
+    ),
+    'Conference Proceedings' => 'Conference Proceedings', 
+    'Data set' => 'Data set',
     'Map' => array(
       'Map/Aerial photograph' => 'Aerial photograph',
       'Map/Atlas' => 'Atlas',
