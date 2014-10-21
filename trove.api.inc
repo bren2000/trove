@@ -3,17 +3,17 @@
 /**
  * Trove API class.
  *
- * Use troveAPI::factory(operation) to get a request object. All
+ * Use TroveAPI::factory(operation) to get a request object. All
  * public methods return $this and can be chained together.
  */
 
-class troveAPI {
+class TroveAPI {
 
   public $response;
 
-  protected $trove_base_url;
+  protected $troveBaseUrl;
 
-  protected $api_key;
+  protected $apiKey;
 
   protected $method;
 
@@ -24,47 +24,53 @@ class troveAPI {
   public $cache;
 
   // The cache table to use.
-  protected $cache_table = 'cache';
+  protected $cacheTable = 'cache';
 
-  protected $total_results;
+  protected $totalResults;
 
   /**
-   * Factory method
+   * Factory method.
    *
-   * @param $method
+   * @param string $method
    *   The Trove API operation to build a request for.
    *
-   * @return a new Trove object
+   * @return 
+   *   a new Trove object
    */
-  static function factory($base_table) {
+  public static function factory($base_table) {
     switch ($base_table) {
       case 'trovequery':
-        return new troveAPIResult('result');
+        return new TroveAPIResult('result');
+
       case 'work':
       case 'newspaper':
       case 'troveitem':
-        return new troveAPIRecord($base_table);
+        return new TroveAPIRecord($base_table);
+
       case 'trovecontrib':
-        return new troveAPIContributor('contributor');
+        return new TroveAPIContributor('contributor');
     }
   }
-
-  function __construct($method) {
+  /**
+   * Constructor. Use the factory method.
+   */
+  public function __construct($method) {
     $this->set_filter('method', $method);
-    $this->trove_base_url = TROVE_BASE_URL;
-    $this->api_key = variable_get('trove_api_key', '');
+    $this->troveBaseUrl = troveBaseUrl;
+    $this->apiKey = variable_get('trove_apiKey', '');
   }
 
   /**
-   * Add a filter to the request. Classes that extend this one should declare
-   * what $keys are accepted.
+   * Add a filter to the request. 
+   * Classes that extend this one should declare what $keys are accepted.
    *
-   * @param $key
+   * @param string $key
    *   The filter to set
-   * @param $value
+   * @param string $value
    *   The value to set for the $key.
    *
-   * @return the troveAPI object
+   * @return 
+   *    the TroveAPI object
    */
   public function set_filter($key, $value) {
     if (array_key_exists($key, $this->params) && $key !== 'method') {
@@ -98,7 +104,7 @@ class troveAPI {
    * Make the request. The results of the call will be set on the `response`
    * attribute.
    *
-   * @return the troveAPIRequest object
+   * @return the TroveAPIRequest object
    */
   function execute($request_url) {
     dpm($request_url);
@@ -133,7 +139,7 @@ class troveAPI {
    */
   function request($command, $args = array()) {
     unset($args['method']);
-    $args = array_merge(array("encoding" => "json", "key" => $this->api_key), $args);
+    $args = array_merge(array("encoding" => "json", "key" => $this->apiKey), $args);
 
     foreach ($args as $key => $data) {
       if ( is_null($data) ) {
@@ -145,7 +151,7 @@ class troveAPI {
       }
     }
 
-    $request_url = url($this->trove_base_url . $command, array('query' => $args, 'absolute' => TRUE));
+    $request_url = url($this->troveBaseUrl . $command, array('query' => $args, 'absolute' => TRUE));
 
     // Check if we have a cache hit or not.
     if ($result = $this->cache_get($request_url)) {
@@ -172,8 +178,8 @@ class troveAPI {
     static $items = array();
     $cid = $this->cache_id($request_url);
     if (!isset($items[$cid]) || $reset) {
-      $items[$cid] = cache_get($cid, $this->cache_table);
-      if (cache_get($cid, $this->cache_table) == FALSE) {
+      $items[$cid] = cache_get($cid, $this->cacheTable);
+      if (cache_get($cid, $this->cacheTable) == FALSE) {
         return FALSE;
       }
       // Don't return temporary items more that 5 minutes old.
@@ -191,12 +197,12 @@ class troveAPI {
     if ($data === FALSE) {
       // If we don't get a response we set a temporary cache to prevent hitting
       // the API frequently for no reason.
-      cache_set($this->cache_id($url), FALSE, $this->cache_table, CACHE_TEMPORARY);
+      cache_set($this->cache_id($url), FALSE, $this->cacheTable, CACHE_TEMPORARY);
     }
     else {
       $ttl = (int) variable_get('trove_cache_duration', 900);
       $expire = time() + $ttl;
-      cache_set($this->cache_id($url), $data, $this->cache_table, $expire);
+      cache_set($this->cache_id($url), $data, $this->cacheTable, $expire);
     }
   }
 
@@ -228,7 +234,7 @@ class troveAPIResult extends troveAPI {
 
   function parse($joins) {
     $results = array();
-    $total_results = 0;
+    $totalResults = 0;
 
     if (isset($this->response['response'])) {
       foreach ($this->response['response']['zone'] as $zones) {
@@ -246,7 +252,7 @@ class troveAPIResult extends troveAPI {
             $k = 'work';
         }
         if ($zones['records']['total'] != '0') {
-          $total_results += $zones['records']['total'];
+          $totalResults += $zones['records']['total'];
           foreach ($zones['records'][$k] as $res) {
             dpm($res);
             $row = new stdClass;
@@ -357,28 +363,28 @@ class troveAPIResult extends troveAPI {
         }
       }
     }
-    $this->set_total_results($total_results);
+    $this->set_totalResults($totalResults);
     return $results;
   }
 
-  function set_total_results($results = 0) {
-    $this->total_results = $results;
+  function set_totalResults($results = 0) {
+    $this->totalResults = $results;
   }
 
-  public function get_total_results() {
-    return (int) $this->total_results;
+  public function get_totalResults() {
+    return (int) $this->totalResults;
   }
 
 }
 
-class troveAPIRecord extends troveAPI {
+class TroveAPIRecord extends troveAPI {
 
   function query() {
     return $this->call($this->params);
   }
 }
 
-class troveAPIContributor extends troveAPI {
+class TroveAPIContributor extends troveAPI {
 
   function __construct($method) {
     parent::__construct($method);

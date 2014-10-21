@@ -47,7 +47,7 @@ class trove_plugin_query extends views_plugin_query {
 
   function ensure_table($table) {
     if (!isset($this->request)) {
-      $this->request = troveAPI::factory($table);
+      $this->request = TroveAPI::factory($table);
     }
   }
 

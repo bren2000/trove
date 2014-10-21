@@ -19,7 +19,6 @@ function trovequery_views_plugins() {
 function trovequery_views_data() {
   $data = array();
 
-  // Trove query base table
   $data['trovequery']['table']['group']  = t('Trove Results');
   $data['trovequery']['table']['base'] = array(
     'title' => t('Trove Results'),
@@ -28,7 +27,6 @@ function trovequery_views_data() {
     'query class' => 'trove_plugin_query',
   );
 
-  // title
   $data['trovequery']['title'] = array(
     'title' => t('title'),
     'help' => t('The title of this result.'),
@@ -46,7 +44,6 @@ function trovequery_views_data() {
     ),
   );
 
-  // isbn
   $data['trovequery']['isbn'] = array(
     'title' => t('ISBN'),
     'help' => t('The ISBN for this result.'),
@@ -62,7 +59,6 @@ function trovequery_views_data() {
     ),
   );
 
-  // issn
   $data['trovequery']['issn'] = array(
     'title' => t('ISSN'),
     'help' => t('The ISSN for this result.'),
@@ -78,7 +74,6 @@ function trovequery_views_data() {
     ),
   );
 
-  // id
   $data['trovequery']['id'] = array(
     'title' => t('id'),
     'help' => t('The work number of this item.'),
@@ -94,9 +89,6 @@ function trovequery_views_data() {
     ),
   );
 
-
-
-  // tags
   $data['trovequery']['tag'] = array(
     'title' => t('tag'),
     'help' => t('Tags associated with this item.'),
@@ -121,7 +113,6 @@ function trovequery_views_data() {
     ),
   );
 
-  //date
   $data['trovequery']['date'] = array(
     'title' => t('date'),
     'help' => t("Date of publication"),
@@ -130,7 +121,6 @@ function trovequery_views_data() {
     ),
   );
 
-  // comments date
   $data['trovequery']['comments_date'] = array(
     'title' => t('comments date'),
     'help' => t('Comments posted on this date.'),
@@ -146,7 +136,6 @@ function trovequery_views_data() {
     ),
   );
 
-  // lastupdated
   $data['trovequery']['lastupdated'] = array(
     'title' => t('last updated'),
     'help' => t('The date the item was last updated.'),
@@ -181,7 +170,6 @@ function trovequery_views_data() {
     ),
   );
 
-  //comments
   $data['trovequery']['comment'] = array(
     'title' => t('comment'),
     'help' => t('Comments associated with this item.'),
@@ -205,7 +193,6 @@ function trovequery_views_data() {
     ),
   );
 
-  // trove url
   $data['trovequery']['trove_url'] = array(
     'title' => t('trove url'),
     'help' => t('The url of this result.'),
@@ -214,7 +201,6 @@ function trovequery_views_data() {
     ),
   );
 
-  // query
   $data['trovequery']['query'] = array(
     'title' => t('query'),
     'help' => t('The query keywords'),
@@ -227,7 +213,6 @@ function trovequery_views_data() {
     ),
   );
 
-  // facets - format
   $data['trovequery']['facet_article'] = array(
     'title' => t('article format'),
     'help' => t('The article format facet to filter on'),
@@ -240,7 +225,7 @@ function trovequery_views_data() {
       ),
     ),
   );
-  // facets - availability
+
   $data['trovequery']['facet_availaility'] = array(
     'title' => t('availability'),
     'help' => t('Filter on whether the item is online or not.'),
@@ -253,7 +238,7 @@ function trovequery_views_data() {
       ),
     ),
   );
-  // zone
+
   $data['trovequery']['zone'] = array(
     'title' => t('zone'),
     'help' => t('The trove zone this work belongs to'),
@@ -270,7 +255,7 @@ function trovequery_views_data() {
       ),
     ),
   );
-  // contributor
+
   $data['trovequery']['contributor'] = array(
     'title' => t('contributor'),
     'help' => t('The contibutor of this work.'),
@@ -288,7 +273,7 @@ function trovequery_views_data() {
       ),
     ),
   );
-  // id
+
   $data['trovequery']['tid'] = array(
     'title' => t('tid'),
     'help' => t('The Trove id of this work.'),
@@ -296,7 +281,7 @@ function trovequery_views_data() {
       'handler' => 'trovequery_handler_field_tid',
     ),
   );
-  // snippet
+
   $data['trovequery']['snippet'] = array(
     'title' => t('snippet'),
     'help' => t('A snippet of this work.'),
@@ -304,7 +289,7 @@ function trovequery_views_data() {
       'handler' => 'trovequery_handler_field_snippet',
     ),
   );
-  // category
+
   $data['trovequery']['category'] = array(
     'title' => t('category'),
     'help' => t('The category of this work.'),
@@ -320,7 +305,7 @@ function trovequery_views_data() {
       ),
     ),
   );
-  // lists
+
   $data['trovequery']['lists'] = array(
     'title' => t('lists'),
     'help' => t('Lists associated with this item.'),
@@ -332,7 +317,7 @@ function trovequery_views_data() {
       ),
     ),
   );
-  // images
+
   $data['trovequery']['image'] = array(
     'title' => t('image'),
     'help' => t('The image for the Trove work - if available.'),
@@ -340,7 +325,7 @@ function trovequery_views_data() {
       'handler' => 'trovequery_handler_field_image',
     ),
   );
-  // holdings: nuc
+
   $data['trovequery']['holdings_nuc'] = array(
     'title' => t('holdings:nuc'),
     'help' => t('The NUC symbol of an organisation with a copy of this work.'),

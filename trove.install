@@ -14,26 +14,29 @@ function trove_uninstall() {
   drupal_uninstall_schema('trove_contributors');
 }
 
+/**
+ * Implements hook_install().
+ */
 function trove_install() {
   drupal_install_schema('trove_contributors');
 }
 
 /**
- * Implementation of hook_schema().
+ * Implements hook_schema().
  */
 function trove_schema() {
   $schema['trove_contributors'] = array(
-    'description' => t('Stores trove contributors and their NUC'),
+    'description' => 'Stores trove contributors and their NUC',
     'fields' => array(
       'nuc' => array(
         'type' => 'varchar',
         'length' => 32,
         'not null' => TRUE,
         'default' => '',
-        'description' => t('The NUC identifier for the contibutor.'),
+        'description' => 'The NUC identifier for the contibutor.',
       ),
       'name' => array(
-        'description' => t('The name of the contributor'),
+        'description' => 'The name of the contributor',
         'type' => 'text',
         'not null' => FALSE,
       ),

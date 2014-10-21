@@ -22,6 +22,9 @@ function trove_menu() {
   return $items;
 }
 
+/**
+ * Get the available zones.
+ */
 function _get_zones() {
   $zones = array(
     'all',
@@ -39,6 +42,9 @@ function _get_zones() {
   return array_combine($zones, $zones);
 }
 
+/**
+ * Get the available facet formats.
+ */
 function _get_facets_format() {
   return array(
     'Archived website' => 'Archved website',
@@ -92,6 +98,9 @@ function _get_facets_format() {
   );
 }
 
+/**
+ * Get the availability options.
+ */
 function _get_facets_availability() {
   return array(
     'y' => 'online',
@@ -102,6 +111,9 @@ function _get_facets_availability() {
   );
 }
 
+/**
+ * Get the category options.
+ */
 function _get_facets_category() {
   return array(
     'Article' => 'Article',
@@ -112,6 +124,9 @@ function _get_facets_category() {
   );
 }
 
+/**
+ * Get the contributors.
+ */
 function _get_index_contributors() {
   $list = array();
   $result = db_query("SELECT nuc, name

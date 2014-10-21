@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * The admin settings for the trove module
+ * The admin settings for the trove module.
  */
 
 /**
@@ -53,13 +53,19 @@ function trove_admin_settings() {
   return system_settings_form($form);
 }
 
+/**
+ * Update the trove contributors table.
+ */
 function _get_trove_contributors() {
-  $contributors = troveAPI::factory('trovecontrib');
+  $contributors = TroveAPI::factory('trovecontrib');
   $contributors->query();
   $list = $contributors->parse();
-  return ( _db_add_trove_contributors($list) ? 'Contributors list updated with ' . count($list) . ' entries' : 'Error occured');
+  return (_db_add_trove_contributors($list) ? 'Contributors list updated with ' . count($list) . ' entries' : 'Error occured');
 }
 
+/**
+ * Add trove contributors.
+ */
 function _db_add_trove_contributors($contributors) {
   if (!empty($contributors)) {
     foreach ($contributors as $cont) {
