@@ -1,7 +1,7 @@
 INTRODUCTION
 ------------
 The Trove module provides an simple API around the National Library of 
-Australia  Trove API service. It also provides a Views integration 
+Australia Trove API service. It also provides a Views integration 
 module - Trove Views Query - allowing the use of Trove as a views 
 datasource.
  * For a full description of the module, visit the project page:
