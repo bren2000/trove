@@ -94,7 +94,7 @@ class trove_plugin_query extends views_plugin_query {
         $sub_group = $info['type'] == 'OR' ? db_or() : db_and();
         foreach ($info['conditions'] as $key => $clause) {
           // DBTNG doesn't support to add the same subquery twice to the main
-          // query and the count query, so clone the subquery to have two 
+          // query and the count query, so clone the subquery to have two
           // instances of the same object. - http://drupal.org/node/1112854
           if (is_object($clause['value']) && $clause['value'] instanceof SelectQuery) {
             $clause['value'] = clone $clause['value'];
