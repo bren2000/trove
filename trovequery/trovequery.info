@@ -7,7 +7,6 @@ dependencies[] = views
 
 files[] = handlers/trovecontrib_handler_filter_query.inc
 files[] = handlers/troveitem_handler_filter_string.inc
-
 files[] = handlers/trovequery_handler_field_title.inc
 files[] = handlers/trovequery_handler_field_contributor.inc
 files[] = handlers/trovequery_handler_field_tid.inc

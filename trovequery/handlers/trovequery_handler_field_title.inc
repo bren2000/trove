@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- *   Views field handler for basic Trove Query fields.
+ * Views field handler for basic Trove Query fields.
  */
 
 /**
@@ -13,9 +13,8 @@
  */
 class trovequery_handler_field_title extends views_handler_field {
 
-	/**
+  /**
    * Constructor to provide additional field to add.
-   *
    */
   function construct() {
     parent::construct();
@@ -26,7 +25,7 @@ class trovequery_handler_field_title extends views_handler_field {
     $this->field_alias = $this->real_field;
   }
 
-   function option_definition() {
+  function option_definition() {
     $options = parent::option_definition();
     $options['link_to_trove'] = array('default' => FALSE, 'bool' => TRUE);
     return $options;
@@ -35,7 +34,6 @@ class trovequery_handler_field_title extends views_handler_field {
   function options_form(&$form, &$form_state) {
     $form['link_to_trove'] = array(
       '#title' => t('Link the title to the record in Trove'),
-      //'#description' => t("Enable to override this field's links."),
       '#type' => 'checkbox',
       '#default_value' => !empty($this->options['link_to_trove']),
     );

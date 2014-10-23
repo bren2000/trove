@@ -7,7 +7,6 @@
 
 /**
  * Views filter handler for basic Trove Query fields.
- *
  */
 class trovequery_handler_filter_query extends views_handler_filter_string {
 
@@ -28,7 +27,7 @@ class trovequery_handler_filter_query extends views_handler_filter_string {
   }
 
   /**
-   * Add the Trove query options
+   * Add the Trove query options.
    */
   function operators() {
     $operators = array(

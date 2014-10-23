@@ -226,9 +226,8 @@ class TroveAPI {
 
   /**
    * Custom parser for the type of data we're retrieving.
-   * Must be implemented by all subclasses. Must return an
-   * indexed array of results, each result being an array keyed
-   * by the field name.
+   * Must be implemented by all subclasses. Returns an indexed array 
+   * of results, each result being an array keyed by the field name.
    */
   protected function parse($joins) {}
 
@@ -360,7 +359,7 @@ class TroveAPIResult extends troveAPI {
 
             if (isset($res['holding'])) {
               $row->holdings_nuc = implode(', ', array_map(function ($entry) {
-                if(isset($entry['nuc'])) {
+                if (isset($entry['nuc'])) {
                   return $entry['nuc'];
                 }
               }, $res['holding']));

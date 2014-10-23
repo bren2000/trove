@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * Definition of views_handler_filter_date.
@@ -15,7 +14,7 @@ class trovequery_handler_filter_date extends views_handler_filter_date {
   function option_definition() {
     $options = parent::option_definition();
 
-    // value is already set up properly, we're just adding our new field to it.
+    // Value is already set up properly, we're just adding our new field to it.
     $options['value']['contains']['type']['default'] = 'date';
 
     return $options;
@@ -166,8 +165,7 @@ class trovequery_handler_filter_date extends views_handler_filter_date {
       $a = date('Y-m-d\T00:00:00\Z', intval(time()) + $a);
       $b = date('Y-m-d\T00:00:00\Z', intval(time()) + $b);
     }
-    // This is safe because we are manually scrubbing the values.
-    // It is necessary to do it this way because $a and $b are formulas when using an offset.
+
     $operator = 'TO';
     $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], $this->definition['trovequery']['index'] . ":[$a $operator $b]");
   }
@@ -177,14 +175,12 @@ class trovequery_handler_filter_date extends views_handler_filter_date {
       $value = date('Y-m-d\T00:00:00\Z');
     }
     else {
-      $value = date('Y-m-d\T00:00:00\Z', intval(time()) + intval(strtotime( $this->value['value'], 0)));
+      $value = date('Y-m-d\T00:00:00\Z', intval(time()) + intval(strtotime($this->value['value'], 0)));
     }
     if (!empty($this->value['type']) && $this->value['type'] == 'offset') {
-      $value = date('Y-m-d\T00:00:00\Z', intval(time()) + intval(strtotime( $this->value['value'], 0)));
+      $value = date('Y-m-d\T00:00:00\Z', intval(time()) + intval(strtotime($this->value['value'], 0)));
     }
     $operator = 'TO';
-    // This is safe because we are manually scrubbing the value.
-    // It is necessary to do it this way because $value is a formula when using an offset.
     $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], $this->definition['trovequery']['index'] . ":[$value $operator $value]");
   }
 }

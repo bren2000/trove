@@ -1,8 +1,9 @@
 <?php
 /**
  * @file
- *   Views field handler for basic Trove Query fields.
+ * Views field handler for basic Trove Query fields.
  */
+
 class trovequery_handler_filter_holding extends views_handler_filter_in_operator {
 
   public $opt = array();

@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- *   Views field handler for basic Trove Query fields.
+ * Views field handler for basic Trove Query fields.
  */
 
 /**
@@ -12,7 +12,7 @@
  * gets called.
  */
 class trovequery_handler_field_string extends views_handler_field {
-  
+
   function query() {
     $this->field_alias = $this->real_field;
     $this->query->add_where('', 'include', 'holdings');

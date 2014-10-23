@@ -11,7 +11,8 @@ class trovequery_handler_sort_date extends views_handler_sort {
 
   /**
    * Provide a list of options for the default sort form.
-   * Should be overridden by classes that don't override sort_form
+   *
+   * Should be overridden by classes that don't override sort_form.
    */
   function sort_options() {
     return array(

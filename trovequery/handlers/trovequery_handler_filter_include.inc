@@ -20,4 +20,3 @@ class trovequery_handler_filter_include extends views_handler_filter_boolean_ope
   }
 
 }
-

@@ -60,4 +60,3 @@ THANKS
    very helpful four part article on Building Views Query 
    Plugins, 
    see https://www.lullabot.com/blog/article/building-views-query-plugins
-   

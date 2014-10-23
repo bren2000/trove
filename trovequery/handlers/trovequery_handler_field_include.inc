@@ -11,8 +11,8 @@
  * gets set properly, and that none of the sql-specific query functionality
  * gets called.
  *
- *  Some trove api response fields  can contain HTML, which is typically run 
- * through check_plain() and thus not rendered. Here we give the user the 
+ *  Some trove api response fields  can contain HTML, which is typically run
+ * through check_plain() and thus not rendered. Here we give the user the
  * option to override this behavior and render the HTML.
  */
 
@@ -27,7 +27,7 @@ class trovequery_handler_field_include extends views_handler_field {
   function options_form(&$form, &$form_state) {
     $form['render_html'] = array(
       '#title' => t('Render HTML'),
-      '#description' => t('By default, HTML returned from the Trove API is escaped and will not render. Checking this option will disable this behavior and allow the HTML to render. Note that this could be a security problem if Trove\'s filtering of dangerous HTML has problems.'),
+      '#description' => t('By default, HTML returned from the Trove API is escaped and will not render. Checking this option will disable this behavior and allow the HTML to render. Note that this could be a security problem if Trove filtering of dangerous HTML has problems.'),
       '#type' => 'checkbox',
       '#default_value' => $this->options['render_html'],
       '#weight' => 1,
@@ -44,7 +44,7 @@ class trovequery_handler_field_include extends views_handler_field {
   }
 
   function render($values) {
-    if ( isset( $values->{$this->field} )) {
+    if (isset($values->{$this->field})) {
       if ($this->options['render_html']) {
         $value = $values->{$this->field};
       }

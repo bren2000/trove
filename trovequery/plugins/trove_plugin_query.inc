@@ -15,7 +15,7 @@ class trove_plugin_query extends views_plugin_query {
    */
   var $where = array();
 
-  /**
+  /*
    * Array of all encountered errors.
    *
    * Each of these is fatal.
@@ -27,7 +27,7 @@ class trove_plugin_query extends views_plugin_query {
    */
   var $errors = array();
 
-  /**
+  /*
    * Whether to abort the search instead of executing it.
    *
    * @var bool
@@ -37,7 +37,7 @@ class trove_plugin_query extends views_plugin_query {
   /**
    * Constructor; Create the basic query object and fill with default values.
    */
-  function init($base_table, $base_field, $options) {
+  public function init($base_table, $base_field, $options) {
     // parent::init($base_table, $base_field, $options);
     // Required fields are fields that may not be empty in rows of the
     // resultset. Any rows with empty required fields are dropped *prior* to
@@ -46,7 +46,9 @@ class trove_plugin_query extends views_plugin_query {
     $this->ensure_table($base_table);
     $where = array();
   }
-
+  /**
+   * Ensure table.
+   */
   function ensure_table($table) {
     if (!isset($this->request)) {
       $this->request = TroveAPI::factory($table);
@@ -75,7 +77,7 @@ class trove_plugin_query extends views_plugin_query {
    * There is other code in filters which makes sure that the group IDs are
    * higher than zero.
    *
-   * @param $where
+   * @param string $where
    *   'where' or 'having'.
    */
   function build_condition($where = 'where') {
@@ -92,8 +94,8 @@ class trove_plugin_query extends views_plugin_query {
         $sub_group = $info['type'] == 'OR' ? db_or() : db_and();
         foreach ($info['conditions'] as $key => $clause) {
           // DBTNG doesn't support to add the same subquery twice to the main
-          // query and the count query, so clone the subquery to have two instances
-          // of the same object. - http://drupal.org/node/1112854
+          // query and the count query, so clone the subquery to have two 
+          // instances of the same object. - http://drupal.org/node/1112854
           if (is_object($clause['value']) && $clause['value'] instanceof SelectQuery) {
             $clause['value'] = clone $clause['value'];
           }
@@ -137,7 +139,7 @@ class trove_plugin_query extends views_plugin_query {
     if (empty($group)) {
       $group = 0;
     }
-    
+
     // Check for a group.
     if (!isset($this->where[$group])) {
       $this->set_where_group('AND', $group);
@@ -150,7 +152,7 @@ class trove_plugin_query extends views_plugin_query {
   }
 
   function add_filter($field, $value, $operator = '=') {
-    //$this->ensure_table($table);
+    // $this->ensure_table($table);
     $this->request->set_filter($field, $value);
   }
 
@@ -182,7 +184,7 @@ class trove_plugin_query extends views_plugin_query {
    */
   function execute(&$view) {
 
-    if ($this->errors || $this->abort ) {
+    if ($this->errors || $this->abort) {
       if (error_displayable()) {
         foreach ($this->errors as $msg) {
           drupal_set_message(check_plain($msg), 'error');
@@ -198,21 +200,20 @@ class trove_plugin_query extends views_plugin_query {
         return;
       }
 
-      // Setup pager
+      // Setup pager.
       $view->init_pager();
       if ($this->pager->use_pager()) {
         $this->pager->set_current_page($view->current_page);
       }
 
-      $this->add_filter('n', $this->pager->options['items_per_page']); 
-      $this->add_filter('s', $this->pager->current_page * $this->pager->options['items_per_page']);   
+      $this->add_filter('n', $this->pager->options['items_per_page']);
+      $this->add_filter('s', $this->pager->current_page * $this->pager->options['items_per_page']);
 
       $this->request->query();
       $view->result = $this->request->parse(NULL);
 
       $this->pager->total_items = $this->request->getTotalResults();
-      $this->pager->update_page_info();  
-      
+      $this->pager->update_page_info();
 
     }
     catch (Exception $e) {

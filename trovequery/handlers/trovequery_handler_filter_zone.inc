@@ -50,7 +50,7 @@ class trovequery_handler_filter_zone extends views_handler_filter_in_operator {
     $errors = array();
 
     if ($this->options['exposed'] && !$this->options['expose']['required'] && empty($this->value)) {
-      // Don't validate if the field is exposed and no default value is provided.
+      // Don't validate if field is exposed and no default value is provided.
       return $errors;
     }
 
@@ -63,9 +63,8 @@ class trovequery_handler_filter_zone extends views_handler_filter_in_operator {
       $this->value['all'] = 'all';
       return $errors;
     }
-    
+
     return $errors;
   }
 
 }
-
