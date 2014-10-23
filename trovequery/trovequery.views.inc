@@ -264,16 +264,6 @@ function trovequery_views_data() {
     'field' => array(
       'handler' => 'trovequery_handler_field_contributor',
     ),
-    'filter' => array(
-      'handler' => 'trovequery_handler_filter_contributor',
-      'help' => t('Filter by contributor'),
-      'trovequery' => array(
-        'arg' => 'q',
-        'method' => 'result',
-        'index' => 'nuc',
-        'index_method' => 'trove_get_index_contributors',
-      ),
-    ),
   );
 
   $data['trovequery']['tid'] = array(
@@ -333,6 +323,16 @@ function trovequery_views_data() {
     'help' => t('The NUC symbol of an organisation with a copy of this work.'),
     'field' => array(
       'handler' => 'trovequery_handler_field_string',
+    ),
+    'filter' => array(
+      'handler' => 'trovequery_handler_filter_holding',
+      'help' => t('Filter by NUC (ID of organisation who has a copy of this work).'),
+      'trovequery' => array(
+        'arg' => 'q',
+        'method' => 'result',
+        'index' => 'nuc',
+        'index_method' => 'trove_get_index_contributors',
+      ),
     ),
   );
 

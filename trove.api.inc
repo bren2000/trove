@@ -56,8 +56,8 @@ class TroveAPI {
    */
   public function __construct($method) {
     $this->set_filter('method', $method);
-    $this->troveBaseUrl = troveBaseUrl;
-    $this->apiKey = variable_get('trove_apiKey', '');
+    $this->troveBaseUrl = TROVE_BASE_URL;
+    $this->apiKey = variable_get('trove_api_key', '');
   }
 
   /**
@@ -359,13 +359,14 @@ class TroveAPIResult extends troveAPI {
             }
 
             if (isset($res['holding'])) {
-              foreach ($res['holding'] as $k) {
-                $row->holdings_nuc[] = $k['nuc'];
-              }
+              $row->holdings_nuc = implode(', ', array_map(function ($entry) {
+                if(isset($entry['nuc'])) {
+                  return $entry['nuc'];
+                }
+              }, $res['holding']));
             }
 
             $row->zone = $zones['name'];
-
             $results[] = $row;
           }
         }

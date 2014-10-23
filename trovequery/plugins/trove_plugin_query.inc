@@ -9,7 +9,7 @@
  */
 class trove_plugin_query extends views_plugin_query {
 
-  /**
+  /*
    * An array of sections of the WHERE query. Each section is in itself
    * an array of pieces. All AND by default.
    */
@@ -18,7 +18,9 @@ class trove_plugin_query extends views_plugin_query {
   /**
    * Array of all encountered errors.
    *
-   * Each of these is fatal, meaning that a non-empty $errors property will
+   * Each of these is fatal.
+   *
+   * A non-empty $errors property will
    * result in an empty result being returned.
    *
    * @var array
@@ -208,7 +210,7 @@ class trove_plugin_query extends views_plugin_query {
       $this->request->query();
       $view->result = $this->request->parse(NULL);
 
-      $this->pager->total_items = $this->request->get_total_results();
+      $this->pager->total_items = $this->request->getTotalResults();
       $this->pager->update_page_info();  
       
 

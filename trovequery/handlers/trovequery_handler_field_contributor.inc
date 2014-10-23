@@ -12,7 +12,9 @@
  * gets called.
  */
 class trovequery_handler_field_contributor extends views_handler_field {
+  
   function query() {
     $this->field_alias = $this->real_field;
   }
+
 }

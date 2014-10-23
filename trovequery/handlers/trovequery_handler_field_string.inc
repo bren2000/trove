@@ -18,6 +18,4 @@ class trovequery_handler_field_string extends views_handler_field {
     $this->query->add_where('', 'include', 'holdings');
   }
 
-
-
 }
