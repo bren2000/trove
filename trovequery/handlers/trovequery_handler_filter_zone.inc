@@ -13,6 +13,9 @@ class trovequery_handler_filter_zone extends views_handler_filter_in_operator {
     }
   }
 
+  /**
+   * Called to add the field to a query.
+   */
   function query() {
     if (isset($this->value, $this->definition['trovequery'])) {
       $this->query->args['method'] = $this->definition['trovequery']['method'];
@@ -31,6 +34,9 @@ class trovequery_handler_filter_zone extends views_handler_filter_in_operator {
     }
   }
 
+  /**
+   * Overrides views_handler_filter_in_operator::operators
+   */
   function operators() {
     $operators = array(
       'in' => array(

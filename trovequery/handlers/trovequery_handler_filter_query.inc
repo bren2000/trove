@@ -14,7 +14,6 @@ class trovequery_handler_filter_query extends views_handler_filter_string {
 
   /**
    * Add this filter to the query.
-   *
    */
   function query() {
     $this->ensure_my_table();

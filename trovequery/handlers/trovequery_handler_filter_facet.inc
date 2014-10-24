@@ -4,6 +4,11 @@ class trovequery_handler_filter_facet extends views_handler_filter_in_operator {
 
   public $opt = array();
 
+  /**
+   * Make an options list with depth indication.
+   * @param  array  $array
+   * @param  integer $level
+   */
   function make_options($array, $level = 0) {
     $pre = '';
     for ($i = $level; $i > 0; $i--) {
@@ -20,6 +25,12 @@ class trovequery_handler_filter_facet extends views_handler_filter_in_operator {
     }
   }
 
+  /**
+   * Sets the'value options'.
+   *
+   * @return
+   *   Return the stored values in $this->value_options if someone expects it.
+   */
   function get_value_options() {
     if (!isset($this->value_options)) {
       $this->value_title = t('Facet filter');
@@ -29,6 +40,9 @@ class trovequery_handler_filter_facet extends views_handler_filter_in_operator {
     }
   }
 
+  /**
+   * Called to add the field to a query.
+   */
   function query() {
     if (isset($this->value, $this->definition['trovequery'])) {
       $this->query->args['method'] = $this->definition['trovequery']['method'];

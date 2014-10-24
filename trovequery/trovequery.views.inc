@@ -1,9 +1,12 @@
 <?php
+/**
+ * @file
+ * The admin settings for the trove module.
+ */
 
 /**
  * Implements hook_views_plugins().
  */
-
 function trovequery_views_plugins() {
   $plugin = array();
   $plugin['query']['trove_plugin_query'] = array(

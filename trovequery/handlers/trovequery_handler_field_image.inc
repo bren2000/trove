@@ -13,6 +13,10 @@
  * gets called.
  */
 class trovequery_handler_field_image extends views_handler_field {
+
+  /**
+   * Called to add the field to a query.
+   */
   function query() {
     $this->field_alias = $this->real_field;
   }

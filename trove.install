@@ -25,7 +25,7 @@ function trove_install() {
  * Implements hook_schema().
  */
 function trove_schema() {
-  $schema['trove_contributors'] = array(
+  $schema['trove_contributors'] = array (
     'description' => 'Stores trove contributors and their NUC',
     'fields' => array(
       'nuc' => array(

@@ -15,6 +15,10 @@ class trovequery_handler_filter_include_string extends views_handler_filter_stri
     }
   }
 
+
+  /**
+   * Overrides views_handler_filter_string::operators
+   */
   function operators() {
     $operators = array(
       '=' => array(

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Trove API class.
  *
@@ -226,6 +225,7 @@ class TroveAPI {
 
   /**
    * Custom parser for the type of data we're retrieving.
+   * 
    * Must be implemented by all subclasses. Returns an indexed array
    * of results, each result being an array keyed by the field name.
    */

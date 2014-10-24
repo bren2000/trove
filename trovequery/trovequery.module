@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Module file for trovequery module.
+ */
 
 /**
  * Implements hook_views_api().

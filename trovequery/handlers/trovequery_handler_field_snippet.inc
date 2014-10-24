@@ -19,16 +19,26 @@
 
 class trovequery_handler_field_snippet extends views_handler_field {
 
+  /**
+   * Called to add the field to a query.
+   */
   function query() {
     $this->field_alias = $this->real_field;
   }
 
+  /**
+   * Define the options available.
+   * @return array
+   */
   function option_definition() {
     $options = parent::option_definition();
     $options['render_html'] = array('default' => FALSE);
     return $options;
   }
 
+  /**
+   * Defines the options form.
+   */
   function options_form(&$form, &$form_state) {
     $form['render_html'] = array(
       '#title' => t('Render HTML'),
@@ -40,6 +50,11 @@ class trovequery_handler_field_snippet extends views_handler_field {
     parent::options_form($form, $form_state);
   }
 
+  /**
+   * Render output based on options settings.
+   * @param  object $values
+   * @return the rendered field
+   */
   function render($values) {
     if ($this->options['render_html']) {
       $value = $this->get_value($values);

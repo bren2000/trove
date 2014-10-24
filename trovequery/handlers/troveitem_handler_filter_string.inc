@@ -15,6 +15,9 @@ class troveitem_filter_string extends views_handler_filter_string {
     }
   }
 
+  /**
+   * Overrides views_handler_filter_string::operators
+   */
   function operators() {
     $operators = array(
       '=' => array(

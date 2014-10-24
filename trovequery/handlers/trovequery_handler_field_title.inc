@@ -21,16 +21,26 @@ class trovequery_handler_field_title extends views_handler_field {
     $this->additional_fields['trove_url'] = 'trove_url';
   }
 
+  /**
+   * Called to add the field to a query.
+   */
   function query() {
     $this->field_alias = $this->real_field;
   }
 
+  /**
+   * Define the options available.
+   * @return array
+   */
   function option_definition() {
     $options = parent::option_definition();
     $options['link_to_trove'] = array('default' => FALSE, 'bool' => TRUE);
     return $options;
   }
 
+  /**
+   * Defines the options form.
+   */
   function options_form(&$form, &$form_state) {
     $form['link_to_trove'] = array(
       '#title' => t('Link the title to the record in Trove'),
@@ -54,6 +64,11 @@ class trovequery_handler_field_title extends views_handler_field {
     return $data;
   }
 
+  /**
+   * Render output based on options settings.
+   * @param  object $values
+   * @return the rendered field
+   */
   function render($values) {
     $value = $this->get_value($values);
     return $this->render_link($this->sanitize_value($value), $values);

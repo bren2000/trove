@@ -13,10 +13,18 @@
  */
 class trovequery_handler_field_url extends views_handler_field_url {
 
+  /**
+   * Called to add the field to a query.
+   */
   function query() {
     $this->field_alias = $this->real_field;
   }
 
+  /**
+   * Render output based on options settings.
+   * @param  object $values
+   * @return the rendered field
+   */
   function render($values) {
     $value = $values->{$this->field};
     if (!empty($this->options['display_as_link'])) {
