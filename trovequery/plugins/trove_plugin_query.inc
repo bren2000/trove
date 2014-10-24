@@ -44,7 +44,6 @@ class TrovePluginQuery extends views_plugin_query {
     // paging.
     $this->required_fields = array();
     $this->ensure_table($base_table);
-    $where = array();
   }
   /**
    * Ensure table.
@@ -161,7 +160,7 @@ class TrovePluginQuery extends views_plugin_query {
   /**
    * Builds the necessary info to execute the query.
    */
-   public function build(&$view) {
+  public function build(&$view) {
     $this->view = $view;
 
     if (!empty($this->where)) {

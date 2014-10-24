@@ -57,7 +57,7 @@ class TrovequeryHandlerFilterIncludeString extends views_handler_filter_string {
   /**
    * Remove the case sensitive option, since it is irrelevant.
    */
-  public unction options_form(&$form, &$form_state) {
+  public function options_form(&$form, &$form_state) {
     parent::options_form($form, $form_state);
     $form['case']['#access'] = FALSE;
   }
