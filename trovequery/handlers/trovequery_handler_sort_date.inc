@@ -9,7 +9,7 @@ class TrovequeryHandlerSortDate extends views_handler_sort {
   /**
    * Determine if a sort can be exposed.
    */
-  function can_expose() {
+  public function can_expose() {
     return TRUE;
   }
 
@@ -18,7 +18,7 @@ class TrovequeryHandlerSortDate extends views_handler_sort {
    *
    * Should be overridden by classes that don't override sort_form.
    */
-  function sort_options() {
+  public function sort_options() {
     return array(
       'asc' => t('Sort ascending'),
       'desc' => t('Sort descending'),
@@ -28,7 +28,7 @@ class TrovequeryHandlerSortDate extends views_handler_sort {
   /**
    * Called to add the sort to a query.
    */
-  function query() {
+  public function query() {
     $this->field_alias = $this->real_field;
     if (isset($this->definition['sort order'], $this->options['order'])) {
       $this->query->add_filter($this->definition['sort method'], $this->definition['sort order'] . $this->options['order']);

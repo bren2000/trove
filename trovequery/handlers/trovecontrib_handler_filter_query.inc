@@ -11,7 +11,7 @@ class TrovecontribHandlerFilterQuery extends views_handler_filter_string {
   /**
    * Called to add the field to a query.
    */
-  function query() {
+  public function query() {
     if (isset($this->value, $this->definition['trovecontrib'])) {
       $this->query->args['method'] = $this->definition['trovecontrib']['method'];
       if (is_array($this->value)) {
@@ -26,7 +26,7 @@ class TrovecontribHandlerFilterQuery extends views_handler_filter_string {
   /**
    * Set the operator.
    */
-  function operators() {
+  public function operators() {
     $operators = array(
       '=' => array(
         'title' => t('Is equal to'),
@@ -44,7 +44,7 @@ class TrovecontribHandlerFilterQuery extends views_handler_filter_string {
    *
    * We remove the operator option since we only have one operators available.
    */
-  function expose_form_left(&$form, &$form_state) {
+  public function expose_form_left(&$form, &$form_state) {
     parent::expose_form_left($form, $form_state);
     $form['expose']['use_operator']['#access'] = FALSE;
     $form['expose']['operator']['#access'] = FALSE;
@@ -53,7 +53,7 @@ class TrovecontribHandlerFilterQuery extends views_handler_filter_string {
   /**
    * Remove the optional checkbox since it makes no sense in our context.
    */
-  function expose_form_right(&$form, &$form_state) {
+  public function expose_form_right(&$form, &$form_state) {
     parent::expose_form_right($form, $form_state);
     $form['expose']['optional']['#access'] = FALSE;
   }
@@ -61,7 +61,7 @@ class TrovecontribHandlerFilterQuery extends views_handler_filter_string {
   /**
    * Remove the case sensitive option, since it is irrelevant.
    */
-  function options_form(&$form, &$form_state) {
+  public function options_form(&$form, &$form_state) {
     parent::options_form($form, $form_state);
     $form['case']['#access'] = FALSE;
   }

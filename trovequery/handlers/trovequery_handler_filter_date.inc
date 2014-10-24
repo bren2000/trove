@@ -14,7 +14,7 @@ class TrovequeryHandlerFilterDate extends views_handler_filter_date {
   /**
    * Define the available options.
    */
-  function option_definition() {
+  public function option_definition() {
     $options = parent::option_definition();
 
     // Value is already set up properly, we're just adding our new field to it.
@@ -26,7 +26,7 @@ class TrovequeryHandlerFilterDate extends views_handler_filter_date {
   /**
    * Add a type selector to the value form.
    */
-  function value_form(&$form, &$form_state) {
+  public function value_form(&$form, &$form_state) {
     if (empty($form_state['exposed'])) {
       $form['value']['type'] = array(
         '#type' => 'radios',
@@ -44,7 +44,7 @@ class TrovequeryHandlerFilterDate extends views_handler_filter_date {
   /**
    * Validates the selected options.
    */
-  function options_validate(&$form, &$form_state) {
+  public function options_validate(&$form, &$form_state) {
     parent::options_validate($form, $form_state);
 
     if (!empty($this->options['exposed']) && empty($form_state['values']['options']['expose']['required'])) {
@@ -58,7 +58,7 @@ class TrovequeryHandlerFilterDate extends views_handler_filter_date {
   /**
    * Validate the exposed filter value.
    */
-  function exposed_validate(&$form, &$form_state) {
+  public function exposed_validate(&$form, &$form_state) {
     if (empty($this->options['exposed'])) {
       return;
     }
@@ -83,7 +83,7 @@ class TrovequeryHandlerFilterDate extends views_handler_filter_date {
   /**
    * Validate that the time values convert to something usable.
    */
-  function validate_valid_time(&$form, $operator, $value) {
+  public function validate_valid_time(&$form, $operator, $value) {
     $operators = $this->operators();
 
     if ($operators[$operator]['values'] == 1) {
@@ -107,7 +107,7 @@ class TrovequeryHandlerFilterDate extends views_handler_filter_date {
   /**
    * Validate the build group options form.
    */
-  function build_group_validate($form, &$form_state) {
+  public function build_group_validate($form, &$form_state) {
     // Special case to validate grouped date filters, this is because the
     // $group['value'] array contains the type of filter (date or offset)
     // and therefore the number of items the comparission has to be done
@@ -134,7 +134,7 @@ class TrovequeryHandlerFilterDate extends views_handler_filter_date {
   /**
    * Check the input.
    */
-  function accept_exposed_input($input) {
+  public function accept_exposed_input($input) {
     if (empty($this->options['exposed'])) {
       return TRUE;
     }
@@ -171,7 +171,7 @@ class TrovequeryHandlerFilterDate extends views_handler_filter_date {
   /**
    * Create the between dates filter.
    */
-  function op_between($field) {
+  public function op_between($field) {
     $a = intval(strtotime($this->value['min'], 0));
     $b = intval(strtotime($this->value['max'], 0));
 
@@ -187,7 +187,7 @@ class TrovequeryHandlerFilterDate extends views_handler_filter_date {
   /**
    * Create the simple date filter.
    */
-  function op_simple($field) {
+  public function op_simple($field) {
     if ($this->value['value'] == 'now') {
       $value = date('Y-m-d\T00:00:00\Z');
     }

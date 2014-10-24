@@ -11,7 +11,7 @@ class TrovequeryHandlerFilterFacet extends views_handler_filter_in_operator {
   /**
    * Make an options list with depth indication.
    */
-  function make_options($array, $level = 0) {
+  public function make_options($array, $level = 0) {
     $pre = '';
     for ($i = $level; $i > 0; $i--) {
       $pre .= '--';
@@ -30,7 +30,7 @@ class TrovequeryHandlerFilterFacet extends views_handler_filter_in_operator {
   /**
    * Sets the'value options'.
    */
-  function get_value_options() {
+  public function get_value_options() {
     if (!isset($this->value_options)) {
       $this->value_title = t('Facet filter');
       $facets = call_user_func($this->definition['trovequery']['facets_method']);
@@ -42,7 +42,7 @@ class TrovequeryHandlerFilterFacet extends views_handler_filter_in_operator {
   /**
    * Called to add the field to a query.
    */
-  function query() {
+  public function query() {
     if (isset($this->value, $this->definition['trovequery'])) {
       $this->query->args['method'] = $this->definition['trovequery']['method'];
       if (is_array($this->value)) {

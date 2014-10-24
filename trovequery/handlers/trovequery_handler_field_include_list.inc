@@ -21,7 +21,7 @@ class TrovequeryHandlerFieldInclude extends views_handler_field {
   /**
    * Define the options available.
    */
-  function option_definition() {
+  public function option_definition() {
     $options = parent::option_definition();
     $options['render_html'] = array('default' => FALSE);
     return $options;
@@ -30,7 +30,7 @@ class TrovequeryHandlerFieldInclude extends views_handler_field {
   /**
    * Defines the options form.
    */
-  function options_form(&$form, &$form_state) {
+  public function options_form(&$form, &$form_state) {
     $form['render_html'] = array(
       '#title' => t('Render HTML'),
       '#description' => t('By default, HTML returned from the Trove API is escaped and will not render. Checking this option will disable this behavior and allow the HTML to render. Note that this could be a security problem if Troves filtering of dangerous HTML has problems.'),
@@ -44,21 +44,21 @@ class TrovequeryHandlerFieldInclude extends views_handler_field {
   /**
    * Add the filter to the query.
    */
-  function pre_query() {
+  public function pre_query() {
     $this->query->add_where('', $this->definition['trovequery']['arg'], $this->definition['trovequery']['value']);
   }
 
   /**
    * Called to add the field to a query.
    */
-  function query() {
+  public function query() {
     $this->field_alias = $this->real_field;
   }
 
   /**
    * Render output based on options settings.
    */
-  function render($values) {
+  public function render($values) {
     if (isset($values->{$this->field})) {
       if ($this->options['render_html']) {
         $value = $values->{$this->field};

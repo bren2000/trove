@@ -16,7 +16,7 @@ class TrovequeryHandlerFieldTitle extends views_handler_field {
   /**
    * Constructor to provide additional field to add.
    */
-  function construct() {
+  public function construct() {
     parent::construct();
     $this->additional_fields['trove_url'] = 'trove_url';
   }
@@ -24,14 +24,14 @@ class TrovequeryHandlerFieldTitle extends views_handler_field {
   /**
    * Called to add the field to a query.
    */
-  function query() {
+  public function query() {
     $this->field_alias = $this->real_field;
   }
 
   /**
    * Define the options available.
    */
-  function option_definition() {
+  public function option_definition() {
     $options = parent::option_definition();
     $options['link_to_trove'] = array('default' => FALSE, 'bool' => TRUE);
     return $options;
@@ -40,7 +40,7 @@ class TrovequeryHandlerFieldTitle extends views_handler_field {
   /**
    * Defines the options form.
    */
-  function options_form(&$form, &$form_state) {
+  public function options_form(&$form, &$form_state) {
     $form['link_to_trove'] = array(
       '#title' => t('Link the title to the record in Trove'),
       '#type' => 'checkbox',
@@ -54,7 +54,7 @@ class TrovequeryHandlerFieldTitle extends views_handler_field {
    *
    * Data should be made XSS safe prior to calling this function.
    */
-  function render_link($data, $values) {
+  public function render_link($data, $values) {
     $trove_url = $values->trove_url;
     if (!empty($this->options['link_to_trove']) && !empty($trove_url) && $data !== NULL && $data !== '') {
       $this->options['alter']['make_link'] = TRUE;
@@ -66,7 +66,7 @@ class TrovequeryHandlerFieldTitle extends views_handler_field {
   /**
    * Render output based on options settings.
    */
-  function render($values) {
+  public function render($values) {
     $value = $this->get_value($values);
     return $this->render_link($this->sanitize_value($value), $values);
   }

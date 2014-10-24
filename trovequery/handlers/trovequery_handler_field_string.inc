@@ -16,7 +16,7 @@ class TrovequeryHandlerFieldString extends views_handler_field {
   /**
    * Called to add the field to a query.
    */
-  function query() {
+  public function query() {
     $this->field_alias = $this->real_field;
     $this->query->add_where('', 'include', 'holdings');
   }

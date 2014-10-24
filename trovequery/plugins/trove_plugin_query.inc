@@ -13,7 +13,7 @@ class TrovePluginQuery extends views_plugin_query {
    * An array of sections of the WHERE query. Each section is in itself
    * an array of pieces. All AND by default.
    */
-  var $where = array();
+  protected $where = array();
 
   /*
    * Array of all encountered errors.
@@ -25,14 +25,14 @@ class TrovePluginQuery extends views_plugin_query {
    *
    * @var array
    */
-  var $errors = array();
+  protected $errors = array();
 
   /*
    * Whether to abort the search instead of executing it.
    *
    * @var bool
    */
-  var $abort = FALSE;
+  protected $abort = FALSE;
 
   /**
    * Constructor; Create the basic query object and fill with default values.
@@ -49,7 +49,7 @@ class TrovePluginQuery extends views_plugin_query {
   /**
    * Ensure table.
    */
-  function ensure_table($table) {
+  public function ensure_table($table) {
     if (!isset($this->request)) {
       $this->request = TroveAPI::factory($table);
     }
@@ -59,7 +59,7 @@ class TrovePluginQuery extends views_plugin_query {
   /**
    * Get the arguments attached to the WHERE clauses of this query.
    */
-  function get_where_args() {
+  public function get_where_args() {
 
     $args = array();
     foreach ($this->where as $group => $where) {
@@ -77,7 +77,7 @@ class TrovePluginQuery extends views_plugin_query {
    * There is other code in filters which makes sure that the group IDs are
    * higher than zero.
    */
-  function build_condition($where = 'where') {
+  public function build_condition($where = 'where') {
     $has_condition = FALSE;
     $has_arguments = FALSE;
     $has_filter = FALSE;
@@ -133,7 +133,7 @@ class TrovePluginQuery extends views_plugin_query {
   /**
    * Add a simple WHERE clause to the query.
    */
-  function add_where($group, $field, $value = NULL, $operator = NULL) {
+  public function add_where($group, $field, $value = NULL, $operator = NULL) {
     // Ensure all variants of 0 are actually 0. Thus '', 0 and NULL are all
     // the default group.
     if (empty($group)) {
@@ -153,7 +153,7 @@ class TrovePluginQuery extends views_plugin_query {
   /**
    * Set a filter on the query object.
    */
-  function add_filter($field, $value, $operator = '=') {
+  public function add_filter($field, $value, $operator = '=') {
     // $this->ensure_table($table);
     $this->request->set_filter($field, $value);
   }
@@ -161,7 +161,7 @@ class TrovePluginQuery extends views_plugin_query {
   /**
    * Builds the necessary info to execute the query.
    */
-  public function build(&$view) {
+   public function build(&$view) {
     $this->view = $view;
 
     if (!empty($this->where)) {
@@ -183,7 +183,7 @@ class TrovePluginQuery extends views_plugin_query {
    * Values to set: $view->result, $view->total_rows, $view->execute_time,
    * $view->pager['current_page'].
    */
-  function execute(&$view) {
+  public function execute(&$view) {
 
     if ($this->errors || $this->abort) {
       if (error_displayable()) {

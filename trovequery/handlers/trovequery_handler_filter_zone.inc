@@ -9,7 +9,7 @@ class TrovequeryHandlerFilterZone extends views_handler_filter_in_operator {
   /**
    * Sets the 'value options'.
    */
-  function get_value_options() {
+  public function get_value_options() {
     if (!isset($this->value_options)) {
       $this->value_title = t('Zone type');
       $zones = call_user_func($this->definition['trovequery']['zones_method']);
@@ -23,7 +23,7 @@ class TrovequeryHandlerFilterZone extends views_handler_filter_in_operator {
   /**
    * Called to add the field to a query.
    */
-  function query() {
+  public function query() {
     if (isset($this->value, $this->definition['trovequery'])) {
       $this->query->args['method'] = $this->definition['trovequery']['method'];
       if (is_array($this->value)) {
@@ -44,7 +44,7 @@ class TrovequeryHandlerFilterZone extends views_handler_filter_in_operator {
   /**
    * Overrides views_handler_filter_in_operator::operators.
    */
-  function operators() {
+  public function operators() {
     $operators = array(
       'in' => array(
         'title' => t('Is one of'),
@@ -60,7 +60,7 @@ class TrovequeryHandlerFilterZone extends views_handler_filter_in_operator {
   /**
    * Validate the selected options.
    */
-  function validate() {
+  public function validate() {
     $this->get_value_options();
     $errors = array();
 

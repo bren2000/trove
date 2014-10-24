@@ -16,14 +16,14 @@ class TrovequeryHandlerFieldUrl extends views_handler_field_url {
   /**
    * Called to add the field to a query.
    */
-  function query() {
+  public function query() {
     $this->field_alias = $this->real_field;
   }
 
   /**
    * Render output based on options settings.
    */
-  function render($values) {
+  public function render($values) {
     $value = $values->{$this->field};
     if (!empty($this->options['display_as_link'])) {
       $this->options['alter']['make_link'] = TRUE;

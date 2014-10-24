@@ -16,14 +16,14 @@ class TrovequeryHandlerFieldImage extends views_handler_field {
   /**
    * Called to add the field to a query.
    */
-  function query() {
+  public function query() {
     $this->field_alias = $this->real_field;
   }
 
   /**
    * Render the field.
    */
-  function render($values) {
+  public function render($values) {
     if (isset($values->image)) {
       $variables = array(
         'path' => $values->{$this->field},

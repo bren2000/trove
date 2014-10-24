@@ -9,7 +9,7 @@ class TrovequeryHandlerRelationship extends views_handler_relationship {
   /**
    * Called to implement a relationship in a query.
    */
-  function query() {
+  public function query() {
     $right_table = $this->definition['base'];
     $method = $this->definition['trovequery']['method'];
     $arg = $this->definition['trovequery']['arg'];

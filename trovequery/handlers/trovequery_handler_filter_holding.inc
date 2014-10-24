@@ -11,7 +11,7 @@ class TrovequeryHandlerFilterHolding extends views_handler_filter_in_operator {
   /**
    * Sets the'value options'.
    */
-  function get_value_options() {
+  public function get_value_options() {
     if (!isset($this->value_options)) {
       $this->value_title = t('Index filter');
       $contributors = call_user_func($this->definition['trovequery']['index_method']);
@@ -22,7 +22,7 @@ class TrovequeryHandlerFilterHolding extends views_handler_filter_in_operator {
   /**
    * Called to add the field to a query.
    */
-  function query() {
+  public function query() {
     if (isset($this->value, $this->definition['trovequery'])) {
       $this->query->args['method'] = $this->definition['trovequery']['method'];
       if (is_array($this->value)) {
@@ -39,7 +39,7 @@ class TrovequeryHandlerFilterHolding extends views_handler_filter_in_operator {
   /**
    * Overrides views_handler_filter_string::operators.
    */
-  function operators() {
+  public function operators() {
     $operators = array(
       'in' => array(
         'title' => t('Is one of'),
