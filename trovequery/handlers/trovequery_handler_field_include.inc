@@ -16,7 +16,7 @@
  * option to override this behavior and render the HTML.
  */
 
-class trovequery_handler_field_include extends views_handler_field {
+class TrovequeryHandlerFieldInclude extends views_handler_field {
 
   /**
    * Define the options available.

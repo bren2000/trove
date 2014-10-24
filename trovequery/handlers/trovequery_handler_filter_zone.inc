@@ -4,7 +4,7 @@
  * Views field handler for basic Trove Query fields.
  */
 
-class trovequery_handler_filter_zone extends views_handler_filter_in_operator {
+class TrovequeryHandlerFilterZone extends views_handler_filter_in_operator {
 
   /**
    * Sets the 'value options'.

@@ -7,7 +7,7 @@
 /**
  * Views filter handler for basic Trove Query fields.
  */
-class trovequery_handler_filter_query extends views_handler_filter_string {
+class TrovequeryHandlerFilterQuery extends views_handler_filter_string {
 
   public $always_required = TRUE;
 

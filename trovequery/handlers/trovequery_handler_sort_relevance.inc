@@ -7,7 +7,7 @@
 /**
  * Basic sort handler for relevance.
  */
-class trovequery_handler_sort_relevance extends views_handler_sort {
+class TrovequeryHandlerSortRelevance extends views_handler_sort {
 
   /**
    * Determine if a sort can be exposed.

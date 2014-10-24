@@ -9,7 +9,7 @@
  *
  * @ingroup views_filter_handlers
  */
-class trovequery_handler_filter_date extends views_handler_filter_date {
+class TrovequeryHandlerFilterDate extends views_handler_filter_date {
 
   /**
    * Define the available options.

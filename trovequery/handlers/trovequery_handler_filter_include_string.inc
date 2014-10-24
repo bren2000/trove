@@ -4,7 +4,7 @@
  * Views field handler for basic Trove Query fields.
  */
 
-class trovequery_handler_filter_include_string extends views_handler_filter_string {
+class TrovequeryHandlerFilterIncludeString extends views_handler_filter_string {
 
   /**
    * Called to add the field to a query.

@@ -4,7 +4,7 @@
  * Views field handler for basic Trove Query fields.
  */
 
-class trovecontrib_handler_filter_query extends views_handler_filter_string {
+class TrovecontribHandlerFilterQuery extends views_handler_filter_string {
 
   public $always_required = TRUE;
 

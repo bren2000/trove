@@ -4,7 +4,7 @@
  * Definition of trovequery_handler_filter_facet.
  */
 
-class trovequery_handler_filter_facet extends views_handler_filter_in_operator {
+class TrovequeryHandlerFilterFacet extends views_handler_filter_in_operator {
 
   public $opt = array();
 

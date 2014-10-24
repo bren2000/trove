@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * The admin settings for the trove module.
+ * Definition of trovequery view.
  */
 
 /**
@@ -9,10 +9,10 @@
  */
 function trovequery_views_plugins() {
   $plugin = array();
-  $plugin['query']['trove_plugin_query'] = array(
+  $plugin['query']['TrovePluginQuery'] = array(
     'title' => t('Trove API Query'),
     'help' => t('Trove API query object.'),
-    'handler' => 'trove_plugin_query',
+    'handler' => 'TrovePluginQuery',
     'use pager' => TRUE,
   );
   return $plugin;
@@ -29,17 +29,17 @@ function trovequery_views_data() {
     'title' => t('Trove Results'),
     'help' => t('Query Trove.'),
     'field' => 'title',
-    'query class' => 'trove_plugin_query',
+    'query class' => 'TrovePluginQuery',
   );
 
   $data['trovequery']['title'] = array(
     'title' => t('title'),
     'help' => t('The title of this result.'),
     'field' => array(
-      'handler' => 'trovequery_handler_field_title',
+      'handler' => 'TrovequeryHandlerFieldTitle',
     ),
     'filter' => array(
-      'handler' => 'trovequery_handler_filter_field',
+      'handler' => 'TrovequeryHandlerFilterField',
       'help' => t('Keyword filter on the title field.'),
       'trovequery' => array(
         'arg' => 'q',
@@ -53,7 +53,7 @@ function trovequery_views_data() {
     'title' => t('ISBN'),
     'help' => t('The ISBN for this result.'),
     'filter' => array(
-      'handler' => 'trovequery_handler_filter_include_string',
+      'handler' => 'TrovequeryHandlerFilterIncludeString',
       'help' => t('Filter on ISBNs.'),
       'label' => t('The ISBN of the item.'),
       'trovequery' => array(
@@ -68,7 +68,7 @@ function trovequery_views_data() {
     'title' => t('ISSN'),
     'help' => t('The ISSN for this result.'),
     'filter' => array(
-      'handler' => 'trovequery_handler_filter_include_string',
+      'handler' => 'TrovequeryHandlerFilterIncludeString',
       'help' => t('Filter on ISSNs.'),
       'label' => t('The ISSN of the item.'),
       'trovequery' => array(
@@ -83,7 +83,7 @@ function trovequery_views_data() {
     'title' => t('id'),
     'help' => t('The work number of this item.'),
     'filter' => array(
-      'handler' => 'trovequery_handler_filter_include_string',
+      'handler' => 'TrovequeryHandlerFilterIncludeString',
       'help' => t('Filter on work number (ID).'),
       'label' => t('The work number of the item.'),
       'trovequery' => array(
@@ -98,14 +98,14 @@ function trovequery_views_data() {
     'title' => t('tag'),
     'help' => t('Tags associated with this item.'),
     'field' => array(
-      'handler' => 'trovequery_handler_field_include',
+      'handler' => 'TrovequeryHandlerFieldInclude',
       'trovequery' => array(
         'arg' => 'include',
         'value' => 'tags',
       ),
     ),
     'filter' => array(
-      'handler' => 'trovequery_handler_filter_include',
+      'handler' => 'TrovequeryHandlerFilterInclude',
       'help' => t('Limit results to tagged items.'),
       'label' => t('The item has tags?'),
       'use equal' => TRUE,
@@ -122,7 +122,7 @@ function trovequery_views_data() {
     'title' => t('date'),
     'help' => t("Date of publication"),
     'field' => array(
-      'handler' => 'trovequery_handler_field_date',
+      'handler' => 'TrovequeryHandlerFieldDate',
     ),
   );
 
@@ -130,7 +130,7 @@ function trovequery_views_data() {
     'title' => t('comments date'),
     'help' => t('Comments posted on this date.'),
     'filter' => array(
-      'handler' => 'trovequery_handler_filter_date',
+      'handler' => 'TrovequeryHandlerFilterDate',
       'help' => t('Limit results to items with comments posted in this date range.'),
       'label' => t('Comments date range'),
       'trovequery' => array(
@@ -145,7 +145,7 @@ function trovequery_views_data() {
     'title' => t('last updated'),
     'help' => t('The date the item was last updated.'),
     'filter' => array(
-      'handler' => 'trovequery_handler_filter_date',
+      'handler' => 'TrovequeryHandlerFilterDate',
       'help' => t('Limit results to items updated before, after or between certain dates'),
       'label' => t('Last updated date'),
       'trovequery' => array(
@@ -159,7 +159,7 @@ function trovequery_views_data() {
   $data['trovequery']['relevance_sort'] = array(
     'title' => t('relevance'),
     'sort' => array(
-      'handler' => 'trovequery_handler_sort_relevance',
+      'handler' => 'TrovequeryHandlerSortRelevance',
       'help' => t('Sort results by relevance.'),
       'sort method' => 'sortby',
       'sort order' => 'relevance',
@@ -168,7 +168,7 @@ function trovequery_views_data() {
   $data['trovequery']['date_sort'] = array(
     'title' => t('date sort'),
     'sort' => array(
-      'handler' => 'trovequery_handler_sort_date',
+      'handler' => 'TrovequeryHandlerSortDate',
       'help' => t('Sort results by relevance.'),
       'sort method' => 'sortby',
       'sort order' => 'date',
@@ -179,14 +179,14 @@ function trovequery_views_data() {
     'title' => t('comment'),
     'help' => t('Comments associated with this item.'),
     'field' => array(
-      'handler' => 'trovequery_handler_field_include',
+      'handler' => 'TrovequeryHandlerFieldInclude',
       'trovequery' => array(
         'arg' => 'include',
         'value' => 'comments',
       ),
     ),
     'filter' => array(
-      'handler' => 'trovequery_handler_filter_include',
+      'handler' => 'TrovequeryHandlerFilterInclude',
       'help' => t('Limit results to items with comments.'),
       'label' => t('The item has comments?'),
       'trovequery' => array(
@@ -202,7 +202,7 @@ function trovequery_views_data() {
     'title' => t('trove url'),
     'help' => t('The url of this result.'),
     'field' => array(
-      'handler' => 'trovequery_handler_field_url',
+      'handler' => 'TrovequeryHandlerFieldUrl',
     ),
   );
 
@@ -210,7 +210,7 @@ function trovequery_views_data() {
     'title' => t('query'),
     'help' => t('The query keywords'),
     'filter' => array(
-      'handler' => 'trovequery_handler_filter_query',
+      'handler' => 'TrovequeryHandlerFilterQuery',
       'trovequery' => array(
         'arg' => 'q',
         'method' => 'result',
@@ -222,7 +222,7 @@ function trovequery_views_data() {
     'title' => t('article format'),
     'help' => t('The article format facet to filter on'),
     'filter' => array(
-      'handler' => 'trovequery_handler_filter_facet',
+      'handler' => 'TrovequeryHandlerFilterFacet',
       'trovequery' => array(
         'arg' => 'l-format',
         'method' => 'result',
@@ -235,7 +235,7 @@ function trovequery_views_data() {
     'title' => t('availability'),
     'help' => t('Filter on whether the item is online or not.'),
     'filter' => array(
-      'handler' => 'trovequery_handler_filter_facet',
+      'handler' => 'TrovequeryHandlerFilterFacet',
       'trovequery' => array(
         'arg' => 'l-availability',
         'method' => 'result',
@@ -248,10 +248,10 @@ function trovequery_views_data() {
     'title' => t('zone'),
     'help' => t('The trove zone this work belongs to'),
     'field' => array(
-      'handler' => 'trovequery_handler_field_title',
+      'handler' => 'TrovequeryHandlerFieldTitle',
     ),
     'filter' => array(
-      'handler' => 'trovequery_handler_filter_zone',
+      'handler' => 'TrovequeryHandlerFilterZone',
       'help' => t('Filter results based on trove zones'),
       'trovequery' => array(
         'arg' => 'zone',
@@ -265,7 +265,7 @@ function trovequery_views_data() {
     'title' => t('contributor'),
     'help' => t('The contibutor of this work.'),
     'field' => array(
-      'handler' => 'trovequery_handler_field_contributor',
+      'handler' => 'TrovequeryHandlerFieldContributor',
     ),
   );
 
@@ -273,7 +273,7 @@ function trovequery_views_data() {
     'title' => t('tid'),
     'help' => t('The Trove id of this work.'),
     'field' => array(
-      'handler' => 'trovequery_handler_field_tid',
+      'handler' => 'TrovequeryHandlerFieldTid',
     ),
   );
 
@@ -281,7 +281,7 @@ function trovequery_views_data() {
     'title' => t('snippet'),
     'help' => t('A snippet of this work.'),
     'field' => array(
-      'handler' => 'trovequery_handler_field_snippet',
+      'handler' => 'TrovequeryHandlerFieldSnippet',
     ),
   );
 
@@ -289,10 +289,10 @@ function trovequery_views_data() {
     'title' => t('category'),
     'help' => t('The category of this work.'),
     'field' => array(
-      'handler' => 'trovequery_handler_field_title',
+      'handler' => 'TrovequeryHandlerFieldTitle',
     ),
     'filter' => array(
-      'handler' => 'trovequery_handler_filter_facet',
+      'handler' => 'TrovequeryHandlerFilterFacet',
       'trovequery' => array(
         'arg' => 'l-category',
         'method' => 'result',
@@ -305,7 +305,7 @@ function trovequery_views_data() {
     'title' => t('lists'),
     'help' => t('Lists associated with this item.'),
     'field' => array(
-      'handler' => 'trovequery_handler_field_include',
+      'handler' => 'TrovequeryHandlerFieldInclude',
       'trovequery' => array(
         'arg' => 'include',
         'value' => 'lists',
@@ -317,7 +317,7 @@ function trovequery_views_data() {
     'title' => t('image'),
     'help' => t('The image for the Trove work - if available.'),
     'field' => array(
-      'handler' => 'trovequery_handler_field_image',
+      'handler' => 'TrovequeryHandlerFieldImage',
     ),
   );
 
@@ -325,10 +325,10 @@ function trovequery_views_data() {
     'title' => t('holdings:nuc'),
     'help' => t('The NUC symbol of an organisation with a copy of this work.'),
     'field' => array(
-      'handler' => 'trovequery_handler_field_string',
+      'handler' => 'TrovequeryHandlerFieldString',
     ),
     'filter' => array(
-      'handler' => 'trovequery_handler_filter_holding',
+      'handler' => 'TrovequeryHandlerFilterHolding',
       'help' => t('Filter by NUC (ID of organisation who has a copy of this work).'),
       'trovequery' => array(
         'arg' => 'q',

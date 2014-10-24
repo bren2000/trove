@@ -7,7 +7,7 @@
 /**
  * Views query plugin for the Trove Query results.
  */
-class trove_plugin_query extends views_plugin_query {
+class TrovePluginQuery extends views_plugin_query {
 
   /*
    * An array of sections of the WHERE query. Each section is in itself

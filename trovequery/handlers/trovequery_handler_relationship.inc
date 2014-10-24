@@ -4,7 +4,7 @@
  * Views field handler for basic Trove Query fields.
  */
 
-class trovequery_handler_relationship extends views_handler_relationship {
+class TrovequeryHandlerRelationship extends views_handler_relationship {
 
   /**
    * Called to implement a relationship in a query.

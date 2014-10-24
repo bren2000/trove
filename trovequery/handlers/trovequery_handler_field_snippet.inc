@@ -16,7 +16,7 @@
  * override this behavior and render the HTML.
  */
 
-class trovequery_handler_field_snippet extends views_handler_field {
+class TrovequeryHandlerFieldSnippet extends views_handler_field {
 
   /**
    * Called to add the field to a query.
