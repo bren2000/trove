@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Views field handler for basic Trove Query fields.
+ */
 
 class trovequery_handler_sort_date extends views_handler_sort {
 

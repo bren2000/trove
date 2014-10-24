@@ -1,7 +1,14 @@
 <?php
+/**
+ * @file
+ * Views field handler for basic Trove Query fields.
+ */
 
 class trovequery_handler_filter_zone extends views_handler_filter_in_operator {
 
+  /**
+   * Sets the 'value options'.
+   */
   function get_value_options() {
     if (!isset($this->value_options)) {
       $this->value_title = t('Zone type');
@@ -35,7 +42,7 @@ class trovequery_handler_filter_zone extends views_handler_filter_in_operator {
   }
 
   /**
-   * Overrides views_handler_filter_in_operator::operators
+   * Overrides views_handler_filter_in_operator::operators.
    */
   function operators() {
     $operators = array(
@@ -50,7 +57,9 @@ class trovequery_handler_filter_zone extends views_handler_filter_in_operator {
     return $operators;
   }
 
-
+  /**
+   * Validate the selected options.
+   */
   function validate() {
     $this->get_value_options();
     $errors = array();

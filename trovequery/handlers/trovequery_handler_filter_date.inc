@@ -11,6 +11,9 @@
  */
 class trovequery_handler_filter_date extends views_handler_filter_date {
 
+  /**
+   * Define the available options.
+   */
   function option_definition() {
     $options = parent::option_definition();
 
@@ -38,6 +41,9 @@ class trovequery_handler_filter_date extends views_handler_filter_date {
     parent::value_form($form, $form_state);
   }
 
+  /**
+   * Validates the selected options.
+   */
   function options_validate(&$form, &$form_state) {
     parent::options_validate($form, $form_state);
 
@@ -122,7 +128,9 @@ class trovequery_handler_filter_date extends views_handler_filter_date {
     }
   }
 
-
+  /**
+   * Check the input.
+   */
   function accept_exposed_input($input) {
     if (empty($this->options['exposed'])) {
       return TRUE;
@@ -157,6 +165,9 @@ class trovequery_handler_filter_date extends views_handler_filter_date {
     return $rc;
   }
 
+  /**
+   * Create the between dates filter.
+   */
   function op_between($field) {
     $a = intval(strtotime($this->value['min'], 0));
     $b = intval(strtotime($this->value['max'], 0));
@@ -170,6 +181,9 @@ class trovequery_handler_filter_date extends views_handler_filter_date {
     $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], $this->definition['trovequery']['index'] . ":[$a $operator $b]");
   }
 
+  /**
+   * Create the simple date filter.
+   */
   function op_simple($field) {
     if ($this->value['value'] == 'now') {
       $value = date('Y-m-d\T00:00:00\Z');

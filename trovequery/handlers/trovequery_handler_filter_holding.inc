@@ -10,9 +10,6 @@ class trovequery_handler_filter_holding extends views_handler_filter_in_operator
 
   /**
    * Sets the'value options'.
-   *
-   * @return
-   *   Return the stored values in $this->value_options if someone expects it.
    */
   function get_value_options() {
     if (!isset($this->value_options)) {
@@ -39,6 +36,9 @@ class trovequery_handler_filter_holding extends views_handler_filter_in_operator
     }
   }
 
+  /**
+   * Overrides views_handler_filter_string::operators
+   */
   function operators() {
     $operators = array(
       'in' => array(

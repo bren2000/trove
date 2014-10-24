@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Definition of trovequery_handler_filter_facet.
+ */
 
 class trovequery_handler_filter_facet extends views_handler_filter_in_operator {
 
@@ -6,8 +10,6 @@ class trovequery_handler_filter_facet extends views_handler_filter_in_operator {
 
   /**
    * Make an options list with depth indication.
-   * @param  array  $array
-   * @param  integer $level
    */
   function make_options($array, $level = 0) {
     $pre = '';
@@ -27,9 +29,6 @@ class trovequery_handler_filter_facet extends views_handler_filter_in_operator {
 
   /**
    * Sets the'value options'.
-   *
-   * @return
-   *   Return the stored values in $this->value_options if someone expects it.
    */
   function get_value_options() {
     if (!isset($this->value_options)) {

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * Views filter handler for basic Trove Query fields.
@@ -60,7 +59,7 @@ class trovequery_handler_filter_query extends views_handler_filter_string {
   }
 
   /**
-   * Set the operator
+   * Set the operator.
    */
   function operator() {
     $_operator = '';
@@ -78,6 +77,9 @@ class trovequery_handler_filter_query extends views_handler_filter_string {
     return $_operator;
   }
 
+  /**
+   * Format a phrase query.
+   */
   function op_phrase($field) {
     if (is_array($this->value)) {
       $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], '"' . implode($this->value, ',') . '"');
@@ -87,6 +89,9 @@ class trovequery_handler_filter_query extends views_handler_filter_string {
     }
   }
 
+  /**
+   * Format a multi-word query.
+   */
   function op_multi($field) {
     if (is_array($this->value)) {
       $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], implode($this->value, ' ') . ' ');
@@ -96,6 +101,9 @@ class trovequery_handler_filter_query extends views_handler_filter_string {
     }
   }
 
+  /**
+   *  Format a NOT phrase query.
+   */
   function op_not_phrase($field) {
     if (is_array($this->value)) {
       $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], implode($this->value, $this->operator()));
@@ -105,6 +113,9 @@ class trovequery_handler_filter_query extends views_handler_filter_string {
     }
   }
 
+  /**
+   *  Format a NOT multi-word query.
+   */
   function op_not_multi($field) {
     $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], $this->operator() . str_replace(' ', $this->operator(), $this->value));
   }

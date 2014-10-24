@@ -20,7 +20,6 @@ class trovequery_handler_field_include extends views_handler_field {
 
   /**
    * Define the options available.
-   * @return array
    */
   function option_definition() {
     $options = parent::option_definition();
@@ -58,8 +57,6 @@ class trovequery_handler_field_include extends views_handler_field {
   
   /**
    * Render output based on options settings.
-   * @param  object $values
-   * @return the rendered field
    */
   function render($values) {
     if (isset($values->{$this->field})) {

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * Views field handler for basic Trove Query fields.

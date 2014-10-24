@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Views field handler for basic Trove Query string fields.
+ */
 
 class troveitem_filter_string extends views_handler_filter_string {
 
@@ -16,7 +20,7 @@ class troveitem_filter_string extends views_handler_filter_string {
   }
 
   /**
-   * Overrides views_handler_filter_string::operators
+   * Overrides views_handler_filter_string::operators.
    */
   function operators() {
     $operators = array(

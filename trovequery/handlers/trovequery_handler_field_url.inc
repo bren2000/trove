@@ -22,7 +22,9 @@ class trovequery_handler_field_url extends views_handler_field_url {
 
   /**
    * Render output based on options settings.
-   * @param  object $values
+   * 
+   * @param object $values
+   * 
    * @return the rendered field
    */
   function render($values) {

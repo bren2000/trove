@@ -134,10 +134,11 @@ class trove_plugin_query extends views_plugin_query {
 
   /**
    * Add a simple WHERE clause to the query.
-   *   @param integer $group
-   *   @param string $field
-   *   @param string $value
-   *   @param string $operator
+   * 
+   * @param int $group
+   * @param string $field
+   * @param string $value
+   * @param string $operator
    */
   function add_where($group, $field, $value = NULL, $operator = NULL) {
     // Ensure all variants of 0 are actually 0. Thus '', 0 and NULL are all

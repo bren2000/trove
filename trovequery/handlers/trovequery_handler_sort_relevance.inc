@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * Sort results by relevance.

@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Views field handler for basic Trove Query fields.
+ */
 
 class trovequery_handler_filter_include extends views_handler_filter_boolean_operator {
 
@@ -12,6 +16,9 @@ class trovequery_handler_filter_include extends views_handler_filter_boolean_ope
     }
   }
 
+  /**
+   * Sets the'value options'.
+   */
   function get_value_options() {
     $this->value_options = array(
       1 => t('Yes'),

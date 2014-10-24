@@ -4,6 +4,9 @@ class trovecontrib_handler_filter_query extends views_handler_filter_string {
 
   public $always_required = TRUE;
 
+  /**
+   * Called to add the field to a query.
+   */
   function query() {
     if (isset($this->value, $this->definition['trovecontrib'])) {
       $this->query->args['method'] = $this->definition['trovecontrib']['method'];
