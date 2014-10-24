@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Views field handler for basic Trove Query fields.
+ */
 
 class trovecontrib_handler_filter_query extends views_handler_filter_string {
 

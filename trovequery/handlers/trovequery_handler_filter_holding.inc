@@ -37,7 +37,7 @@ class trovequery_handler_filter_holding extends views_handler_filter_in_operator
   }
 
   /**
-   * Overrides views_handler_filter_string::operators
+   * Overrides views_handler_filter_string::operators.
    */
   function operators() {
     $operators = array(

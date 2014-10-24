@@ -54,7 +54,7 @@ class trovequery_handler_field_include extends views_handler_field {
   function query() {
     $this->field_alias = $this->real_field;
   }
-  
+
   /**
    * Render output based on options settings.
    */

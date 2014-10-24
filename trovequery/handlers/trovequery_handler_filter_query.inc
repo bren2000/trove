@@ -102,7 +102,7 @@ class trovequery_handler_filter_query extends views_handler_filter_string {
   }
 
   /**
-   *  Format a NOT phrase query.
+   * Format a NOT phrase query.
    */
   function op_not_phrase($field) {
     if (is_array($this->value)) {
@@ -114,7 +114,7 @@ class trovequery_handler_filter_query extends views_handler_filter_string {
   }
 
   /**
-   *  Format a NOT multi-word query.
+   * Format a NOT multi-word query.
    */
   function op_not_multi($field) {
     $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], $this->operator() . str_replace(' ', $this->operator(), $this->value));
