@@ -23,6 +23,9 @@ class trovecontrib_handler_filter_query extends views_handler_filter_string {
     }
   }
 
+  /**
+   * Set the operator.
+   */
   function operators() {
     $operators = array(
       '=' => array(

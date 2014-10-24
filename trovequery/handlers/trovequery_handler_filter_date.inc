@@ -55,6 +55,9 @@ class trovequery_handler_filter_date extends views_handler_filter_date {
     $this->validate_valid_time($form['value'], $form_state['values']['options']['operator'], $form_state['values']['options']['value']);
   }
 
+  /**
+   * Validate the exposed filter value.
+   */
   function exposed_validate(&$form, &$form_state) {
     if (empty($this->options['exposed'])) {
       return;

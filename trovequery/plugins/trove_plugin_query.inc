@@ -76,8 +76,6 @@ class trove_plugin_query extends views_plugin_query {
    * group is wrapped around all conditions. This special group has the ID 0.
    * There is other code in filters which makes sure that the group IDs are
    * higher than zero.
-   *
-   * @param string $where
    */
   function build_condition($where = 'where') {
     $has_condition = FALSE;
