@@ -229,7 +229,7 @@ class TroveAPI {
    * Must be implemented by all subclasses. Returns an indexed array
    * of results, each result being an array keyed by the field name.
    */
-  protected function parse($joins) {}
+  protected function parse($joins = NULL) {}
 
 }
 
@@ -245,7 +245,7 @@ class TroveAPIResult extends troveAPI {
   /**
    * Create the result object.
    */
-  public function parse($joins) {
+  public function parse($joins = NULL) {
     $results = array();
     $total_results = 0;
 
@@ -420,13 +420,13 @@ class TroveAPIContributor extends troveAPI {
   /**
    * Create the result object.
    */
-  public function parse($joins) {
+  public function parse($joins = NULL) {
     $contributors = array();
     foreach ($this->response['response']['contributor'] as $contributor) {
       $cont = new stdClass();
       $cont->name = $contributor['name'];
       $cont->id = $contributor['id'];
-      if ($contributor['nuc'] != '') {
+      if (isset($contributor['nuc'])) {
         $cont->nuc  = $contributor['nuc'];
       }
       $contributors[] = $cont;

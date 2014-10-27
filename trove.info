@@ -5,3 +5,4 @@ package = Trove
 configure = admin/config/services/trove
 
 files[] = trove.api.inc
+files[] = trove.admin.inc
