@@ -46,10 +46,10 @@ class TrovequeryHandlerFilterFacet extends views_handler_filter_in_operator {
     if (isset($this->value, $this->definition['trovequery'])) {
       $this->query->args['method'] = $this->definition['trovequery']['method'];
       if (is_array($this->value)) {
-        $this->query->args[$this->definition['trovequery']['arg']] = implode($this->value, ',');
+        $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], implode($this->value, ','));
       }
       else {
-        $this->query->args[$this->definition['trovequery']['arg']] = $this->value;
+        $this->query->add_where($this->options['group'], $this->definition['trovequery']['arg'], $this->value);
       }
     }
   }
