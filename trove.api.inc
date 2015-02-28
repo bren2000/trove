@@ -2,11 +2,11 @@
 /**
  * Trove API class.
  *
- * Use TroveAPI::factory(operation) to get a request object. All
+ * Use TroveApi::factory(operation) to get a request object. All
  * public methods return $this and can be chained together.
  */
 
-class TroveAPI {
+abstract class TroveApi {
 
   public $response;
 
@@ -16,7 +16,7 @@ class TroveAPI {
 
   protected $method;
 
-  // API parameter, use troveAPI->set_filter() to set.
+  // API parameter, use TroveApi->set_filter() to set.
   protected $params = array();
 
   // Flag to designate if the $response is from a cache.
@@ -33,21 +33,21 @@ class TroveAPI {
    * @param string $base_table
    *   The Trove API operation to build a request for.
    *
-   * @return object TroveAPI
-   *   The TroveAPI object.
+   * @return object TroveApi
+   *   The TroveApi object.
    */
   public static function factory($base_table) {
     switch ($base_table) {
       case 'trovequery':
-        return new TroveAPIResult('result');
+        return new TroveApiResult('result');
 
       case 'work':
       case 'newspaper':
       case 'troveitem':
-        return new TroveAPIRecord($base_table);
+        return new TroveApiRecord($base_table);
 
       case 'trovecontrib':
-        return new TroveAPIContributor('contributor');
+        return new TroveApiContributor('contributor');
     }
   }
   /**
@@ -69,8 +69,8 @@ class TroveAPI {
    * @param string $value
    *   The value to set for the $key.
    *
-   * @return object TroveAPI
-   *    the TroveAPI object
+   * @return object TroveApi
+   *    the TroveApi object
    */
   public function set_filter($key, $value) {
     if (array_key_exists($key, $this->params) && $key !== 'method') {
@@ -93,8 +93,8 @@ class TroveAPI {
   /**
    * Check the arguments then make the request.
    *
-   * @return object TroveAPIRequest
-   *   the TroveAPIRequest object
+   * @return object TroveApiRequest
+   *   the TroveApiRequest object
    */
   protected function call($arguments) {
     foreach ($arguments as $key => $value) {
@@ -109,8 +109,8 @@ class TroveAPI {
   /**
    * Make the request. The results will be set on the `response` attribute.
    *
-   * @return object TroveAPIRequest
-   *   the TroveAPIRequest object
+   * @return object TroveApiRequest
+   *   the TroveApiRequest object
    */
   protected function execute($request_url) {
     $options = array(
@@ -221,19 +221,19 @@ class TroveAPI {
   /**
    * Abstract method query. Implement in sub-classes.
    */
-  public function query() {}
+  abstract public function query();
 
   /**
-   * Custom parser for the type of data we're retrieving.
+   * Abstract custom parser for the type of data we're retrieving.
    *
    * Must be implemented by all subclasses. Returns an indexed array
    * of results, each result being an array keyed by the field name.
    */
-  protected function parse($joins = NULL) {}
+  abstract protected function parse($joins = NULL);
 
 }
 
-class TroveAPIResult extends troveAPI {
+class TroveApiResult extends TroveApi {
 
   /**
    * Make the request.
@@ -391,7 +391,7 @@ class TroveAPIResult extends troveAPI {
 
 }
 
-class TroveAPIRecord extends troveAPI {
+class TroveApiRecord extends TroveApi {
 
   /**
    * Make the request.
@@ -399,9 +399,14 @@ class TroveAPIRecord extends troveAPI {
   public function query() {
     return $this->call($this->params);
   }
+
+  /**
+   * Create the result object
+   */
+  protected function parse($joins = NULL) {}
 }
 
-class TroveAPIContributor extends troveAPI {
+class TroveApiContributor extends TroveApi {
 
   /**
    * Constructor.
