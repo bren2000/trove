@@ -25,7 +25,7 @@ function trove_menu() {
 /**
  * Get the available zones.
  */
-function trove_get_zones() {
+function troveGetZones() {
   $zones = array(
     'all',
     'article',
@@ -45,7 +45,7 @@ function trove_get_zones() {
 /**
  * Get the available facet formats.
  */
-function trove_get_facets_format() {
+function troveGetFacetsFormat() {
   return array(
     'Archived website' => 'Archved website',
     'Art work' => 'Art work',
@@ -103,7 +103,7 @@ function trove_get_facets_format() {
 /**
  * Get the availability options.
  */
-function trove_get_facets_availability() {
+function troveGetFacetsAvailability() {
   return array(
     'y' => 'online',
     'y/f' => 'freely accessible online',
@@ -116,7 +116,7 @@ function trove_get_facets_availability() {
 /**
  * Get the category options.
  */
-function trove_get_facets_category() {
+function troveGetFacetsCategory() {
   return array(
     'Article' => 'Article',
     'Advertising' => 'Advertising',
@@ -129,7 +129,7 @@ function trove_get_facets_category() {
 /**
  * Get the contributors.
  */
-function trove_get_index_contributors() {
+function troveGetIndexContributors() {
   $list = array();
   $result = db_query("SELECT nuc, name
     FROM {trove_contributors}");

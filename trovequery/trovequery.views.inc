@@ -226,7 +226,7 @@ function trovequery_views_data() {
       'trovequery' => array(
         'arg' => 'l-format',
         'method' => 'result',
-        'facets_method' => 'trove_get_facets_format',
+        'facets_method' => 'troveGetFacetsFormat',
       ),
     ),
   );
@@ -239,7 +239,7 @@ function trovequery_views_data() {
       'trovequery' => array(
         'arg' => 'l-availability',
         'method' => 'result',
-        'facets_method' => 'trove_get_facets_availability',
+        'facets_method' => 'troveGetFacetsAvailability',
       ),
     ),
   );
@@ -256,7 +256,7 @@ function trovequery_views_data() {
       'trovequery' => array(
         'arg' => 'zone',
         'method' => 'result',
-        'zones_method' => 'trove_get_zones',
+        'zones_method' => 'troveGetZones',
       ),
     ),
   );
@@ -296,7 +296,7 @@ function trovequery_views_data() {
       'trovequery' => array(
         'arg' => 'l-category',
         'method' => 'result',
-        'facets_method' => 'trove_get_facets_category',
+        'facets_method' => 'troveGetFacetsCategory',
       ),
     ),
   );
@@ -334,7 +334,7 @@ function trovequery_views_data() {
         'arg' => 'q',
         'method' => 'result',
         'index' => 'nuc',
-        'index_method' => 'trove_get_index_contributors',
+        'index_method' => 'troveGetIndexContributors',
       ),
     ),
   );

@@ -44,7 +44,7 @@ function trove_admin_settings() {
     '#description' => t('This will update the list of Trove contributors, this list is used by views as filter values.'),
     '#suffix' => '<span id="update-cont-div"></span>',
     '#ajax' => array(
-      'callback' => 'trove_get_trove_contributors',
+      'callback' => 'troveGetTroveContributors',
       'wrapper' => 'update-cont-div',
       'method' => 'replace',
       'effect' => 'fade',
@@ -56,17 +56,17 @@ function trove_admin_settings() {
 /**
  * Update the trove contributors table.
  */
-function trove_get_trove_contributors() {
-  $contributors = TroveAPI::factory('trovecontrib');
+function troveGetTroveContributors() {
+  $contributors = TroveApi::factory('trovecontrib');
   $contributors->query();
   $list = $contributors->parse();
-  return (trove_db_add_trove_contributors($list) ? 'Contributors list updated with ' . count($list) . ' entries' : 'Error occured');
+  return (troveDbAddTroveContributors($list) ? 'Contributors list updated with ' . count($list) . ' entries' : 'Error occured');
 }
 
 /**
  * Add trove contributors.
  */
-function trove_db_add_trove_contributors($contributors) {
+function troveDbAddTroveContributors($contributors) {
   if (!empty($contributors)) {
     foreach ($contributors as $cont) {
       if ($cont->nuc) {
@@ -90,7 +90,7 @@ function trove_db_add_trove_contributors($contributors) {
 /**
  * Validate user input.
  */
-function trove_admin_settings_validate($form, &$form_state) {
+function troveAdminSettingsValidate($form, &$form_state) {
   $key = trim($form_state['values']['trove_api_key']);
 
   if ($key && (preg_match('/^[A-Za-z\d]{16}$/', $key) != 1)) {
@@ -101,7 +101,7 @@ function trove_admin_settings_validate($form, &$form_state) {
 /**
  * Submit form data.
  */
-function trove_admin_settings_submit($form, &$form_state) {
+function troveAdminSettingsSubmit($form, &$form_state) {
   // Clean up the data.
   $form_state['values']['trove_api_key'] = trim($form_state['values']['trove_api_key']);
 
