@@ -24,15 +24,17 @@ class TrovequeryHandlerFieldUrl extends views_handler_field_url {
    * Render output based on options settings.
    */
   public function render($values) {
-    $value = $values->{$this->field};
-    if (!empty($this->options['display_as_link'])) {
-      $this->options['alter']['make_link'] = TRUE;
-      $this->options['alter']['path'] = $value;
-      $text = !empty($this->options['text']) ? $this->sanitize_value($this->options['text']) : $this->sanitize_value($value, 'url');
-      return $text;
-    }
-    else {
-      return $this->sanitize_value($value, 'url');
+    if (isset($values->{$this->field})) {
+      $value = $values->{$this->field};
+      if (!empty($this->options['display_as_link'])) {
+        $this->options['alter']['make_link'] = TRUE;
+        $this->options['alter']['path'] = $value;
+        $text = !empty($this->options['text']) ? $this->sanitize_value($this->options['text']) : $this->sanitize_value($value, 'url');
+        return $text;
+      }
+      else {
+        return $this->sanitize_value($value, 'url');
+      }
     }
   }
 
