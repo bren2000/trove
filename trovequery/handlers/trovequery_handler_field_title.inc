@@ -50,15 +50,17 @@ class TrovequeryHandlerFieldTitle extends views_handler_field {
   }
 
   /**
-   * Render whatever the data is as a link to the taxonomy.
+   * Render whatever the data is as a link to the trove item.
    *
    * Data should be made XSS safe prior to calling this function.
    */
   public function render_link($data, $values) {
-    $trove_url = $values->trove_url;
-    if (!empty($this->options['link_to_trove']) && !empty($trove_url) && $data !== NULL && $data !== '') {
-      $this->options['alter']['make_link'] = TRUE;
-      $this->options['alter']['path'] = $trove_url;
+    if (isset($values->trove_url)) {
+      $trove_url = $values->trove_url;
+      if (!empty($this->options['link_to_trove']) && !empty($trove_url) && $data !== NULL && $data !== '') {
+        $this->options['alter']['make_link'] = TRUE;
+        $this->options['alter']['path'] = $trove_url;
+      }
     }
     return $data;
   }
