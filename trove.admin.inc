@@ -60,7 +60,7 @@ function troveGetTroveContributors() {
   $contributors = TroveApi::factory('trovecontrib');
   $contributors->query();
   $list = $contributors->parse();
-  return (troveDbAddTroveContributors($list) ? 'Contributors list updated with ' . count($list) . ' entries' : 'Error occured');
+  return (troveDbAddTroveContributors($list) ? 'Contributors list updated with ' . count($list) . ' entries' : 'An error occured');
 }
 
 /**
@@ -92,7 +92,6 @@ function troveDbAddTroveContributors($contributors) {
  */
 function troveAdminSettingsValidate($form, &$form_state) {
   $key = trim($form_state['values']['trove_api_key']);
-
   if ($key && (preg_match('/^[A-Za-z\d]{16}$/', $key) != 1)) {
     form_set_error('trove_api_key', t('This does not appear to be a trove API key.'));
   }
@@ -104,7 +103,6 @@ function troveAdminSettingsValidate($form, &$form_state) {
 function troveAdminSettingsSubmit($form, &$form_state) {
   // Clean up the data.
   $form_state['values']['trove_api_key'] = trim($form_state['values']['trove_api_key']);
-
   // Save the settings.
   system_settings_form_submit($form, $form_state);
 }
