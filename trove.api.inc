@@ -8,7 +8,7 @@
 
 abstract class TroveApi {
 
-  public $response;
+  protected $response;
 
   protected $troveBaseUrl;
 
@@ -229,10 +229,16 @@ abstract class TroveApi {
    * Must be implemented by all subclasses. Returns an indexed array
    * of results, each result being an array keyed by the field name.
    */
-  abstract protected function parse($joins = NULL);
+  abstract protected function parse();
 
 }
 
+
+/**
+ *  Represents a Trove Search
+ *
+ *  (see http://help.nla.gov.au/trove/building-with-trove/api-technical-guide#anchor-1)
+ */
 class TroveApiResult extends TroveApi {
 
   /**
@@ -245,7 +251,7 @@ class TroveApiResult extends TroveApi {
   /**
    * Create the result object.
    */
-  public function parse($joins = NULL) {
+  public function parse() {
     $results = array();
     $total_results = 0;
 
@@ -391,6 +397,11 @@ class TroveApiResult extends TroveApi {
 
 }
 
+/**
+ *  Represents a Trove metadata record
+ *
+ *  (see http://help.nla.gov.au/trove/building-with-trove/api-technical-guide#anchor-2)
+ */
 class TroveApiRecord extends TroveApi {
 
   /**
@@ -403,7 +414,7 @@ class TroveApiRecord extends TroveApi {
   /**
    * Create the result object
    */
-  protected function parse($joins = NULL) {}
+  protected function parse() {}
 }
 
 class TroveApiContributor extends TroveApi {
@@ -424,8 +435,12 @@ class TroveApiContributor extends TroveApi {
 
   /**
    * Create the result object.
+   *
+   * @return stdClass[]
+   *  An array of  stClass objetcs representing a contributor, including
+   *  name, id, and an array of nuc identifiers
    */
-  public function parse($joins = NULL) {
+  public function parse() {
     $contributors = array();
     foreach ($this->response['response']['contributor'] as $contributor) {
       $cont = new stdClass();
@@ -436,6 +451,7 @@ class TroveApiContributor extends TroveApi {
       }
       $contributors[] = $cont;
     }
+    dd($contributors);
     return $contributors;
   }
 
