@@ -8,4 +8,4 @@ dependencies[] = registry_autoload
 
 files[] = trove.admin.inc
 
-registry_autoload[] = PSR-0
+registry_autoload[] = PSR-4
