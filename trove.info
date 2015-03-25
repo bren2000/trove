@@ -4,5 +4,8 @@ core = 7.x
 package = Trove
 configure = admin/config/services/trove
 
-files[] = trove.api.inc
+dependencies[] = registry_autoload
+
 files[] = trove.admin.inc
+
+registry_autoload[] = PSR-0
