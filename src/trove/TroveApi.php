@@ -5,7 +5,7 @@
  * Use TroveApi::factory(operation) to get a request object. All
  * public methods return $this and can be chained together.
  */
-namespace  Drupal\trove\TroveApi;
+namespace  Drupal\trove;
 
 abstract class TroveApi {
 

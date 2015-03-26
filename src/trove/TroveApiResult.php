@@ -5,7 +5,7 @@
  *  (see http://help.nla.gov.au/trove/building-with-trove/api-technical-guide#anchor-1)
  */
 
-namespace  Drupal\trove\TroveApiResult;
+namespace  Drupal\trove;
 
 
 class TroveApiResult extends TroveApi {

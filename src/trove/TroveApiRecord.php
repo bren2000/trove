@@ -5,7 +5,7 @@
  *  (see http://help.nla.gov.au/trove/building-with-trove/api-technical-guide#anchor-2)
  */
 
-namespace  Drupal\trove\TroveApiRecord;
+namespace  Drupal\trove;
 
 class TroveApiRecord extends TroveApi {
 

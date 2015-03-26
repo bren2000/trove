@@ -7,6 +7,10 @@
 /**
  * Implements hook_settings_form().
  */
+
+use Drupal\trove\TroveApi;
+use Drupal\trove\TroveApiContributor;
+
 function trove_admin_settings() {
   $form['trove_api_key'] = array(
     '#type' => 'textfield',
@@ -57,7 +61,7 @@ function trove_admin_settings() {
  * Update the trove contributors table.
  */
 function troveGetTroveContributors() {
-  $contributors = Drupal\trove\TroveApi::factory('trovecontrib');
+  $contributors = TroveApi::factory('trovecontrib');
   $contributors->query();
   $list = $contributors->parse();
   return (troveDbAddTroveContributors($list) ? 'Contributors list updated with ' . count($list) . ' entries' : 'An error occured');

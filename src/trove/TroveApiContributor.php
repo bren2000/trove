@@ -1,6 +1,6 @@
 <?php
 
-namespace  Drupal\trove\TroveApiContributor;
+namespace  Drupal\trove;
 
 
 class TroveApiContributor extends TroveApi {
@@ -29,7 +29,7 @@ class TroveApiContributor extends TroveApi {
   public function parse() {
     $contributors = array();
     foreach ($this->response['response']['contributor'] as $contributor) {
-      $cont = new stdClass();
+      $cont = new \stdClass();
       $cont->name = $contributor['name'];
       $cont->id = $contributor['id'];
       if (isset($contributor['nuc'])) {
