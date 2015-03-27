@@ -26,38 +26,54 @@ abstract class TroveApi {
   // The cache table to use.
   protected $cacheTable = 'cache';
 
+  // property holding total results returned from api call
   protected $totalResults;
 
   /**
    * Factory method.
    *
-   * @param string $base_table
+   * @param string $op
    *   The Trove API operation to build a request for.
    *
    * @return object TroveApi
    *   The TroveApi object.
    */
-  public static function factory($base_table) {
-    switch ($base_table) {
+  public static function factory($op) {
+    switch ($op) {
       case 'trovequery':
         return new TroveApiResult('result');
-
       case 'work':
-      case 'newspaper':
       case 'troveitem':
-        return new TroveApiRecord($base_table);
-
-      case 'trovecontrib':
-        return new TroveApiContributor('contributor');
+        return new TroveApiRecord($op);
+      case 'newspaper/title':
+        return new TroveApiNewspaperTitle($op);
+      case 'newspaper/titles':
+        return new TroveApiNewspaperTitle($op);
+      case 'contributor':
+        return new TroveApiContributor($op);
     }
   }
   /**
    * Constructor. Use the factory method.
    */
   public function __construct($method) {
-    $this->set_filter('method', $method);
+    $this->setFilter('method', $method);
     $this->troveBaseUrl = TROVE_BASE_URL;
     $this->apiKey = variable_get('trove_api_key', '');
+  }
+
+  /**
+   * Add an ID to the request.
+   *
+   * @param int $id
+   *   The filter to set.
+   *
+   * @return object TroveApi
+   *    the TroveApi object
+   */
+  public function setId($id) {
+    $this->params['id'] = $id;
+    return $this;
   }
 
   /**
@@ -73,13 +89,13 @@ abstract class TroveApi {
    * @return object TroveApi
    *    the TroveApi object
    */
-  public function set_filter($key, $value) {
+  public function setFilter($key, $value) {
     if (array_key_exists($key, $this->params) && $key !== 'method') {
       switch ($key) {
         case 'include':
+        case 'zone':
           $this->params[$key] .= (',' . $value);
           break;
-
         default:
           $this->params[$key] .= (' ' . $value);
           break;
@@ -103,7 +119,12 @@ abstract class TroveApi {
         unset($arguments[$key]);
       }
     }
-    $this->request($this->params['method'], $arguments);
+    if(isset($this->params['id'])) {
+      $_command = $this->params['method'] . '/' . $this->params['id'];
+    } else {
+      $_command = $this->params['method'];
+    }
+    $this->request($_command, $arguments);
     return $this->response ? $this->response : FALSE;
   }
 
@@ -145,6 +166,7 @@ abstract class TroveApi {
    */
   public function request($command, $args = array()) {
     unset($args['method']);
+    unset($args['id']);
     $args = array_merge(array("encoding" => "json", "key" => $this->apiKey), $args);
 
     foreach ($args as $key => $data) {
@@ -158,15 +180,16 @@ abstract class TroveApi {
     }
 
     $request_url = url($this->troveBaseUrl . $command, array('query' => $args, 'absolute' => TRUE));
-
+    dpm($request_url);
     // Check if we have a cache hit or not.
-    if ($result = $this->cache_get($request_url)) {
+    if ($result = $this->cacheGet($request_url)) {
       $this->response = $result->data;
       $this->cache = TRUE;
+      dpm('cache = true');
     }
     else {
       $this->response = $this->execute($request_url);
-      $this->cache_set($request_url, $this->response);
+      $this->cacheSet($request_url, $this->response);
       $this->cache = FALSE;
     }
     return $this;
@@ -180,7 +203,7 @@ abstract class TroveApi {
    * @param bool $reset
    *   Set to TRUE to force a retrieval from the database.
    */
-  protected function cache_get($request_url, $reset = FALSE) {
+  protected function cacheGet($request_url, $reset = FALSE) {
     static $items = array();
     $cid = $this->cache_id($request_url);
     if (!isset($items[$cid]) || $reset) {
@@ -199,7 +222,7 @@ abstract class TroveApi {
   /**
    * Retrieve the cache. Wrapper around Drupal's cache_set().
    */
-  protected function cache_set($url, $data) {
+  protected function cacheSet($url, $data) {
     if ($data === FALSE) {
       // If we don't get a response we set a temporary cache to prevent hitting
       // the API frequently for no reason.
