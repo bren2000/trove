@@ -13,11 +13,14 @@ class TroveApiRecord extends TroveApi {
    * Make the request.
    */
   public function query() {
-    return $this->call($this->params);
+    $this->call($this->params);
+    return $this->response ? $this->response : FALSE;
   }
 
   /**
    * Create the result object
    */
-  protected function parse() {}
+  public function parse() {
+    return $this->response['article'];
+  }
 }

@@ -43,7 +43,8 @@ abstract class TroveApi {
       case 'trovequery':
         return new TroveApiResult('result');
       case 'work':
-      case 'troveitem':
+      case 'newspaper':
+      case 'list':
         return new TroveApiRecord($op);
       case 'newspaper/title':
         return new TroveApiNewspaperTitle($op);
