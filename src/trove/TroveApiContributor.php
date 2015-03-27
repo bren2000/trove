@@ -16,29 +16,33 @@ class TroveApiContributor extends TroveApi {
    * Make the request.
    */
   public function query() {
-    return $this->call($this->params);
+    $this->call($this->params);
+    $this->setTotalResults();
+    return $this->response ? $this->response : FALSE;
   }
 
   /**
    * Create the result object.
    *
-   * @return stdClass[]
-   *  An array of  stClass objetcs representing a contributor, including
-   *  name, id, and an array of nuc identifiers
+   * @return array
+   *  An array of  contributors
    */
   public function parse() {
-    $contributors = array();
-    foreach ($this->response['response']['contributor'] as $contributor) {
-      $cont = new \stdClass();
-      $cont->name = $contributor['name'];
-      $cont->id = $contributor['id'];
-      if (isset($contributor['nuc'])) {
-        $cont->nuc  = $contributor['nuc'];
-      }
-      $contributors[] = $cont;
-    }
-    dd($contributors);
-    return $contributors;
+    return $this->response['response']['contributor'];
+  }
+
+  /**
+   * Set the total results.
+   */
+  public function setTotalResults() {
+    $this->totalResults = count($this->response['response']['contributor']);
+  }
+
+  /**
+   * Get the total results.
+   */
+  public function getTotalResults() {
+    return $this->totalResults;
   }
 
 }
