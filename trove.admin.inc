@@ -61,7 +61,7 @@ function trove_admin_settings() {
  * Update the trove contributors table.
  */
 function troveGetTroveContributors() {
-  $contributors = TroveApi::factory('trovecontrib');
+  $contributors = TroveApi::factory('contributor');
   $contributors->query();
   $list = $contributors->parse();
   return (troveDbAddTroveContributors($list) ? 'Contributors list updated with ' . count($list) . ' entries' : 'An error occured');
