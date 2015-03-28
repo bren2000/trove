@@ -1,7 +1,8 @@
 <?php
 /**
  * @file
- * Abstract TroveApi base class for sub-classes represnting Trope API operations.
+ * Abstract TroveApi base class for sub-classes represnting Trope API
+ * operations.
  */
 
 namespace  Drupal\trove;
@@ -36,7 +37,7 @@ abstract class TroveApi {
   protected $cacheTable = 'cache';
 
   // Property holding total results returned from api call.
-  protected $total_results = 0;
+  protected $totalResults;
 
   /**
    * Factory method.
@@ -260,6 +261,18 @@ abstract class TroveApi {
   *   Message or error response to display.
   */
   protected function troveSetError($code, $message) {
+    switch ($code) {
+      case '404':
+        $message = 'Not found';
+        break;
+
+      case '500':
+        $message = "Internal server error";
+        break;
+
+      default:
+        break;
+    }
     $message = t('Trove error @error_id: %trove_error', array(
       '@error_id' => $code,
       '%trove_error' => $message,
