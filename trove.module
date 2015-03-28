@@ -33,8 +33,14 @@ function trove_permission() {
 
 /**
  * Get the available zones.
+ *
+ * See @link http://help.nla.gov.au/trove/building-with-trove/api-technical-guide Trove API facets documentation @endlink
+ * for detailed facets information.
+ *
+ * @return array
+ *   Array of trove zones.
  */
-function troveGetZones() {
+function trove_get_zones() {
   $zones = array(
     'all',
     'article',
@@ -53,8 +59,14 @@ function troveGetZones() {
 
 /**
  * Get the available facet formats.
+ *
+ * See @link http://help.nla.gov.au/trove/building-with-trove/api-technical-guide#anchor-8 Trove API facets documentation @endlink
+ * for detailed facets information.
+ *
+ * @return array
+ *   Array of facets formats.
  */
-function troveGetFacetsFormat() {
+function trove_get_facets_format() {
   return array(
     'Archived website' => 'Archved website',
     'Art work' => 'Art work',
@@ -111,8 +123,14 @@ function troveGetFacetsFormat() {
 
 /**
  * Get the availability options.
+ *
+ * See @link http://help.nla.gov.au/trove/building-with-trove/api-technical-guide#anchor-8 Trove API facets documentation @endlink
+ * for detailed facets information.
+ *
+ * @return array
+ *   An array of availability facets
  */
-function troveGetFacetsAvailability() {
+function trove_get_facets_availability() {
   return array(
     'y' => 'online',
     'y/f' => 'freely accessible online',
@@ -124,8 +142,14 @@ function troveGetFacetsAvailability() {
 
 /**
  * Get the category options.
+ *
+ * See @link http://help.nla.gov.au/trove/building-with-trove/api-technical-guide#anchor-8 Trove API facets documentation @endlink
+ * for detailed facets information.
+ *
+ * @return array
+ *   An array of category facets
  */
-function troveGetFacetsCategory() {
+function trove_get_facets_category() {
   return array(
     'Article' => 'Article',
     'Advertising' => 'Advertising',
@@ -138,7 +162,7 @@ function troveGetFacetsCategory() {
 /**
  * Get the contributors.
  */
-function troveGetIndexContributors() {
+function trove_get_index_contributors() {
   $list = array();
   $result = db_query("SELECT nuc, name
     FROM {trove_contributors}");
