@@ -36,7 +36,7 @@ abstract class TroveApi {
   protected $cacheTable = 'cache';
 
   // property holding total results returned from api call
-  protected $totalResults;
+  protected $totalResults = 0;
 
   /**
    * Factory method.
@@ -195,15 +195,12 @@ abstract class TroveApi {
     }
 
     $request_url = url($this->troveBaseUrl . $command, array('query' => $args, 'absolute' => TRUE));
-    dpm($request_url);
     // Check if we have a cache hit or not.
     if ($result = $this->cacheGet($request_url)) {
       $this->response = $result->data;
       $this->cache = TRUE;
-      dpm('cache = true');
     }
-    else {
-      $this->response = $this->execute($request_url);
+    elseif ($this->response = $this->execute($request_url)) {
       $this->cacheSet($request_url, $this->response);
       $this->cache = FALSE;
     }
