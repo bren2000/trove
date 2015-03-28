@@ -26,7 +26,9 @@ class TroveApiContributor extends TroveApi {
    */
   public function query() {
     $this->call($this->params);
-    $this->setTotalResults();
+    if (!isset($this->params['id'])) {
+      $this->setTotalResults();
+    }
     return $this->response ? $this->response : FALSE;
   }
 
@@ -34,14 +36,14 @@ class TroveApiContributor extends TroveApi {
    * {@inheritdoc}
    */
   public function parse() {
-    return $this->response['response']['contributor'];
+    return $this->response;
   }
 
   /**
    * Setter method for $totalResults.
    */
   public function setTotalResults() {
-    $this->total_results = count($this->response['response']['contributor']);
+    $this->totalResults = count($this->response['response']['contributor']);
   }
 
   /**

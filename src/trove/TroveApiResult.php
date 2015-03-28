@@ -29,15 +29,16 @@ class TroveApiResult extends TroveApi {
    * {@inheritdoc}
    */
   public function parse() {
-    return $this->response['response'];
+    return $this->response;
   }
 
   /**
    * Setter method for $totalResults.
    */
   public function setTotalResults() {
+    $this->totalResults = 0;
     foreach ($this->response['response']['zone'] as $zone) {
-      $this->$total_results += $zone['records']['total'];
+      $this->$totalResults += $zone['records']['total'];
     }
   }
 
@@ -45,7 +46,7 @@ class TroveApiResult extends TroveApi {
    * Getter method for $totalResultse.
    */
   public function getTotalResults() {
-    return $this->total_results;
+    return $this->totalResults;
   }
 
 }
