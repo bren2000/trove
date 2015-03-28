@@ -4,15 +4,14 @@
  * Abstract TroveApi base class for sub-classes represnting Trope API operations.
  */
 
+namespace  Drupal\trove;
+
 /**
  * TroveAPI class.
  *
  * Use TroveApi::factory(operation) to get a request object. All
  * public methods return $this and can be chained together.
  */
-
-namespace  Drupal\trove;
-
 abstract class TroveApi {
 
   // The response object.
@@ -24,7 +23,7 @@ abstract class TroveApi {
   // Users API key.
   protected $apiKey;
 
-  // reference to the trove api service method, e.g 'contributors'
+  // Reference to the trove api service method, e.g 'contributors'
   protected $method;
 
   // API parameter, use TroveApi->set_filter() to set.
@@ -36,8 +35,8 @@ abstract class TroveApi {
   // The cache table to use.
   protected $cacheTable = 'cache';
 
-  // property holding total results returned from api call
-  protected $totalResults = 0;
+  // Property holding total results returned from api call.
+  protected $total_results = 0;
 
   /**
    * Factory method.
@@ -52,16 +51,21 @@ abstract class TroveApi {
     switch ($op) {
       case 'trovequery':
         return new TroveApiResult('result');
+
       case 'work':
       case 'newspaper':
       case 'list':
         return new TroveApiRecord($op);
+
       case 'newspaper/title':
         return new TroveApiNewspaperTitle($op);
+
       case 'newspaper/titles':
         return new TroveApiNewspaperTitle($op);
+
       case 'contributor':
         return new TroveApiContributor($op);
+
     }
   }
   /**
@@ -130,9 +134,10 @@ abstract class TroveApi {
         unset($arguments[$key]);
       }
     }
-    if(isset($this->params['id'])) {
+    if (isset($this->params['id'])) {
       $_command = $this->params['method'] . '/' . $this->params['id'];
-    } else {
+    }
+    else {
       $_command = $this->params['method'];
     }
     $this->request($_command, $arguments);
@@ -218,7 +223,7 @@ abstract class TroveApi {
    */
   protected function cacheGet($request_url, $reset = FALSE) {
     static $items = array();
-    $cid = $this->cache_id($request_url);
+    $cid = $this->cacheId($request_url);
     if (!isset($items[$cid]) || $reset) {
       $items[$cid] = cache_get($cid, $this->cacheTable);
       if (cache_get($cid, $this->cacheTable) == FALSE) {
@@ -239,31 +244,26 @@ abstract class TroveApi {
     if ($data === FALSE) {
       // If we don't get a response we set a temporary cache to prevent hitting
       // the API frequently for no reason.
-      cache_set($this->cache_id($url), FALSE, $this->cacheTable, CACHE_TEMPORARY);
+      cache_set($this->cacheId($url), FALSE, $this->cacheTable, CACHE_TEMPORARY);
     }
     else {
       $ttl = (int) variable_get('trove_cache_duration', 900);
       $expire = time() + $ttl;
-      cache_set($this->cache_id($url), $data, $this->cacheTable, $expire);
+      cache_set($this->cacheId($url), $data, $this->cacheTable, $expire);
     }
   }
 
   /**
- * Display an error message to trove admins and write an error to watchdog.
- *
- * @param string $message
- *   Message or error response to display.
- */
-  function troveSetError($code, $message) {
-    if (is_array($message)) {
-      $message = t('Trove error @error_id: %trove_error', array(
-        '@error_id' => $code,
-        '%trove_error' => $message,
-      ));
-    }
-    else {
-      $message = t('Trove error: ' . $message);
-    }
+  * Display an error message to trove admins and write an error to watchdog.
+  *
+  * @param string $message
+  *   Message or error response to display.
+  */
+  protected function troveSetError($code, $message) {
+    $message = t('Trove error @error_id: %trove_error', array(
+      '@error_id' => $code,
+      '%trove_error' => $message,
+    ));
 
     if (user_access('administer trove')) {
       drupal_set_message($message, 'error');
@@ -272,14 +272,14 @@ abstract class TroveApi {
   }
 
   /**
-   * Get a cache id
+   * Get a cache id.
    *
    * Helper function to generate a cache id based on class name & hash of url.
    *
-   * @param String $requets_url
+   * @param string $request_url
    *   The full trove API requets URL.
    */
-  protected function cache_id($request_url) {
+  protected function cacheId($request_url) {
     return get_class($this) . ':' . md5($request_url);
   }
 

@@ -6,6 +6,4 @@ configure = admin/config/services/trove
 
 dependencies[] = registry_autoload
 
-files[] = trove.admin.inc
-
 registry_autoload[] = PSR-4

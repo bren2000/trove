@@ -4,15 +4,14 @@
  * TroveApiNewspaperTitle class for represnting Trope API newspaper title operations.
  */
 
+namespace  Drupal\trove;
+
 /**
  * TroveAPINewspaperTitle class.
  *
  * Use TroveApi::factory(operation) to get a request object. All
  * public methods return $this and can be chained together.
  */
-namespace  Drupal\trove;
-
-
 class TroveApiNewspaperTitle extends TroveApi {
 
   /**

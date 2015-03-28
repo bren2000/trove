@@ -4,15 +4,14 @@
  * TroveApiRecord class for represnting Trope API record operations.
  */
 
+namespace  Drupal\trove;
+
 /**
  * TroveAPIRecord class.
  *
  * Use TroveApi::factory(operation) to get a request object. All
  * public methods return $this and can be chained together.
  */
-
-namespace  Drupal\trove;
-
 class TroveApiRecord extends TroveApi {
 
   /**
@@ -29,4 +28,5 @@ class TroveApiRecord extends TroveApi {
   public function parse() {
     return $this->response['article'];
   }
+
 }

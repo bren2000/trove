@@ -4,15 +4,14 @@
  * TroveApiRecord class for represnting Trope API search operations.
  */
 
+namespace  Drupal\trove;
+
 /**
  * TroveAPIResult class.
  *
  * Use TroveApi::factory(operation) to get a request object. All
  * public methods return $this and can be chained together.
  */
-
-namespace  Drupal\trove;
-
 class TroveApiResult extends TroveApi {
 
   /**
@@ -20,7 +19,7 @@ class TroveApiResult extends TroveApi {
    */
   public function query() {
     $this->call($this->params);
-    if($this->response) {
+    if ($this->response) {
       $this->setTotalResults();
     }
     return $this->response;
@@ -34,11 +33,11 @@ class TroveApiResult extends TroveApi {
   }
 
   /**
-   * Setter method for $totalResults
+   * Setter method for $totalResults.
    */
   public function setTotalResults() {
-    foreach($this->response['response']['zone'] as $zone) {
-      $this->$totalResults += $zone['records']['total'];
+    foreach ($this->response['response']['zone'] as $zone) {
+      $this->$total_results += $zone['records']['total'];
     }
   }
 
@@ -46,7 +45,7 @@ class TroveApiResult extends TroveApi {
    * Getter method for $totalResultse.
    */
   public function getTotalResults() {
-    return $this->totalResults;
+    return $this->total_results;
   }
 
 }
