@@ -23,6 +23,15 @@ function trove_menu() {
 }
 
 /**
+ * Implements hook_permission().
+ */
+function trove_permission() {
+  return array(
+    'administer torve' => array('title' => t('Administer trove settings')),
+  );
+}
+
+/**
  * Get the available zones.
  */
 function troveGetZones() {
