@@ -1,8 +1,7 @@
 <?php
 /**
  * @file
- * Abstract TroveApi base class for sub-classes represnting Trope API
- * operations.
+ * Abstract TroveApi base class for sub-classes represnting API operations.
  */
 
 namespace  Drupal\trove;
@@ -81,7 +80,7 @@ abstract class TroveApi {
   /**
    * Add an ID to the request.
    *
-   * @param String $id
+   * @param string $id
    *   The filter to set.
    *
    * @return object TroveApi
@@ -112,6 +111,7 @@ abstract class TroveApi {
         case 'zone':
           $this->params[$key] .= (',' . $value);
           break;
+
         default:
           $this->params[$key] .= (' ' . $value);
           break;
@@ -180,7 +180,7 @@ abstract class TroveApi {
    *
    * @param string $command
    *   The Trove API operation to build a request for.
-   * @param  array $args
+   * @param array $args
    *   An array of request parameters.
    *
    * @return object TroveApi
@@ -255,11 +255,11 @@ abstract class TroveApi {
   }
 
   /**
-  * Display an error message to trove admins and write an error to watchdog.
-  *
-  * @param string $message
-  *   Message or error response to display.
-  */
+   * Display an error message to trove admins and write an error to watchdog.
+   *
+   * @param string $message
+   *   Message or error response to display.
+   */
   protected function troveSetError($code, $message) {
     switch ($code) {
       case '404':

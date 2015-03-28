@@ -17,13 +17,13 @@ class TroveApiNewspaperTitle extends TroveApi {
   /**
    * {@inheritdoc}
    */
-   public function query() {
-     $this->call($this->params);
-     if ($this->response && $this->params['method'] == 'newspaper/titles') {
-       $this->setTotalResults();
-     }
-     return $this->response;
-   }
+  public function query() {
+    $this->call($this->params);
+    if ($this->response && $this->params['method'] == 'newspaper/titles') {
+      $this->setTotalResults();
+    }
+    return $this->response;
+  }
 
   /**
    * {@inheritdoc}

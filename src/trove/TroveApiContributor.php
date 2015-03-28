@@ -22,7 +22,7 @@ class TroveApiContributor extends TroveApi {
   }
 
   /**
-    * {@inheritdoc}
+   * {@inheritdoc}
    */
   public function query() {
     $this->call($this->params);
