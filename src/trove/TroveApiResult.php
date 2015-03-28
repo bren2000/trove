@@ -33,7 +33,7 @@ class TroveApiResult extends TroveApi {
    */
   public function setTotalResults() {
     foreach($this->response['response']['zone'] as $zone) {
-      $totalResults += $zone['records']['total'];
+      $this->$totalResults += $zone['records']['total'];
     }
   }
 
