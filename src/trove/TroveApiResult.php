@@ -15,8 +15,10 @@ class TroveApiResult extends TroveApi {
    */
   public function query() {
     $this->call($this->params);
-    $this->setTotalResults();
-    return $this->response ? $this->response : FALSE;
+    if($this->response) {
+      $this->setTotalResults();
+    }
+    return $this->response;
   }
 
   /**
@@ -30,11 +32,9 @@ class TroveApiResult extends TroveApi {
    * Set the total results.
    */
   public function setTotalResults() {
-    $_total = 0;
     foreach($this->response['response']['zone'] as $zone) {
-      $_total += $zone['records']['total'];
+      $totalResults += $zone['records']['total'];
     }
-    $this->totalResults = $_total;
   }
 
   /**
