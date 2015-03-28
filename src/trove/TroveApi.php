@@ -1,5 +1,10 @@
 <?php
 /**
+ * @file
+ * Abstract base class for classes represnting Trope API operations.
+ */
+
+/**
  * Trove API class.
  *
  * Use TroveApi::factory(operation) to get a request object. All
@@ -9,12 +14,16 @@ namespace  Drupal\trove;
 
 abstract class TroveApi {
 
+  // The response object.
   protected $response;
 
+  // Base URL of the trove api service.
   protected $troveBaseUrl;
 
+  // Users API key.
   protected $apiKey;
 
+  // reference to the trove api service method, e.g 'contributors'
   protected $method;
 
   // API parameter, use TroveApi->set_filter() to set.
@@ -55,7 +64,7 @@ abstract class TroveApi {
     }
   }
   /**
-   * Constructor. Use the factory method.
+   * Constructor. Use the factory method TroveApi objects.
    */
   public function __construct($method) {
     $this->setFilter('method', $method);
@@ -66,7 +75,7 @@ abstract class TroveApi {
   /**
    * Add an ID to the request.
    *
-   * @param int $id
+   * @param String $id
    *   The filter to set.
    *
    * @return object TroveApi
@@ -130,7 +139,9 @@ abstract class TroveApi {
   }
 
   /**
-   * Make the request. The results will be set on the `response` attribute.
+   * Make the request.
+   *
+   * The results will be set on the `response` attribute.
    *
    * @return object TroveApiRequest
    *   the TroveApiRequest object
@@ -145,25 +156,28 @@ abstract class TroveApi {
     if ($response->code == '200') {
       $data = json_decode($response->data, TRUE);
       if (is_array($data)) {
-        if (isset($data->error)) {
-          watchdog('error', "Trove error !code received: %message", array('!code' => $data->error, '%mesage' => $data->message));
-        }
-        else {
-          return $data;
-        }
+        return $data;
       }
       else {
-        watchdog('error', "Didn't receive valid API response (invalid JSON).");
+        $this->troveSetError($response->code, $response->data);
       }
     }
     else {
-      watchdog('error', 'HTTP error !code received', array('!code' => $response->code));
+      $this->troveSetError($response->code, $response->data);
     }
     return FALSE;
   }
 
   /**
    * Make the actual HTTP request and parse output.
+   *
+   * @param string $command
+   *   The Trove API operation to build a request for.
+   * @param  array $args
+   *   An array of request parameters.
+   *
+   * @return object TroveApi
+   *   The TroveApi object.
    */
   public function request($command, $args = array()) {
     unset($args['method']);
@@ -237,7 +251,35 @@ abstract class TroveApi {
   }
 
   /**
+ * Display an error message to trove admins and write an error to watchdog.
+ *
+ * @param string $message
+ *   Message or error response to display.
+ */
+  function troveSetError($code, $message) {
+    if (is_array($message)) {
+      $message = t('Trove error @error_id: %trove_error', array(
+        '@error_id' => $code,
+        '%trove_error' => $message,
+      ));
+    }
+    else {
+      $message = t('Trove error: ' . $message);
+    }
+
+    if (user_access('administer trove')) {
+      drupal_set_message($message, 'error');
+    }
+    watchdog('trove', $message, array(), WATCHDOG_WARNING);
+  }
+
+  /**
+   * Get a cache id
+   *
    * Helper function to generate a cache id based on class name & hash of url.
+   *
+   * @param String $requets_url
+   *   The full trove API requets URL.
    */
   protected function cache_id($request_url) {
     return get_class($this) . ':' . md5($request_url);
@@ -254,6 +296,6 @@ abstract class TroveApi {
    * Must be implemented by all subclasses. Returns an indexed array
    * of results, each result being an array keyed by the field name.
    */
-  abstract protected function parse();
+  abstract public function parse();
 
 }
