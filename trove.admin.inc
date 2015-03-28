@@ -4,13 +4,12 @@
  * The admin settings for the trove module.
  */
 
-/**
- * Implements hook_settings_form().
- */
-
 use Drupal\trove\TroveApi;
 use Drupal\trove\TroveApiContributor;
 
+/**
+ * Implements hook_settings_form().
+ */
 function trove_admin_settings() {
   $form['trove_api_key'] = array(
     '#type' => 'textfield',
@@ -48,7 +47,7 @@ function trove_admin_settings() {
     '#description' => t('This will update the list of Trove contributors, this list is used by views as filter values.'),
     '#suffix' => '<span id="update-cont-div"></span>',
     '#ajax' => array(
-      'callback' => 'troveGetTroveContributors',
+      'callback' => 'trove_get_trove_contributors',
       'wrapper' => 'update-cont-div',
       'method' => 'replace',
       'effect' => 'fade',
@@ -60,17 +59,17 @@ function trove_admin_settings() {
 /**
  * Update the trove contributors table.
  */
-function troveGetTroveContributors() {
+function trove_get_trove_contributors() {
   $contributors = TroveApi::factory('contributor');
   $contributors->query();
   $list = $contributors->parse();
-  return (troveDbAddTroveContributors($list) ? 'Contributors list updated with ' . count($list) . ' entries' : 'An error occured');
+  return (trove_db_add_trove_contributors($list) ? 'Contributors list updated with ' . count($list) . ' entries' : 'An error occured');
 }
 
 /**
  * Add trove contributors.
  */
-function troveDbAddTroveContributors($contributors) {
+function trove_db_add_trove_contributors($contributors) {
   if (!empty($contributors)) {
     foreach ($contributors as $cont) {
       if ($cont->nuc) {
@@ -94,7 +93,7 @@ function troveDbAddTroveContributors($contributors) {
 /**
  * Validate user input.
  */
-function troveAdminSettingsValidate($form, &$form_state) {
+function trove_admin_settings_validate($form, &$form_state) {
   $key = trim($form_state['values']['trove_api_key']);
   if ($key && (preg_match('/^[A-Za-z\d]{16}$/', $key) != 1)) {
     form_set_error('trove_api_key', t('This does not appear to be a trove API key.'));
@@ -104,7 +103,7 @@ function troveAdminSettingsValidate($form, &$form_state) {
 /**
  * Submit form data.
  */
-function troveAdminSettingsSubmit($form, &$form_state) {
+function trove_admin_settings_submit($form, &$form_state) {
   // Clean up the data.
   $form_state['values']['trove_api_key'] = trim($form_state['values']['trove_api_key']);
   // Save the settings.
