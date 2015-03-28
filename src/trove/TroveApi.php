@@ -1,15 +1,16 @@
 <?php
 /**
  * @file
- * Abstract base class for classes represnting Trope API operations.
+ * Abstract TroveApi base class for sub-classes represnting Trope API operations.
  */
 
 /**
- * Trove API class.
+ * TroveAPI class.
  *
  * Use TroveApi::factory(operation) to get a request object. All
  * public methods return $this and can be chained together.
  */
+
 namespace  Drupal\trove;
 
 abstract class TroveApi {

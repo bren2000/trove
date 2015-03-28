@@ -1,8 +1,14 @@
 <?php
 /**
- *  Represents a Trove metadata record
+ * @file
+ * TroveApiRecord class for represnting Trope API record operations.
+ */
+
+/**
+ * TroveAPIRecord class.
  *
- *  (see http://help.nla.gov.au/trove/building-with-trove/api-technical-guide#anchor-2)
+ * Use TroveApi::factory(operation) to get a request object. All
+ * public methods return $this and can be chained together.
  */
 
 namespace  Drupal\trove;
@@ -10,7 +16,7 @@ namespace  Drupal\trove;
 class TroveApiRecord extends TroveApi {
 
   /**
-   * Make the request.
+   * {@inheritdoc}
    */
   public function query() {
     $this->call($this->params);
@@ -18,7 +24,7 @@ class TroveApiRecord extends TroveApi {
   }
 
   /**
-   * Create the result object
+   * {@inheritdoc}
    */
   public function parse() {
     return $this->response['article'];

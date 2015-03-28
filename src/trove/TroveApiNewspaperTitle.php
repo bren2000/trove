@@ -1,17 +1,22 @@
 <?php
 /**
- *  Represents a Trove Search
- *
- *  (see http://help.nla.gov.au/trove/building-with-trove/api-technical-guide#anchor-1)
+ * @file
+ * TroveApiNewspaperTitle class for represnting Trope API newspaper title operations.
  */
 
+/**
+ * TroveAPINewspaperTitle class.
+ *
+ * Use TroveApi::factory(operation) to get a request object. All
+ * public methods return $this and can be chained together.
+ */
 namespace  Drupal\trove;
 
 
 class TroveApiNewspaperTitle extends TroveApi {
 
   /**
-   * Make the request.
+   * {@inheritdoc}
    */
   public function query() {
     $this->call($this->params);
@@ -19,7 +24,7 @@ class TroveApiNewspaperTitle extends TroveApi {
   }
 
   /**
-   * Create the result object.
+   * {@inheritdoc}
    */
   public function parse() {
     return $this->response['newspaper'];

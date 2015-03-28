@@ -1,7 +1,17 @@
 <?php
+/**
+ * @file
+ * TroveApiContributor class for represnting Trope API contributor operations.
+ */
+
+/**
+ * TroveAPIContributor class.
+ *
+ * Use TroveApi::factory(operation) to get a request object. All
+ * public methods return $this and can be chained together.
+ */
 
 namespace  Drupal\trove;
-
 
 class TroveApiContributor extends TroveApi {
 
@@ -13,7 +23,7 @@ class TroveApiContributor extends TroveApi {
   }
 
   /**
-   * Make the request.
+   * {@inheritdoc}
    */
   public function query() {
     $this->call($this->params);
@@ -22,24 +32,21 @@ class TroveApiContributor extends TroveApi {
   }
 
   /**
-   * Create the result object.
-   *
-   * @return array
-   *  An array of  contributors
-   */
+  * {@inheritdoc}
+  */
   public function parse() {
     return $this->response['response']['contributor'];
   }
 
   /**
-   * Set the total results.
+   * Setter method for $totalResults
    */
   public function setTotalResults() {
     $this->totalResults = count($this->response['response']['contributor']);
   }
 
   /**
-   * Get the total results.
+   * Getter method for $totalResults
    */
   public function getTotalResults() {
     return $this->totalResults;

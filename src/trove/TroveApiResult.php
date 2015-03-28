@@ -1,17 +1,22 @@
 <?php
 /**
- *  Represents a Trove Search
+ * @file
+ * TroveApiRecord class for represnting Trope API search operations.
+ */
+
+/**
+ * TroveAPIResult class.
  *
- *  (see http://help.nla.gov.au/trove/building-with-trove/api-technical-guide#anchor-1)
+ * Use TroveApi::factory(operation) to get a request object. All
+ * public methods return $this and can be chained together.
  */
 
 namespace  Drupal\trove;
 
-
 class TroveApiResult extends TroveApi {
 
   /**
-   * Make the request.
+   * {@inheritdoc}
    */
   public function query() {
     $this->call($this->params);
@@ -22,14 +27,14 @@ class TroveApiResult extends TroveApi {
   }
 
   /**
-   * Create the result object.
+   * {@inheritdoc}
    */
   public function parse() {
     return $this->response['response'];
   }
 
   /**
-   * Set the total results.
+   * Setter method for $totalResults
    */
   public function setTotalResults() {
     foreach($this->response['response']['zone'] as $zone) {
@@ -38,7 +43,7 @@ class TroveApiResult extends TroveApi {
   }
 
   /**
-   * Get the total results.
+   * Getter method for $totalResultse.
    */
   public function getTotalResults() {
     return $this->totalResults;

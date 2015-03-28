@@ -21,10 +21,82 @@ CONFIGURATION
  * For more information on using the Trove API, visit
    http://help.nla.gov.au/trove/building-with-trove/api
 
+USAGE
+-----
+Examples
+
+Getting a list of all Trove contributors:
+<?php
+use Drupal\trove\TroveApi;
+use Drupal\trove\TroveApiContributor;
+
+$contributors = TroveAPI::factory('contributor');
+$contributors->query();
+$list = $contributors->parse();
+?>
+
+Getting a result set for items in the Trove books zone with the keyword
+query "fish":
+<?php
+use Drupal\trove\TroveApi;
+use Drupal\trove\TroveApiQuery;
+
+$my_search = TroveAPI::factory('trovequery');
+$my_search->set_filter('zone','book')
+   ->set_filter('q','fish')
+   ->query();
+$list = $my_search->parse();
+?>
+
+Get the list of years available in Trove for the Sydney Morning Herald and get
+the dates it was issued in 1926 and 1927:
+<?php
+use Drupal\trove\TroveApi;
+use Drupal\trove\TroveApiQueryNewspaperTitle;
+
+$title = TroveAPI::factory('newspaper/title');
+$title->setId('35')
+      ->setFilter('include','years')
+      ->setFilter('range','19260101-19271231')
+      ->query();
+$list = $title->parse();
+?>
+
+Get the full record for a digitised newspaper article:
+<?php
+use Drupal\trove\TroveApi;
+use Drupal\trove\TroveApiQueryRecord;
+
+$newspaper = TroveAPI::factory('newspaper');
+$newspaper->setId('18342701')
+          ->setFilter('include','articletext')
+          ->setFilter('reclevel','full');
+          ->query();
+$list = $newspaper->parse();
+?>
+
+All public Trove module API methods can be chained.
+
+Other utilities offered by the Trove module include:
+
+<?php
+// get the trove search zones
+$zones = trove_get_zones();
+
+// get a list of trove format facets
+$formats = trove_get_facets_format();
+
+// get trove availability facets:
+$availability = trove_get_facets_availability();
+
+// get the trove category facets:
+$category = trove_get_facets_category();
+?>
+
 THANKS
 ------
  * Thanks to the National Library and all of the contributors for the amazing,
-   vast and free Trove service. Be sure and acknowledge them if you use
+   vast and free Trove service. Be sure to acknowledge them if you use
    this module on your site.
    See http://trove.nla.gov.au/general/api-powered-by-trove
    for more information on acknowledging Trove.

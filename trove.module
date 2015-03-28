@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * The drove module.
+ * The Trove module.
  */
 
 define('TROVE_BASE_URL', 'http://api.trove.nla.gov.au/');
