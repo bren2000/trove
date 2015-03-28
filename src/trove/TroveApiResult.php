@@ -36,9 +36,8 @@ class TroveApiResult extends TroveApi {
    * Setter method for $totalResults.
    */
   public function setTotalResults() {
-    $this->totalResults = 0;
     foreach ($this->response['response']['zone'] as $zone) {
-      $this->$totalResults += $zone['records']['total'];
+      $this->totalResults += $zone['records']['total'];
     }
   }
 
