@@ -183,7 +183,7 @@ function trove_cron() {
   // Refresh the cache with trove api data that doesn't regularly change,
   // e.g. Newspaper titles and contributors.
   if (variable_get('trove_cache_items_cron', TRUE)) {
-    $contributors = TroveAPI::factory('contributor')->query();
-    $titles = TroveAPI::factory('newspaper/titles')->query();
+    TroveAPI::factory('contributor')->query();
+    TroveAPI::factory('newspaper/titles')->query();
   }
 }
