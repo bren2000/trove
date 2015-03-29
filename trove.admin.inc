@@ -11,6 +11,7 @@ use Drupal\trove\TroveApiContributor;
  * Implements hook_settings_form().
  */
 function trove_admin_settings() {
+
   $form['trove_api_key'] = array(
     '#type' => 'textfield',
     '#title' => t('API Key'),
@@ -19,6 +20,14 @@ function trove_admin_settings() {
     '#description' => t('API Key from Trove (see the <a href="@trove_link">Trove API page</a> to
       apply for an API  key).', array('@trove_link' => url('http://trove.nla.gov.au/general/api'))),
   );
+
+
+  $form['trove_details'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Trove API operation details'),
+    '#tree' => TRUE,
+  );
+
   $times = array(
     900,
     1800,
@@ -32,62 +41,47 @@ function trove_admin_settings() {
     43200,
     86400,
   );
+
   $ageoptions = drupal_map_assoc($times, 'format_interval');
-  $form['trove_cache_duration'] = array(
+
+  $form['trove_details']['trove_cache_duration'] = array(
     '#type' => 'select',
-    '#title' => t('Update interval'),
+    '#title' => t('Cache update interval'),
     '#options' => $ageoptions,
     '#default_value' => variable_get('trove_cache_duration', 3600),
-    '#description' => t('The refresh interval indicating how often you want to check cached trove API calls are up to date.'),
+    '#description' => t('The Trove module caches calls to the API to improve
+      performance. Select a refresh interval indicating how often you want to
+      check cached trove API calls are up to date.'),
   );
-  $form['trove_update_contributors'] = array(
-    '#type' => 'button',
-    '#value' => t('Update contributors'),
-    '#title' => t('Update contributors list'),
-    '#description' => t('This will update the list of Trove contributors, this list is used by views as filter values.'),
-    '#suffix' => '<span id="update-cont-div"></span>',
-    '#ajax' => array(
-      'callback' => 'trove_get_trove_contributors',
-      'wrapper' => 'update-cont-div',
-      'method' => 'replace',
-      'effect' => 'fade',
-    ),
+
+  $timeout_raw_options = array(
+    3.0,
+    6.0,
+    12.0,
+    30.0,
+    60.0,
   );
+
+  $timeout_options = drupal_map_assoc($timeout_raw_options, 'format_interval');
+
+  $form['trove_details']['trove_timeout'] = array(
+    '#type' => 'select',
+    '#title' => t('API calls timeout'),
+    '#options' => $timeout_options,
+    '#default_value' => variable_get('trove_timeout', 3.0),
+    '#description' => t('Set the timeout for API calls.'),
+  );
+
+  $form['trove_details']['trove_cache_items_cron'] = array(
+    '#type' => 'checkbox',
+    '#title' =>  t('Cache Trove Contributors and Trove Newspaper titles during
+      Drupal cron run. '),
+    '#default_value' => variable_get('trove_cache_items_cron', TRUE),
+    '#description' => t('Results that change less frequently can be requested and cached
+          during cron runs.'),
+  );
+
   return system_settings_form($form);
-}
-
-/**
- * Update the trove contributors table.
- */
-function trove_get_trove_contributors() {
-  $contributors = TroveApi::factory('contributor');
-  $contributors->query();
-  $list = $contributors->parse();
-  return (trove_db_add_trove_contributors($list) ? 'Contributors list updated with ' . count($list) . ' entries' : 'An error occured');
-}
-
-/**
- * Add trove contributors.
- */
-function trove_db_add_trove_contributors($contributors) {
-  if (!empty($contributors)) {
-    foreach ($contributors as $cont) {
-      if ($cont->nuc) {
-        $values[] = array(
-          'nuc' => $cont->nuc,
-          'name' => $cont->name,
-        );
-      }
-    }
-    db_delete('trove_contributors')->execute();
-    $insert = db_insert('trove_contributors')->fields(array('nuc', 'name'));
-    foreach ($values as $value) {
-      $insert->values($value);
-    }
-    $insert->execute();
-    return TRUE;
-  }
-  return FALSE;
 }
 
 /**

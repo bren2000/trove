@@ -4,6 +4,10 @@
  * The Trove module.
  */
 
+use Drupal\trove\TroveAPI;
+use Drupal\trove\TroveApiContributor;
+use Drupal\trove\TroveApiNewspaperTitle;
+
 define('TROVE_BASE_URL', 'http://api.trove.nla.gov.au/');
 define('TROVE_FROM_DATE', '2012-04-04T00:00:00Z');
 
@@ -170,4 +174,16 @@ function trove_get_index_contributors() {
     $list[$arr->nuc] = $arr->name;
   }
   return $list;
+}
+
+/**
+ * Implements hook_cron().
+ */
+function trove_cron() {
+  // Refresh the cache with trove api data that doesn't regularly change,
+  // e.g. Newspaper titles and contributors.
+  if (variable_get('trove_cache_items_cron', TRUE)) {
+    $contributors = TroveAPI::factory('contributor')->query();
+    $titles = TroveAPI::factory('newspaper/titles')->query();
+  }
 }
