@@ -155,7 +155,7 @@ abstract class TroveApi {
    */
   protected function execute($request_url) {
     $options = array(
-      'timeout' => 5.0,
+      'timeout' => variable_get('trove_timeout', 3.0),
     );
 
     $response = drupal_http_request($request_url, $options);
@@ -166,11 +166,12 @@ abstract class TroveApi {
         return $data;
       }
       else {
-        $this->troveSetError($response->code, $response->data);
+        $this->troveSetError($response->code, $response->status_message);
       }
     }
     else {
-      $this->troveSetError($response->code, $response->data);
+      $this->troveSetError($response->code,
+        isset($response->status_message) ? $response->status_message : $response->error);
     }
     return FALSE;
   }
@@ -261,18 +262,6 @@ abstract class TroveApi {
    *   Message or error response to display.
    */
   protected function troveSetError($code, $message) {
-    switch ($code) {
-      case '404':
-        $message = 'Not found';
-        break;
-
-      case '500':
-        $message = "Internal server error";
-        break;
-
-      default:
-        break;
-    }
     $message = t('Trove error @error_id: %trove_error', array(
       '@error_id' => $code,
       '%trove_error' => $message,

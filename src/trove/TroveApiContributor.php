@@ -50,7 +50,7 @@ class TroveApiContributor extends TroveApi {
    * Getter method for $totalResults.
    */
   public function getTotalResults() {
-    return $this->total_results;
+    return $this->totalResults;
   }
 
 }
