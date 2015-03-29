@@ -209,7 +209,14 @@ abstract class TroveApi {
       $this->cache = TRUE;
     }
     elseif ($this->response = $this->execute($request_url)) {
-      $this->cacheSet($request_url, $this->response);
+      // set custom cache expire for contributor & titles calls with no params.
+      if (($this->params['method'] = 'newspaper/titles' ||
+           $this->params['method'] = 'contributor') &&
+          count($this->params) == 1) {
+        $this->cacheSet($request_url, $this->response, 86400);
+      } else {
+        $this->cacheSet($request_url, $this->response);
+      }
       $this->cache = FALSE;
     }
     return $this;
@@ -241,15 +248,27 @@ abstract class TroveApi {
 
   /**
    * Retrieve the cache. Wrapper around Drupal's cache_set().
+   *
+   * @param string $url
+   *   The API url that will be used for the cache id.
+   * @param array $data
+   *   The response data to cache.
+   * @param int $expires
+   *   A time in seconds to overide the default timeout.
    */
-  protected function cacheSet($url, $data) {
+  protected function cacheSet($url, $data, $expires = NULL) {
     if ($data === FALSE) {
       // If we don't get a response we set a temporary cache to prevent hitting
       // the API frequently for no reason.
       cache_set($this->cacheId($url), FALSE, $this->cacheTable, CACHE_TEMPORARY);
     }
     else {
-      $ttl = (int) variable_get('trove_cache_duration', 900);
+      if ($expires == NULL) {
+        $ttl = (int) variable_get('trove_cache_duration', 900);
+      }
+      else {
+        $ttl = (int) $expires;
+      }
       $expire = time() + $ttl;
       cache_set($this->cacheId($url), $data, $this->cacheTable, $expire);
     }
