@@ -209,12 +209,13 @@ abstract class TroveApi {
       $this->cache = TRUE;
     }
     elseif ($this->response = $this->execute($request_url)) {
-      // set custom cache expire for contributor & titles calls with no params.
+      // Set custom cache expire for contributor & titles calls with no params.
       if (($this->params['method'] = 'newspaper/titles' ||
            $this->params['method'] = 'contributor') &&
           count($this->params) == 1) {
         $this->cacheSet($request_url, $this->response, 86400);
-      } else {
+      }
+      else {
         $this->cacheSet($request_url, $this->response);
       }
       $this->cache = FALSE;
