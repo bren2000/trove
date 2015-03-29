@@ -21,7 +21,6 @@ function trove_admin_settings() {
       apply for an API  key).', array('@trove_link' => url('http://trove.nla.gov.au/general/api'))),
   );
 
-
   $form['trove_details'] = array(
     '#type' => 'fieldset',
     '#title' => t('Trove API operation details'),
@@ -74,11 +73,11 @@ function trove_admin_settings() {
 
   $form['trove_details']['trove_cache_items_cron'] = array(
     '#type' => 'checkbox',
-    '#title' =>  t('Cache Trove Contributors and Trove Newspaper titles during
+    '#title' => t('Cache Trove Contributors and Trove Newspaper titles during
       Drupal cron run. '),
     '#default_value' => variable_get('trove_cache_items_cron', TRUE),
     '#description' => t('Results that change less frequently can be requested and cached
-          during cron runs.'),
+      during cron runs.'),
   );
 
   return system_settings_form($form);
