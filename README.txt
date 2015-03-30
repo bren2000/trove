@@ -23,6 +23,24 @@ CONFIGURATION
 
 USAGE
 -----
+Trove API methods are described on the Trove API help site. This Trove module
+provides wrapper functions around those methods. These are defined in a set of
+constants:
+ * TROVE_RESULT
+   Method for Trove API search.
+ * TROVE_CONTRIBUTOR
+   Method for searching and retrieving full list of trove contributors.
+ * TROVE_RECORD_NEWSPAPER
+   Method for rerieving information about a newspaper work.
+ * TROVE_RECORD_WORK
+   Method for rerieving information about a general work.
+ * TROVE_RECORD_LIST
+   Method for rerieving information about a list.
+ * TROVE_NEWSPAPER_TITLE
+   Method for rerieving information about a newspaper title.
+ * TROVE_NEWSPAPER_TITLES
+   Method for searching information about newspaper titles.
+
 Examples
 
 Getting a list of all Trove contributors:
@@ -30,65 +48,61 @@ Getting a list of all Trove contributors:
 use Drupal\trove\TroveApi;
 use Drupal\trove\TroveApiContributor;
 
-$contributors = TroveAPI::factory('contributor');
+$contributors = TroveAPI::factory(TROVE_CONTRIBUTOR);
 $contributors->query();
 $list = $contributors->parse();
 ?>
 
-Getting a result set for items in the Trove books zone with the keyword
-query "fish":
+Getting a result set for items in the Trove books zone with the keyword query "fish":
 <?php
 use Drupal\trove\TroveApi;
 use Drupal\trove\TroveApiQuery;
 
-$my_search = TroveAPI::factory('trovequery');
-$my_search->set_filter('zone', 'book')
-  ->set_filter('q', 'fish')
+$my_search = TroveAPI::factory(TROVE_RESULT);
+$my_search->set_filter('zone','book')
+  ->set_filter('q','fish')
   ->query();
 $list = $my_search->parse();
 ?>
 
-Get the list of years available in Trove for the Sydney Morning Herald and get
-the dates it was issued in 1926 and 1927:
+Get the list of years available for the <em>Sydney Morning Herald </em>and get the dates it was issued in 1926 and 1927:
 <?php
 use Drupal\trove\TroveApi;
 use Drupal\trove\TroveApiQueryNewspaperTitle;
 
-$title = TroveAPI::factory('newspaper/title');
+$title = TroveAPI::factory(TROVE_NEWSPAPER_TITLE);
 $title->setId('35')
-  ->setFilter('include', 'years')
-  ->setFilter('range', '19260101-19271231')
+  ->setFilter('include','years')
+  ->setFilter('range','19260101-19271231')
   ->query();
 $list = $title->parse();
 ?>
-
 Get the full record for a digitised newspaper article:
 <?php
 use Drupal\trove\TroveApi;
 use Drupal\trove\TroveApiQueryRecord;
 
-$newspaper = TroveAPI::factory('newspaper');
+$newspaper = TroveAPI::factory(TROVE_RECORD_NEWSPAPER);
 $newspaper->setId('18342701')
-  ->setFilter('include', 'articletext')
-  ->setFilter('reclevel', 'full');
+  ->setFilter('include','articletext')
+  ->setFilter('reclevel','full');
   ->query();
 $list = $newspaper->parse();
 ?>
-
 All public Trove module API methods can be chained.
 
 Other utilities offered by the Trove module include:
 <?php
-// Get the trove search zones.
+// get the trove search zones
 $zones = trove_get_zones();
 
-// Get a list of trove format facets.
+// get a list of trove format facets
 $formats = trove_get_facets_format();
 
-// Get trove availability facets:
+// get trove availability facets:
 $availability = trove_get_facets_availability();
 
-// Get the trove category facets:
+// get the trove category facets:
 $category = trove_get_facets_category();
 ?>
 
