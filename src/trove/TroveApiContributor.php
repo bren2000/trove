@@ -15,13 +15,6 @@ namespace  Drupal\trove;
 class TroveApiContributor extends TroveApi {
 
   /**
-   * Constructor.
-   */
-  public function __construct($method) {
-    parent::__construct($method);
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function query() {
