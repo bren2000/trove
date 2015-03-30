@@ -21,12 +21,6 @@ function trove_admin_settings() {
       apply for an API  key).', array('@trove_link' => url('http://trove.nla.gov.au/general/api'))),
   );
 
-  $form['trove_details'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Trove API operation details'),
-    '#tree' => TRUE,
-  );
-
   $times = array(
     900,
     1800,
@@ -43,7 +37,7 @@ function trove_admin_settings() {
 
   $ageoptions = drupal_map_assoc($times, 'format_interval');
 
-  $form['trove_details']['trove_cache_duration'] = array(
+  $form['trove_cache_duration'] = array(
     '#type' => 'select',
     '#title' => t('Cache update interval'),
     '#options' => $ageoptions,
@@ -63,7 +57,7 @@ function trove_admin_settings() {
 
   $timeout_options = drupal_map_assoc($timeout_raw_options, 'format_interval');
 
-  $form['trove_details']['trove_timeout'] = array(
+  $form['trove_timeout'] = array(
     '#type' => 'select',
     '#title' => t('API calls timeout'),
     '#options' => $timeout_options,
@@ -71,7 +65,7 @@ function trove_admin_settings() {
     '#description' => t('Set the timeout for API calls.'),
   );
 
-  $form['trove_details']['trove_cache_items_cron'] = array(
+  $form['trove_cache_items_cron'] = array(
     '#type' => 'checkbox',
     '#title' => t('Cache Trove Contributors and Trove Newspaper titles during
       Drupal cron run. '),
