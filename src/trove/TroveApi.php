@@ -252,7 +252,7 @@ abstract class TroveApi {
    *
    * @param string $url
    *   The API url that will be used for the cache id.
-   * @param array $data
+   * @param mixed $data
    *   The response data to cache.
    * @param int $expires
    *   A time in seconds to overide the default timeout.
