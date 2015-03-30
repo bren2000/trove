@@ -12,37 +12,5 @@ function trove_uninstall() {
   variable_del('trove_cache_duration');
   variable_del('trove_timeout');
   variable_del('trove_get_contributors_interval');
-  drupal_uninstall_schema('trove_contributors');
 }
 
-/**
- * Implements hook_install().
- */
-function trove_install() {
-  drupal_install_schema('trove_contributors');
-}
-
-/**
- * Implements hook_schema().
- */
-function trove_schema() {
-  $schema['trove_contributors'] = array(
-    'description' => 'Stores trove contributors and their NUC',
-    'fields' => array(
-      'nuc' => array(
-        'type' => 'varchar',
-        'length' => 32,
-        'not null' => TRUE,
-        'default' => '',
-        'description' => 'The NUC identifier for the contibutor.',
-      ),
-      'name' => array(
-        'description' => 'The name of the contributor',
-        'type' => 'text',
-        'not null' => FALSE,
-      ),
-    ),
-    'primary key' => array('nuc'),
-  );
-  return $schema;
-}
