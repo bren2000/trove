@@ -49,21 +49,21 @@ abstract class TroveApi {
    */
   public static function factory($op) {
     switch ($op) {
-      case 'trovequery':
+      case TROVE_RESULT:
         return new TroveApiResult('result');
 
-      case 'work':
-      case 'newspaper':
-      case 'list':
+      case TROVE_RECORD_WORK:
+      case TROVE_RECORD_NEWSPAPER:
+      case TROVE_RECORD_LIST:
         return new TroveApiRecord($op);
 
-      case 'newspaper/title':
+      case TROVE_NEWSPAPER_TITLE:
         return new TroveApiNewspaperTitle($op);
 
-      case 'newspaper/titles':
+      case TROVE_NEWSPAPER_TITLES:
         return new TroveApiNewspaperTitle($op);
 
-      case 'contributor':
+      case TROVE_CONTRIBUTOR:
         return new TroveApiContributor($op);
 
     }

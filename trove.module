@@ -8,8 +8,24 @@ use Drupal\trove\TroveAPI;
 use Drupal\trove\TroveApiContributor;
 use Drupal\trove\TroveApiNewspaperTitle;
 
+// Trove API base URL.
 define('TROVE_BASE_URL', 'http://api.trove.nla.gov.au/');
+// The earleist 'from' date for all trove results.
 define('TROVE_FROM_DATE', '2012-04-04T00:00:00Z');
+//  Trove search method.
+define('TROVE_RESULT', 'result');
+// Trove contributor search method.
+define('TROVE_CONTRIBUTOR', 'contributor') ;
+// Trove newspaper search method.
+define('TROVE_RECORD_NEWSPAPER', 'newspaper') ;
+// Trove work method.
+define('TROVE_RECORD_WORK', 'work');
+// Trove record search method.
+define('TROVE_RECORD_LIST', 'list');
+// Trove newspaper title search method.
+define('TROVE_NEWSPAPER_TITLE', 'newspaper/title');
+// Trove newspaper titles search method.
+define('TROVE_NEWSPAPER_TITLES', 'newspaper/titles');
 
 /**
  * Implements hook_menu().
@@ -183,7 +199,7 @@ function trove_cron() {
   // Refresh the cache with trove api data that doesn't regularly change,
   // e.g. Newspaper titles and contributors.
   if (variable_get('trove_cache_items_cron', TRUE)) {
-    TroveAPI::factory('contributor')->query();
-    TroveAPI::factory('newspaper/titles')->query();
+    TroveAPI::factory(TROVE_CONTRIBUTOR)->query();
+    TroveAPI::factory(TROVE_NEWSPAPER_TITLES)->query();
   }
 }
