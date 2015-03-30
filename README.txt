@@ -59,8 +59,8 @@ use Drupal\trove\TroveApi;
 use Drupal\trove\TroveApiQuery;
 
 $my_search = TroveAPI::factory(TROVE_RESULT);
-$my_search->set_filter('zone','book')
-  ->set_filter('q','fish')
+$my_search->set_filter('zone', 'book')
+  ->set_filter('q', 'fish')
   ->query();
 $list = $my_search->parse();
 ?>
@@ -72,8 +72,8 @@ use Drupal\trove\TroveApiQueryNewspaperTitle;
 
 $title = TroveAPI::factory(TROVE_NEWSPAPER_TITLE);
 $title->setId('35')
-  ->setFilter('include','years')
-  ->setFilter('range','19260101-19271231')
+  ->setFilter('include', 'years')
+  ->setFilter('range', '19260101-19271231')
   ->query();
 $list = $title->parse();
 ?>
@@ -84,8 +84,8 @@ use Drupal\trove\TroveApiQueryRecord;
 
 $newspaper = TroveAPI::factory(TROVE_RECORD_NEWSPAPER);
 $newspaper->setId('18342701')
-  ->setFilter('include','articletext')
-  ->setFilter('reclevel','full');
+  ->setFilter('include', 'articletext')
+  ->setFilter('reclevel', 'full');
   ->query();
 $list = $newspaper->parse();
 ?>
@@ -93,16 +93,16 @@ All public Trove module API methods can be chained.
 
 Other utilities offered by the Trove module include:
 <?php
-// get the trove search zones
+// Get the trove search zones.
 $zones = trove_get_zones();
 
-// get a list of trove format facets
+// Get a list of trove format facets.
 $formats = trove_get_facets_format();
 
-// get trove availability facets:
+// Get trove availability facets.
 $availability = trove_get_facets_availability();
 
-// get the trove category facets:
+// Get the trove category facets.
 $category = trove_get_facets_category();
 ?>
 

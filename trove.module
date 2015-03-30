@@ -12,12 +12,12 @@ use Drupal\trove\TroveApiNewspaperTitle;
 define('TROVE_BASE_URL', 'http://api.trove.nla.gov.au/');
 // The earleist 'from' date for all trove results.
 define('TROVE_FROM_DATE', '2012-04-04T00:00:00Z');
-//  Trove search method.
+// Trove search method.
 define('TROVE_RESULT', 'result');
 // Trove contributor search method.
-define('TROVE_CONTRIBUTOR', 'contributor') ;
+define('TROVE_CONTRIBUTOR', 'contributor');
 // Trove newspaper search method.
-define('TROVE_RECORD_NEWSPAPER', 'newspaper') ;
+define('TROVE_RECORD_NEWSPAPER', 'newspaper');
 // Trove work method.
 define('TROVE_RECORD_WORK', 'work');
 // Trove record search method.
