@@ -13,4 +13,3 @@ function trove_uninstall() {
   variable_del('trove_timeout');
   variable_del('trove_get_contributors_interval');
 }
-
