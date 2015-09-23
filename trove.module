@@ -180,19 +180,6 @@ function trove_get_facets_category() {
 }
 
 /**
- * Get the contributors.
- */
-function trove_get_index_contributors() {
-  $list = array();
-  $result = db_query("SELECT nuc, name
-    FROM {trove_contributors}");
-  foreach ($result->fetchAllAssoc('nuc') as $arr) {
-    $list[$arr->nuc] = $arr->name;
-  }
-  return $list;
-}
-
-/**
  * Implements hook_cron().
  */
 function trove_cron() {
