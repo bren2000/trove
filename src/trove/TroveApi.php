@@ -23,7 +23,7 @@ abstract class TroveApi {
   // Users API key.
   protected $apiKey;
 
-  // Reference to the trove api service method, e.g 'contributors'
+  // Reference to the trove api service method, e.g 'contributors'.
   protected $method;
 
   // API parameter, use TroveApi->set_filter() to set.

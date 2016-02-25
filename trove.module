@@ -5,8 +5,6 @@
  */
 
 use Drupal\trove\TroveAPI;
-use Drupal\trove\TroveApiContributor;
-use Drupal\trove\TroveApiNewspaperTitle;
 
 // Trove API base URL.
 define('TROVE_BASE_URL', 'http://api.trove.nla.gov.au/');
@@ -188,5 +186,25 @@ function trove_cron() {
   if (variable_get('trove_cache_items_cron', TRUE)) {
     TroveAPI::factory(TROVE_CONTRIBUTOR)->query();
     TroveAPI::factory(TROVE_NEWSPAPER_TITLES)->query();
+  }
+}
+
+/**
+ * Implements hook_help().
+ */
+function trove_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#trove':
+      $output = '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The Trove module provides a simple Drupal API around the National Library of Australia\'s <a href="@trove_link">Trove API service</a>.', array('@trove_link' => 'http://help.nla.gov.au/trove/building-with-trove/api')) . '</p>';
+      $output .= '<p>' . t('The Trove module can be used as a standalone API for other modules wishing to use the Trove API service. It provides the following:');
+      $output .= '<ul><li>' . t('Caching of requests, with user defined cache expiry.') . '</li>';
+      $output .= '<li>' . t('Storage of API key.') . '</li>';
+      $output .= '<li>' . t('Simple interface and wrapper functions and around the Trove API services.') . '</li>';
+      $output .= '<li>' . t('Utility functions to return lists of facet, zones, parameters, and other Trove API information.') . '</li>';
+      $output .= '<li>' . t('Error handling and logging.') . '</li></p>';
+      return $output;
+    case 'admin/config/services/trove':
+      return '<p>' . t('API Key from Trove (see the <a href="@trove_link">Trove API page</a> to apply for an API  key).', array('@trove_link' => url('http://trove.nla.gov.au/general/api'))) . '</p>';
   }
 }

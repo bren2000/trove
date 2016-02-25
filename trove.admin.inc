@@ -4,9 +4,6 @@
  * The admin settings for the trove module.
  */
 
-use Drupal\trove\TroveApi;
-use Drupal\trove\TroveApiContributor;
-
 /**
  * Implements hook_settings_form().
  */
