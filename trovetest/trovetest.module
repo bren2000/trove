@@ -1,0 +1,45 @@
+<?php
+
+use Drupal\trove\TroveApi;
+use Drupal\trove\TroveApiQueryRecord;
+
+/**
+ * Implements hook_block_info().
+ */
+function trovetest_block_info() {
+  $blocks['trovetest_block'] = array(
+    'info' => t('Test block for the trove module'),
+    'cache' => DRUPAL_CACHE_PER_ROLE,
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function trovetest_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'trovetest_block':
+      $block['subject'] = t('Trove test block');
+      $block['content'] = trovetest_contents($delta);
+      break;
+  }
+  return $block;
+}
+
+/**
+ * A module-defined block content function.
+ */
+function trovetest_contents($which_block) {
+  switch ($which_block) {
+    case 'trovetest_block':
+      $newspaper = TroveAPI::factory(TROVE_RECORD_NEWSPAPER);
+      $newspaper->setId('18342701')
+          ->setFilter('include','articletext')
+          ->setFilter('reclevel','full')
+          ->query();
+       $results .= implode($newspaper->parse(), '<br/>');
+      return $results;
+  }
+}

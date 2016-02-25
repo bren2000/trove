@@ -1,0 +1,6 @@
+name = Trove Test
+description = Very simple Trove example module.
+core = 7.x
+package = Trove
+
+dependencies[] = trove
