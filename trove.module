@@ -204,6 +204,7 @@ function trove_help($path, $arg) {
       $output .= '<li>' . t('Utility functions to return lists of facet, zones, parameters, and other Trove API information.') . '</li>';
       $output .= '<li>' . t('Error handling and logging.') . '</li></p>';
       return $output;
+      
     case 'admin/config/services/trove':
       return '<p>' . t('API Key from Trove (see the <a href="@trove_link">Trove API page</a> to apply for an API  key).', array('@trove_link' => url('http://trove.nla.gov.au/general/api'))) . '</p>';
   }
