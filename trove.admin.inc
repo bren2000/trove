@@ -81,6 +81,7 @@ function trove_admin_settings_validate($form, &$form_state) {
   $key = trim($form_state['values']['trove_api_key']);
   if ($key && (preg_match('/^[A-Za-z\d]{16}$/', $key) != 1)) {
     form_set_error('trove_api_key', t('This does not appear to be a trove API key.'));
+    drupal_set_message(t('Please set a valid Trove API key or visit <a href="@trove_api">Trove</a> to apply for a free api key', array('@trove_api' => 'http://trove.nla.gov.au/general/api')), 'error');
   }
 }
 
