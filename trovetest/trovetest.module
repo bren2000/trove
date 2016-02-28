@@ -5,7 +5,6 @@
  */
 
 use Drupal\trove\TroveApi;
-use Drupal\trove\TroveApiQueryRecord;
 
 /**
  * Implements hook_block_info().
@@ -43,7 +42,7 @@ function trovetest_contents($which_block) {
           ->setFilter('include', 'articletext')
           ->setFilter('reclevel', 'full')
           ->query();
-      $results = implode($newspaper->parse(), '<br/>');
-      return $results;
+      $results = $newspaper->parse();
+      return filter_xss($results['articleText']);
   }
 }
