@@ -282,15 +282,15 @@ abstract class TroveApi {
    *   Message or error response to display.
    */
   protected function troveSetError($code, $message) {
-    $message = t('Trove error @error_id: %trove_error', array(
+    $new_message = t('Trove error @error_id: %trove_error', array(
       '@error_id' => $code,
       '%trove_error' => $message,
     ));
 
     if (user_access('administer trove')) {
-      drupal_set_message($message, 'error');
+      drupal_set_message($new_message, 'error');
     }
-    watchdog('trove', $message, array(), WATCHDOG_WARNING);
+    watchdog('trove', 'Trove error @code: %message', array('%message' => $message, '@code' => $code), WATCHDOG_WARNING);
   }
 
   /**
